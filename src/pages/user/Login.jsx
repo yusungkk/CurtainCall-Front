@@ -12,16 +12,20 @@ const Login = () => {
       return;
     }
 
+const API_BASE_URL = "http://localhost:8080/api/users/login";
+
     try {
-      const response = await fetch("/api/users/login", {
+      const response = await fetch(API_BASE_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        mode: "cors"
       });
 
       if (response.ok) {
         const token = await response.text();
         localStorage.setItem("jwt", token);
+        alert("로그인 성공!");
         navigate("/myPage");
       } else {
         alert("잘못된 이메일이나 비밀번호입니다.");

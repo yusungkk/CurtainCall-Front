@@ -6,11 +6,14 @@ const Register = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
 
+const API_BASE_URL = "http://localhost:8080/api/users";
+
   const handleRegister = async () => {
-    const response = await fetch("/api/users", {
+    const response = await fetch(API_BASE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, name, phone }),
+      mode: "cors",
     });
 
     if (response.ok) {
