@@ -8,10 +8,24 @@ function ProductManagement() {
 
   useEffect(() => {
     axios.get(url).then((response) => {
-      console.log(response.data); // 받아온 상품 목록 데이터
       setProducts(response.data);
     });
   }, []);
+
+  async function handleProductDelete(productId) {
+    try {
+      const response = await axios.delete(`${url}/${productId}`);
+
+      const updatedProducts = products.filter(
+        (product) => product.productId !== productId
+      );
+      setProducts(updatedProducts);
+
+      alert("상품이 삭제되었습니다");
+    } catch (error) {
+      alert("상품 삭제 중 오류가 발생했습니다");
+    }
+  }
 
   return (
     <div>
@@ -34,8 +48,9 @@ function ProductManagement() {
                 <td>{product.productId}</td>
                 <td>
                   <img
-                    src={product.productImageUrl} // S3 accessdenied
+                    src={product.productImageUrl}
                     alt={product.productName}
+                    style={{ width: "150px" }}
                   ></img>
                 </td>
                 <td>{product.productName}</td>
@@ -46,7 +61,15 @@ function ProductManagement() {
                   </Link>
                 </td>
                 <td>
-                  <button>삭제</button>
+                  <button
+                    onClick={() => {
+                      if (window.confirm("정말 상품을 삭제하시겠습니까?")) {
+                        handleProductDelete(product.productId);
+                      }
+                    }}
+                  >
+                    삭제
+                  </button>
                 </td>
               </tr>
             ))}

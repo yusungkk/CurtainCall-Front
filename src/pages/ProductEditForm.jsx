@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ProductEditForm() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const url = `http://localhost:8080/api/products/${id}`;
 
@@ -67,7 +68,8 @@ function ProductEditForm() {
       });
 
       alert("✅ 상품이 수정되었습니다!");
-      console.log(response.data);
+
+      navigate("/admin/products");
     } catch (error) {
       console.error("🚨 상품 수정 실패:", error);
       alert("상품 수정에 실패했습니다.");
@@ -154,6 +156,14 @@ function ProductEditForm() {
         <input type="file" accept="image/*" onChange={handleImageChange} />
 
         <button type="submit">수정</button>
+        <button
+          type="button"
+          onClick={() => {
+            navigate("/admin/products");
+          }}
+        >
+          취소
+        </button>
       </form>
     </div>
   );
