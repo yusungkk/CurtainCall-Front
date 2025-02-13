@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "./ProductRegistration.css"; // CSS 추가
+import "./ProductRegistration.css";
 
 const ProductRegistration = () => {
     const [productName, setProductName] = useState("");
