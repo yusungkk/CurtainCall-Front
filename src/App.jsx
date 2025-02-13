@@ -11,22 +11,20 @@ import ProductEditForm from "./pages/ProductEditForm";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<h1>홈페이지</h1>} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/myPage" element={<MyPage />} />
-        <Route path="/update" element={<Update />} />
-        <Route path="/register" element={<ProductRegistration />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/admin/products" element={<ProductManagement />} />
-        <Route
-          path="/admin/products/:id/edit"
-          element={<ProductEditForm />}
-        ></Route>
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<h1>홈페이지</h1>} />
+      <Route path="/join" element={<Join />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/myPage" element={<MyPage />} />
+      <Route path="/update" element={<Update />} />
+      <Route path="/register" element={<ProductRegistration />} />
+      <Route path="/products" element={<ProductList />} />
+      <Route path="/admin/products" element={<ProductManagement />} />
+      <Route
+        path="/admin/products/:id/edit"
+        element={<ProductEditForm />}
+      ></Route>
+    </Routes>
   );
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
 const UpdateUser = () => {
   const [user, setUser] = useState({
@@ -28,26 +29,13 @@ const UpdateUser = () => {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/myPage`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          mode: "cors",
-        });
-
-        if (!response.ok) {
-          throw new Error("사용자 정보를 가져오는데 실패했습니다.");
-        }
-
-        const data = await response.json();
+        const response = await axios.get(`${API_BASE_URL}/myPage`);
         setUser({
-          email: data.email,
+          email: response.data.email,
           password: "",
           confirmPassword: "",
-          name: data.name,
-          phone: data.phone,
+          name: response.data.name,
+          phone: response.data.phone,
         });
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);
@@ -111,21 +99,13 @@ const UpdateUser = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/update`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password: user.password,
-          name: user.name,
-          phone: user.phone,
-        }),
-        mode: "cors",
+      const response = await axios.put(`${API_BASE_URL}/update`, {
+        password: user.password,
+        name: user.name,
+        phone: user.phone,
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert("회원정보가 수정되었습니다.");
         navigate("/myPage");
       } else {
@@ -150,7 +130,7 @@ const UpdateUser = () => {
 
       <input
         type="password"
-        placeholder="비밀번호 (변경 시 입력)"
+        placeholder="비밀번호"
         value={user.password}
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
 const MyPage = () => {
   const [user, setUser] = useState(null);
@@ -7,38 +8,26 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem("jwt");
-      if (!token) {
-        alert("로그인이 필요합니다.");
-        navigate("/");
-        return;
-      }
-
-      const API_BASE_URL = "http://localhost:8080/api/users";
-
       try {
-        const response = await fetch(`${API_BASE_URL}/myPage`, {
-          method: "GET",
-          headers: {
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json",
-          },
-          mode: "cors",
-        });
-
-        if (!response.ok) {
-          throw new Error("사용자 정보를 가져오는데 실패했습니다.");
-        }
-
-        const data = await response.json();
-        setUser(data);
+        const response = await axios.get('/users/myPage');
+        setUser(response.data);
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);
         alert("사용자 정보를 가져오는데 실패했습니다.");
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('jwt');
+          navigate('/');
+        }
       }
     };
 
-    fetchUserData();
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate('/');
+    } else {
+      fetchUserData();
+    }
   }, [navigate]);
 
   const handleLogout = () => {
@@ -48,8 +37,8 @@ const MyPage = () => {
   };
 
   const handleUpdate = () => {
-    navigate("/update")
-  }
+    navigate("/update");
+  };
 
   return (
     <div>
