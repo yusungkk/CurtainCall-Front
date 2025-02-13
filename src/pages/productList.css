@@ -1,0 +1,61 @@
+/* 상품 목록 컨테이너 */
+.product-list-container {
+    text-align: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 상품 그리드 (격자 형태) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* ✅ 5개씩 배치 */
+    gap: 20px; /* ✅ 카드 간 간격 */
+    justify-content: center; /* 중앙 정렬 */
+    padding: 20px;
+}
+
+/* 상품 카드 */
+.product-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+/* 상품 이미지 */
+.product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* 상품 제목 */
+.product-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 상품 장소 */
+.product-place {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 상품 날짜 */
+.product-dates {
+    font-size: 14px;
+    color: #999;
+}
+
+p {
+    margin-top: -3px;
+    margin-bottom: 5px;
+}
