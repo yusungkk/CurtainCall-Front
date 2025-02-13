@@ -12,10 +12,10 @@ const Login = () => {
       return;
     }
 
-    const API_BASE_URL = "http://localhost:8080/api/users/login";
+    const API_BASE_URL = "http://localhost:8080/api/users";
 
     try {
-      const response = await fetch(API_BASE_URL, {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("jwt");
       if (!token) {
         alert("로그인이 필요합니다.");
+        navigate("/");
         return;
       }
 
-      const API_BASE_URL = "http://localhost:8080/api/users/myPage";
+      const API_BASE_URL = "http://localhost:8080/api/users";
 
       try {
-        const response = await fetch(API_BASE_URL, {
+        const response = await fetch(`${API_BASE_URL}/myPage`, {
           method: "GET",
           headers: {
               "Authorization": `Bearer ${token}`,
@@ -36,7 +39,17 @@ const MyPage = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    alert("로그아웃 되었습니다.");
+    navigate("/");
+  };
+
+  const handleUpdate = () => {
+    navigate("/update")
+  }
 
   return (
     <div>
@@ -46,6 +59,8 @@ const MyPage = () => {
           <p>이메일: {user.email}</p>
           <p>이름: {user.name}</p>
           <p>전화번호: {user.phone}</p>
+          <button onClick={handleUpdate}>수정</button>
+          <button onClick={handleLogout}>로그아웃</button>
         </div>
       ) : (
         <p>로딩 중...</p>
