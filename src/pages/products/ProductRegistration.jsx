@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "./ProductRegistration.css";
+import "../../styles/products/ProductRegistration.css";
 
 const ProductRegistration = () => {
   const [productName, setProductName] = useState("");
