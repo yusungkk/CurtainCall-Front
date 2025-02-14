@@ -9,8 +9,8 @@
 /* 상품 그리드 (격자 형태) */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* ✅ 5개씩 배치 */
-    gap: 20px; /* ✅ 카드 간 간격 */
+    grid-template-columns: repeat(5, 1fr); /* 5개씩 배치 */
+    gap: 20px; /* 카드 간 간격 */
     justify-content: center; /* 중앙 정렬 */
     padding: 20px;
 }

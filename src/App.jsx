@@ -5,6 +5,7 @@ import ProductList from "./pages/products/ProductList.jsx";
 import ProductManagement from "./pages/products/ProductManagement.jsx";
 import ProductEditForm from "./pages/products/ProductEditForm.jsx";
 import BookingPage from "./pages/orders/BookingPage.jsx";
+import PaymentPage from "./pages/orders/PaymentPage"; // 결제 페이지 추가
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         path="/admin/products/:id/edit"
         element={<ProductEditForm />}
       ></Route>
+        <Route path="/payment" element={<PaymentPage />} />
     </Routes>
   );
 }
