@@ -4,7 +4,7 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
-import "./ProductDetail.css";
+import "../../styles/products/ProductDetail.css";
 
 function ProductDetail() {
   const { id } = useParams();
