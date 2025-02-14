@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,27 +13,22 @@ const Login = () => {
       return;
     }
 
-    const API_BASE_URL = "http://localhost:8080/api/users";
-
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        mode: "cors"
-      });
+      const response = await axios.post("/users/login", { email, password });
 
-      if (response.ok) {
-        const token = await response.text();
+      if (response.status === 200) {
+        const token = response.data;
         localStorage.setItem("jwt", token);
         alert("로그인 성공!");
         navigate("/myPage");
-      } else {
-        alert("잘못된 이메일이나 비밀번호입니다.");
       }
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
-      alert("로그인 요청 중 오류가 발생했습니다.");
+      if (error.response && error.response.status === 401) {
+        alert("잘못된 이메일이나 비밀번호입니다.");
+      } else {
+        alert("로그인 요청 중 오류가 발생했습니다.");
+      }
     }
   };
 

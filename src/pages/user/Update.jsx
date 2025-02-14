@@ -17,7 +17,6 @@ const UpdateUser = () => {
   const [phoneError, setPhoneError] = useState("");
 
   const navigate = useNavigate();
-  const API_BASE_URL = "http://localhost:8080/api/users";
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -29,7 +28,7 @@ const UpdateUser = () => {
       }
 
       try {
-        const response = await axios.get(`${API_BASE_URL}/myPage`);
+        const response = await axios.get("/users/myPage");
         setUser({
           email: response.data.email,
           password: "",
@@ -99,7 +98,7 @@ const UpdateUser = () => {
     }
 
     try {
-      const response = await axios.put(`${API_BASE_URL}/update`, {
+      const response = await axios.put("/users/update", {
         password: user.password,
         name: user.name,
         phone: user.phone,

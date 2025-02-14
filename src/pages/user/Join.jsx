@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,6 @@ const Register = () => {
   const [phoneError, setPhoneError] = useState("");
 
   const navigate = useNavigate();
-  const API_BASE_URL = "http://localhost:8080/api/users";
 
   const validateInputs = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -71,18 +71,25 @@ const Register = () => {
   const handleRegister = async () => {
     if (!validateInputs()) return;
 
-    const response = await fetch(API_BASE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name, phone }),
-      mode: "cors",
-    });
+    try {
+      const response = await axios.post("/users", {
+        email,
+        password,
+        name,
+        phone,
+      });
 
-    if (response.ok) {
-      alert("회원가입 성공!");
-      navigate("/login");
-    } else {
-      alert("회원가입 실패!");
+      if (response.status === 201) {
+        alert("회원가입 성공!");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("회원가입 중 오류 발생:", error);
+      if (error.response && error.response.status === 400) {
+        alert("이미 사용 중인 이메일입니다.");
+      } else {
+        alert("회원가입 요청 중 오류가 발생했습니다.");
+      }
     }
   };
 
