@@ -3,14 +3,28 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 function ProductManagement() {
-  const url = "http://localhost:8080/api/products";
+  const url = "http://localhost:8080/api/v1/products";
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const getProducts = async (page, size) => {
+    const response = await axios.get(`${url}?page=${page}&size=${size}`);
+    setProducts(response.data.content);
+    setTotalPages(response.data.page.totalPages);
+  };
 
   useEffect(() => {
-    axios.get(url).then((response) => {
-      setProducts(response.data);
-    });
-  }, []);
+    getProducts(currentPage, 10);
+  }, [currentPage]);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
 
   async function handleProductDelete(productId) {
     try {
@@ -31,6 +45,26 @@ function ProductManagement() {
     <div>
       <h2>상품 관리</h2>
       <main>
+        <div>
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 0}
+          >
+            이전
+          </button>
+          {getPageNumbers().map((page) => (
+            <button key={page} onClick={() => setCurrentPage(page - 1)}>
+              {page}
+            </button>
+          ))}
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages - 1}
+          >
+            다음
+          </button>
+        </div>
+
         <table>
           <thead>
             <tr>
@@ -52,7 +86,7 @@ function ProductManagement() {
                   <img
                     src={product.productImageUrl}
                     alt={product.productName}
-                    style={{ width: "150px" }}
+                    style={{ width: "100px" }}
                   ></img>
                 </td>
                 <td>{product.productName}</td>
