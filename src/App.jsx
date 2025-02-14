@@ -9,9 +9,9 @@ import BookingPage from "./pages/orders/BookingPage.jsx";
 import FaqList from "./pages/inquiry/FaqList.jsx";
 import FaqAddForm from "./pages/inquiry/FaqAddForm.jsx";
 import FaqEditForm from "./pages/inquiry/FaqEditForm.jsx";
-import Join from "./pages/user/Join.jsx";
-import {Login} from "@mui/icons-material";
-import MyPage from "./pages/user/MyPage.jsx";
+import Join from "./pages/users/Join.jsx";
+import Login from "./pages/users/Login.jsx";
+import MyPage from "./pages/users/MyPage.jsx";
 
 function App() {
   return (

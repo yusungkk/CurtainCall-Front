@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {createFaq} from "../../api/faqApi.js";
 import {useNavigate} from "react-router-dom";
-import CommonFaqForm from "../../component/CommonFaqForm.jsx";
+import CommonFaqForm from "../../components/CommonFaqForm.jsx";
 import {Typography} from "@mui/material";
 
 function FaqAddForm() {

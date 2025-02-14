@@ -9,15 +9,15 @@ import {
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import EditBtn from "../../component/EditBtn.tsx";
-import CancelBtn from "../../component/CancelBtn.jsx";
-import LoadMoreBtn from "../../component/LoadMoreBtn.jsx";
+import EditBtn from "../../components/EditBtn.tsx";
+import CancelBtn from "../../components/CancelBtn.jsx";
+import LoadMoreBtn from "../../components/LoadMoreBtn.jsx";
 import {useNavigate} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import QuizIcon from '@mui/icons-material/Quiz';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ChatIcon from '@mui/icons-material/Chat';
-import FaqCard from "../../component/FaqCard.jsx";
+import FaqCard from "../../components/FaqCard.jsx";
 
 
 function FaqList() {

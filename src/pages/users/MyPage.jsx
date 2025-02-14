@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "../../utils/axios";
 import Info from "./Info";
 import Update from "./Update";
 
@@ -19,8 +19,8 @@ const MyPage = () => {
         alert("사용자 정보를 가져오는데 실패했습니다.");
         if (error.response && error.response.status === 401) {
           localStorage.removeItem('jwt');
-          navigate('/');
         }
+        navigate('/login');
       }
     };
 

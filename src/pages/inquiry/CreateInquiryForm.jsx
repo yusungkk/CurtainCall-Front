@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Typography} from "@mui/material";
-import InputText from "../../component/InputText.js";
+import InputText from "../../components/InputText.js";
 
 export default function CreateInquiryForm() {
 
