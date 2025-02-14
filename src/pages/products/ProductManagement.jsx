@@ -38,6 +38,8 @@ function ProductManagement() {
               <th>포스터</th>
               <th>제목</th>
               <th>장소</th>
+              <th>시작일</th>
+              <th>종료일</th>
               <th></th>
               <th></th>
             </tr>
@@ -55,6 +57,8 @@ function ProductManagement() {
                 </td>
                 <td>{product.productName}</td>
                 <td>{product.place}</td>
+                <td>{product.startDate}</td>
+                <td>{product.endDate}</td>
                 <td>
                   <Link to={`/admin/products/${product.productId}/edit`}>
                     <button>수정</button>
@@ -75,6 +79,10 @@ function ProductManagement() {
             ))}
           </tbody>
         </table>
+
+        <Link to="/register">
+          <button>상품 등록</button>
+        </Link>
       </main>
     </div>
   );
