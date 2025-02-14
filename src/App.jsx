@@ -1,9 +1,10 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProductRegistration from "./pages/ProductRegistration";
-import ProductList from "./pages/ProductList";
-import ProductManagement from "./pages/ProductManagement";
-import ProductEditForm from "./pages/ProductEditForm";
+import ProductRegistration from "./pages/products/ProductRegistration";
+import ProductList from "./pages/products/productList";
+import ProductManagement from "./pages/products/ProductManagement";
+import ProductEditForm from "./pages/products/ProductEditForm";
+import ProductDetail from "./pages/products/ProductDetail";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         path="/admin/products/:id/edit"
         element={<ProductEditForm />}
       ></Route>
+      <Route path="/products/:id" element={<ProductDetail />}></Route>
     </Routes>
   );
 }
