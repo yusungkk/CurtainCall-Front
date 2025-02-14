@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
+import Info from "./Info";
+import Update from "./Update";
 
 const MyPage = () => {
+  const [selectedMenu, setSelectedMenu] = useState("info");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -24,36 +27,49 @@ const MyPage = () => {
     const token = localStorage.getItem('jwt');
     if (!token) {
       alert("로그인이 필요합니다.");
-      navigate('/');
+      navigate('/login');
     } else {
       fetchUserData();
     }
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    alert("로그아웃 되었습니다.");
-    navigate("/");
-  };
-
-  const handleUpdate = () => {
-    navigate("/update");
+  const handleMenuClick = (menu) => {
+    setSelectedMenu(menu);
   };
 
   return (
-    <div>
-      <h2>내 정보</h2>
-      {user ? (
-        <div>
-          <p>이메일: {user.email}</p>
-          <p>이름: {user.name}</p>
-          <p>전화번호: {user.phone}</p>
-          <button onClick={handleUpdate}>수정</button>
-          <button onClick={handleLogout}>로그아웃</button>
-        </div>
-      ) : (
-        <p>로딩 중...</p>
-      )}
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      {/* 왼쪽 네비게이션 바 */}
+      <nav style={{ width: "200px", padding: "20px", borderRight: "1px solid #ddd", height: "100%" }}>
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          <li
+            style={{
+              padding: "10px",
+              cursor: "pointer",
+              backgroundColor: selectedMenu === "info" ? "#f0f0f0" : "transparent"
+            }}
+            onClick={() => handleMenuClick("info")}
+          >
+            내 정보
+          </li>
+          <li
+            style={{
+              padding: "10px",
+              cursor: "pointer",
+              backgroundColor: selectedMenu === "update" ? "#f0f0f0" : "transparent"
+            }}
+            onClick={() => handleMenuClick("update")}
+          >
+            회원 정보 수정
+          </li>
+        </ul>
+      </nav>
+
+      {/* 오른쪽 화면 */}
+      <div style={{ flex: 1, padding: "20px" }}>
+        {selectedMenu === "info" && <Info user={user} />}
+        {selectedMenu === "update" && <Update user={user} />}
+      </div>
     </div>
   );
 };
