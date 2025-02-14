@@ -1,4 +1,4 @@
-import {Box, Button, TextField} from "@mui/material";
+import {Box} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Grid from '@mui/material/Grid2';
 import CancelBtn from "./CancelBtn.jsx";
 import SaveBtn from "./SaveBtn.jsx";
+import InputText from "./InputText.js";
 
 export default function CommonFaqForm({onSubmit, onClose,  formData, onChange, saveBtnName="저장"}) {
 
@@ -34,37 +35,25 @@ export default function CommonFaqForm({onSubmit, onClose,  formData, onChange, s
                             ))}
                         </Select>
                     </FormControl>
-
-                    <TextField
-                        id="question"
-                        name="question"
-                        label="질문"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        sx={{width: "70%"}}
+                    <InputText
+                        id={"question"}
+                        name={"question"}
                         value={formData.question}
-                        onChange={onChange}
-                        error={formData.question === ""}
-                        helperText={formData.question === "" ? "질문을 입력해주세요" : ""}
+                        event={onChange}
+                        label={"질문"}
+                        isError={formData.question === ""}
+                        errorText={formData.question === "" ? "질문을 입력해주세요" : ""}
                     />
-
-                    <TextField
-                        id="answer"
-                        name="answer"
-                        label="답변"
-                        multiline
-                        rows={15}
-                        margin="normal"
-                        fullWidth
-                        sx={{width: "70%"}}
+                    <InputText
+                        id={"answer"}
+                        name={"answer"}
                         value={formData.answer}
-                        onChange={onChange}
-                        required
-                        error={formData.answer === ""}
-                        helperText={formData.answer === "" ? "답변을 입력해주세요" : ""}
+                        label={"답변"}
+                        event={onChange}
+                        isError={formData.answer === ""}
+                        errorText={formData.answer === "" ? "답변을 입력해주세요" : ""}
+                        rowNum={15}
                     />
-
 
                     <Grid container marginTop={'10px'} spacing={2}>
                         <Grid size={6}>

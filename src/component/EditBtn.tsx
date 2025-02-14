@@ -17,7 +17,8 @@ export default function EditBtn({onClick, viewName}) {
                     borderColor: 'secondary',
                 },
             }}
-        >수정
+        >
+            {viewName}
         </Button>
     );
 };
