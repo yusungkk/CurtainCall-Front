@@ -1,0 +1,107 @@
+/* 전체 컨테이너 */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+/* 폼 박스 */
+.form-box {
+    background: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+    margin : auto;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; /* 입력 필드와 에러 메시지를 세로 정렬 */
+    margin-bottom: 15px; /* 모든 입력 필드 간 간격 일정하게 */
+    position: relative;
+}
+
+.input-group label {
+    width: 120px;
+    font-weight: bold;
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    margin-bottom: 3px;
+}
+
+.input-group input, .input-group textarea {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 입력 필드 스타일 */
+.schedule-group select,
+.schedule-group input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 공연 일정 그룹 */
+.schedule-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* 버튼 스타일 */
+.add-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add-btn:hover {
+    background-color: #2980b9;
+}
+
+/* 제출 버튼 스타일 */
+.submit-btn {
+    background-color: #2ecc71;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #27ae60;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+.remove-btn {
+    background-color: #f5f5f5;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
