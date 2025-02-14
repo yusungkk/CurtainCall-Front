@@ -26,14 +26,6 @@ const UpdateUser = ({ user }) => {
     if (!user) {
       alert("사용자 정보가 없습니다.");
       navigate("/myPage");
-    } else {
-      setFormData({
-        email: user.email,
-        password: "",
-        confirmPassword: "",
-        name: user.name,
-        phone: user.phone,
-      });
     }
   }, [user, navigate]);
 
@@ -98,7 +90,7 @@ const UpdateUser = ({ user }) => {
 
       if (response.status === 200) {
         alert("회원정보가 수정되었습니다.");
-        navigate("/myPage");
+        window.location.reload();
       } else {
         alert("회원정보 수정에 실패했습니다.");
       }

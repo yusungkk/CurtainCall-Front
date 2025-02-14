@@ -15,10 +15,12 @@ const Info = ({ user }) => {
 
   return (
     <div>
-      <h3>내 정보</h3>
+      <h2>내 정보</h2>
+
       <p>이메일: {user.email}</p>
       <p>이름: {user.name}</p>
       <p>전화번호: {user.phone}</p>
+
       <button onClick={handleLogout}>로그아웃</button>
     </div>
   );
