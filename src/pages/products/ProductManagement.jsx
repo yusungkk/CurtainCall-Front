@@ -2,21 +2,31 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import ProductSearch from "../../components/products/ProductSearch";
+
 function ProductManagement() {
-  const url = "http://localhost:8080/api/v1/products";
+  const commonUrl = "http://localhost:8080/api/v1/products";
+  let url;
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [keyword, setKeyword] = useState("");
+  const [isSearchMode, setIsSearchMode] = useState(false);
 
   const getProducts = async (page, size) => {
-    const response = await axios.get(`${url}?page=${page}&size=${size}`);
+    if (isSearchMode) {
+      url = `${commonUrl}/search?keyword=${keyword}&page=${page}&size=${size}`;
+    } else {
+      url = `${commonUrl}?page=${page}&size=${size}`;
+    }
+    const response = await axios.get(url);
     setProducts(response.data.content);
     setTotalPages(response.data.page.totalPages);
   };
 
   useEffect(() => {
     getProducts(currentPage, 10);
-  }, [currentPage]);
+  }, [currentPage, isSearchMode, keyword]);
 
   const getPageNumbers = () => {
     const pages = [];
@@ -41,10 +51,18 @@ function ProductManagement() {
     }
   }
 
+  const handleSearch = (searchKeyword) => {
+    setKeyword(searchKeyword);
+    setIsSearchMode(true);
+    setCurrentPage(0);
+  };
+
   return (
     <div>
       <h2>상품 관리</h2>
       <main>
+        <ProductSearch onSearch={handleSearch} />
+
         <div>
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
@@ -64,6 +82,10 @@ function ProductManagement() {
             다음
           </button>
         </div>
+
+        <Link to="/register">
+          <button>상품 등록</button>
+        </Link>
 
         <table>
           <thead>
@@ -113,10 +135,6 @@ function ProductManagement() {
             ))}
           </tbody>
         </table>
-
-        <Link to="/register">
-          <button>상품 등록</button>
-        </Link>
       </main>
     </div>
   );
