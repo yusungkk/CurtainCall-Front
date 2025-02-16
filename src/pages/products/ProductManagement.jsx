@@ -2,6 +2,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import {
+  Box,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  Pagination,
+  IconButton,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import ProductSearch from "../../components/products/ProductSearch";
 
 function ProductManagement() {
@@ -28,14 +43,6 @@ function ProductManagement() {
     getProducts(currentPage, 10);
   }, [currentPage, isSearchMode, keyword]);
 
-  const getPageNumbers = () => {
-    const pages = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-    return pages;
-  };
-
   async function handleProductDelete(productId) {
     try {
       const response = await axios.delete(`${url}/${productId}`);
@@ -57,86 +64,93 @@ function ProductManagement() {
     setCurrentPage(0);
   };
 
+  const handlePageChange = (e, page) => {
+    setCurrentPage(page - 1);
+  };
+
   return (
-    <div>
-      <h2>상품 관리</h2>
-      <main>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box>
         <ProductSearch onSearch={handleSearch} />
 
-        <div>
-          <button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 0}
-          >
-            이전
-          </button>
-          {getPageNumbers().map((page) => (
-            <button key={page} onClick={() => setCurrentPage(page - 1)}>
-              {page}
-            </button>
-          ))}
-          <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages - 1}
-          >
-            다음
-          </button>
-        </div>
+        <Box sx={{ padding: 2, display: "flex", justifyContent: "center" }}>
+          <Pagination
+            count={totalPages}
+            page={currentPage + 1}
+            onChange={handlePageChange}
+            color="secondary"
+          />
+        </Box>
 
-        <Link to="/register">
-          <button>상품 등록</button>
-        </Link>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Link to="/admin/products/new">
+            <Button variant="contained" color="secondary">
+              상품 등록
+            </Button>
+          </Link>
+        </Box>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>포스터</th>
-              <th>제목</th>
-              <th>장소</th>
-              <th>시작일</th>
-              <th>종료일</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.productId}>
-                <td>{product.productId}</td>
-                <td>
-                  <img
-                    src={product.productImageUrl}
-                    alt={product.productName}
-                    style={{ width: "100px" }}
-                  ></img>
-                </td>
-                <td>{product.productName}</td>
-                <td>{product.place}</td>
-                <td>{product.startDate}</td>
-                <td>{product.endDate}</td>
-                <td>
-                  <Link to={`/admin/products/${product.productId}/edit`}>
-                    <button>수정</button>
-                  </Link>
-                </td>
-                <td>
-                  <button
-                    onClick={() => {
-                      if (window.confirm("정말 상품을 삭제하시겠습니까?")) {
-                        handleProductDelete(product.productId);
-                      }
-                    }}
-                  >
-                    삭제
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </main>
-    </div>
+        <Box sx={{ flexGrow: 1 }}>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>no</TableCell>
+                  <TableCell>포스터</TableCell>
+                  <TableCell>제목</TableCell>
+                  <TableCell>장소</TableCell>
+                  <TableCell>시작일</TableCell>
+                  <TableCell>종료일</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {products.map((product) => (
+                  <TableRow key={product.productId}>
+                    <TableCell>{product.productId}</TableCell>
+                    <TableCell>
+                      <img
+                        src={product.productImageUrl}
+                        alt={product.productName}
+                        style={{ width: "50px" }}
+                      />
+                    </TableCell>
+                    <TableCell>{product.productName}</TableCell>
+                    <TableCell>{product.place}</TableCell>
+                    <TableCell>{product.startDate}</TableCell>
+                    <TableCell>{product.endDate}</TableCell>
+                    <TableCell>
+                      <Link to={`/admin/products/${product.productId}/edit`}>
+                        <IconButton color="secondary">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="error"
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              `${product.productName}을(를) 삭제하시겠습니까?`
+                            )
+                          ) {
+                            handleProductDelete(product.productId);
+                          }
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
