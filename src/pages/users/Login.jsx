@@ -17,10 +17,16 @@ const Login = () => {
       const response = await axios.post("/users/login", { email, password });
 
       if (response.status === 200) {
-        const token = response.data;
+        const { role, token } = response.data;
         localStorage.setItem("jwt", token);
-        alert("로그인 성공!");
-        navigate("/myPage");
+
+        if(role === "ADMIN") {
+          alert("관리자로 로그인 성공.");
+          navigate("/admin");
+        } else {
+          alert("로그인 성공!");
+          navigate("/myPage");
+        }
       }
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
