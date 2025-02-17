@@ -9,7 +9,7 @@ const ProductList = () => {
   useEffect(() => {
     // 상품 목록 가져오기
     axios
-      .get("http://localhost:8080/api/products")
+      .get("http://localhost:8080/api/v1/products")
       .then((response) => {
         setProducts(response.data);
       })

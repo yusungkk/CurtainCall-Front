@@ -27,12 +27,21 @@ function ProductManagement() {
   const [totalPages, setTotalPages] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
+  const [startDateDirection, setStartDateDirection] = useState("desc");
+  const [endDateDirection, setEndDateDirection] = useState("desc");
 
   const getProducts = async (page, size) => {
     if (isSearchMode) {
       url = `${commonUrl}/search?keyword=${keyword}&page=${page}&size=${size}`;
     } else {
       url = `${commonUrl}?page=${page}&size=${size}`;
+    }
+
+    if (sortBy === "startDate") {
+      url += `&sortBy=${sortBy}&direction=${startDateDirection}`;
+    } else if (sortBy === "endDate") {
+      url += `&sortBy=${sortBy}&direction=${endDateDirection}`;
     }
     const response = await axios.get(url);
     setProducts(response.data.content);
@@ -41,11 +50,18 @@ function ProductManagement() {
 
   useEffect(() => {
     getProducts(currentPage, 10);
-  }, [currentPage, isSearchMode, keyword]);
+  }, [
+    currentPage,
+    isSearchMode,
+    keyword,
+    sortBy,
+    startDateDirection,
+    endDateDirection,
+  ]);
 
   async function handleProductDelete(productId) {
     try {
-      const response = await axios.delete(`${url}/${productId}`);
+      await axios.delete(`${url}/${productId}`);
 
       const updatedProducts = products.filter(
         (product) => product.productId !== productId
@@ -59,6 +75,7 @@ function ProductManagement() {
   }
 
   const handleSearch = (searchKeyword) => {
+    setSortBy(null);
     setKeyword(searchKeyword);
     setIsSearchMode(true);
     setCurrentPage(0);
@@ -66,6 +83,21 @@ function ProductManagement() {
 
   const handlePageChange = (e, page) => {
     setCurrentPage(page - 1);
+  };
+
+  const handleSort = (column) => {
+    setSortBy(column);
+    if (column === "startDate") {
+      setStartDateDirection((preDirection) =>
+        preDirection === "asc" ? "desc" : "asc"
+      );
+    } else if (column === "endDate") {
+      setEndDateDirection((preDirection) =>
+        preDirection === "asc" ? "desc" : "asc"
+      );
+    }
+
+    setCurrentPage(0);
   };
 
   return (
@@ -99,8 +131,18 @@ function ProductManagement() {
                   <TableCell>포스터</TableCell>
                   <TableCell>제목</TableCell>
                   <TableCell>장소</TableCell>
-                  <TableCell>시작일</TableCell>
-                  <TableCell>종료일</TableCell>
+                  <TableCell
+                    onClick={() => handleSort("startDate")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    시작일 {startDateDirection === "asc" ? "▼" : "▲"}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleSort("endDate")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    종료일 {endDateDirection === "asc" ? "▼" : "▲"}
+                  </TableCell>
                   <TableCell></TableCell>
                   <TableCell></TableCell>
                 </TableRow>
