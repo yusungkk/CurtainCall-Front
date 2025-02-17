@@ -87,7 +87,7 @@ const ProductRegistration = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/products/create",
+        "http://localhost:8080/api/v1/products/create",
         formData,
         {
           headers: {
