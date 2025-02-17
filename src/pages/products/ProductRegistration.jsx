@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/products/ProductRegistration.css";
 
@@ -14,6 +15,7 @@ const ProductRegistration = () => {
   const [productDetails, setProductDetails] = useState([]);
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const addProductDetail = () => {
     setProductDetails([...productDetails, { date: "", time: "", remain: "" }]);
@@ -87,7 +89,7 @@ const ProductRegistration = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/products/create",
+        "http://localhost:8080/api/v1/products/create",
         formData,
         {
           headers: {
@@ -96,7 +98,7 @@ const ProductRegistration = () => {
         }
       );
       alert("상품이 등록되었습니다!");
-      console.log(response.data);
+      navigate("/admin/products");
     } catch (error) {
       console.error("상품 등록 실패:", error);
       alert("상품 등록에 실패했습니다.");
