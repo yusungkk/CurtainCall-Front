@@ -11,7 +11,7 @@ const ProductList = () => {
     axios
       .get("http://localhost:8080/api/v1/products")
       .then((response) => {
-        setProducts(response.data);
+        setProducts(response.data.content);
       })
       .catch((error) => {
         console.error("상품 목록을 불러오는 중 오류 발생:", error);

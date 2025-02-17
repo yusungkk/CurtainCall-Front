@@ -8,7 +8,7 @@ import "../../styles/products/ProductDetail.css";
 
 function ProductDetail() {
   const { id } = useParams();
-  const url = `http://localhost:8080/api/products/${id}`;
+  const url = `http://localhost:8080/api/v1/products/${id}`;
 
   const [productName, setProductName] = useState();
   const [place, setPlace] = useState();
