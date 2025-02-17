@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
+import "../../styles/users/Login.css";
+import logo from "../../assets/img.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -39,21 +41,35 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>로그인</h2>
-      <input
-        type="text"
-        placeholder="이메일"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      /><br />
-      <input
-        type="password"
-        placeholder="비밀번호"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      /><br />
-      <button onClick={handleLogin}>로그인</button>
+    <div className="login-container">
+      <div className="login-box">
+        <img src={logo} alt="Curtaincall Logo" className="login-logo" />
+        <input
+          type="text"
+          id="email"
+          className="login-input"
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          id="password"
+          className="login-input"
+          placeholder="비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="login-button" onClick={handleLogin}>
+          로그인
+        </button>
+        <p className="signup-prompt">
+          회원이 아니신가요?{" "}
+          <span className="signup-link" onClick={() => navigate("/join")}>
+            회원가입
+          </span>
+        </p>
+      </div>
     </div>
   );
 };
