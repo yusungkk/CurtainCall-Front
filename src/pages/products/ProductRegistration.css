@@ -15,24 +15,28 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 400px;
     text-align: center;
-    margin : auto;
+    margin: auto;
 }
 
 .input-group {
     display: flex;
-    flex-direction: column; /* 입력 필드와 에러 메시지를 세로 정렬 */
-    margin-bottom: 15px; /* 모든 입력 필드 간 간격 일정하게 */
+    flex-direction: column;
+    /* 입력 필드와 에러 메시지를 세로 정렬 */
+    margin-bottom: 15px;
+    /* 모든 입력 필드 간 간격 일정하게 */
     position: relative;
 }
 
 .input-group label {
     width: 120px;
     font-weight: bold;
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    text-align: left;
+    /* 텍스트를 왼쪽 정렬 */
     margin-bottom: 3px;
 }
 
-.input-group input, .input-group textarea {
+.input-group input,
+.input-group textarea {
     flex: 1;
     padding: 8px;
     border: 1px solid #ccc;
@@ -51,8 +55,24 @@ textarea {
     font-size: 14px;
 }
 
+.category-group select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
 /* 공연 일정 그룹 */
 .schedule-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* 카테고리리 그룹 */
+.category-group {
     display: flex;
     gap: 10px;
     align-items: center;
@@ -104,4 +124,3 @@ textarea {
     padding: 5px;
     cursor: pointer;
 }
-

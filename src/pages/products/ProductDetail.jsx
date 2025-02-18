@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { getProduct } from "../../api/productApi";
+import { Box, Container, Grid2, Card, CardContent, Typography, Button } from "@mui/material";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
-import "../../styles/products/ProductDetail.css";
+import "./ProductDetail.css";
 
 function ProductDetail() {
   const { id } = useParams();
-  const url = `http://localhost:8080/api/v1/products/${id}`;
 
   const [productName, setProductName] = useState();
   const [place, setPlace] = useState();
@@ -25,23 +25,22 @@ function ProductDetail() {
   const [selectedProductDetailId, setSelectedProductDetailId] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then((response) => {
-        setProductName(response.data.productName);
-        setPlace(response.data.place);
-        setStartDate(response.data.startDate);
-        setEndDate(response.data.endDate);
-        setRunningTime(response.data.runningTime);
-        setPrice(response.data.price);
-        setProductDetails(response.data.productDetails);
-        setCasting(response.data.casting);
-        setNotice(response.data.notice);
-        setImageUrl(response.data.productImageUrl);
-      })
-      .catch((error) => {
-        console.log("상품 정보를 불러오는 중 오류 발생:", error);
-      });
+    const fetchProduct = async () => {
+      const data = await getProduct(id);
+
+      setProductName(data.productName);
+      setPlace(data.place);
+      setStartDate(data.startDate);
+      setEndDate(data.endDate);
+      setRunningTime(data.runningTime);
+      setPrice(data.price);
+      setProductDetails(data.productDetails);
+      setCasting(data.casting);
+      setNotice(data.notice);
+      setImageUrl(data.productImageUrl);
+    };
+
+    fetchProduct();
   }, []);
 
   const handleSelectDate = (date) => {
@@ -66,9 +65,7 @@ function ProductDetail() {
     // 월별 뷰에서만
     if (view === "month") {
       const dateStr = format(date, "yyyy-MM-dd");
-      return !productDetails.some(
-        (productDetail) => productDetail.performanceDate === dateStr
-      );
+      return !productDetails.some((productDetail) => productDetail.performanceDate === dateStr);
     }
     return false;
   };
@@ -79,82 +76,93 @@ function ProductDetail() {
   };
 
   return (
-    <div>
-      <div>
-        <Calendar
-          onChange={handleSelectDate}
-          value={selectedDate}
-          calendarType="gregory"
-          minDate={new Date(startDate)}
-          maxDate={new Date(endDate)}
-          tileContent={tileContent}
-          tileDisabled={tileDisabled}
-          prev2Label={null}
-          next2Label={null}
-          showNeighboringMonth={false}
-        />
-        <div>
-          <p>선택한 날짜: {format(selectedDate, "yyyy-MM-dd")}</p>
-          <p>공연 시간</p>
-          {getSelectedProductDetails(selectedDate).map((productDetail) => (
-            <button
-              key={productDetail.productDetailId}
-              onClick={() => handleSelectTime(productDetail.productDetailId)}
-            >
-              {productDetail.time}
-            </button>
-          ))}
-        </div>
-        <div>
-          <button>예매하기</button>
-        </div>
-      </div>
-      <div>
-        <div>
-          <h2>{productName}</h2>
-        </div>
-        <div>
-          <img src={imageUrl} />
-        </div>
-        <div>
-          <div>
-            <table>
-              <tbody>
-                <tr>
-                  <th>장소</th>
-                  <td>{place}</td>
-                </tr>
-                <tr>
-                  <th>공연기간</th>
-                  <td>
-                    {startDate} ~ {endDate}
-                  </td>
-                </tr>
-                <tr>
-                  <th>공연시간</th>
-                  <td>{runningTime}분</td>
-                </tr>
-                <tr>
-                  <th>가격</th>
-                  <td>{price}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div>
-          <h3>공연정보</h3>
-          <div>
-            <h4>캐스팅</h4>
-            <span>{casting}</span>
-          </div>
-          <div>
-            <h4>공지사항</h4>
-            <span>{notice}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Container maxWidth="lg">
+      <Grid2 container>
+        <Grid2 item xs={12} md={7}>
+          <Card>
+            <Typography variant="h5" fontWeight="bold">
+              {productName}
+            </Typography>
+            <Grid2 container>
+              <Grid2 item xs={5}>
+                <img src={imageUrl} alt={productName} style={{ width: "100%" }} />
+              </Grid2>
+            </Grid2>
+
+            <Grid2 item xs={7}>
+              <div>
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>장소</th>
+                      <td>{place}</td>
+                    </tr>
+                    <tr>
+                      <th>공연기간</th>
+                      <td>
+                        {startDate} ~ {endDate}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>공연시간</th>
+                      <td>{runningTime}분</td>
+                    </tr>
+                    <tr>
+                      <th>가격</th>
+                      <td>{price}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Grid2>
+            <div>
+              <h3>공연정보</h3>
+              <div>
+                <h4>캐스팅</h4>
+                <span>{casting}</span>
+              </div>
+              <div>
+                <h4>공지사항</h4>
+                <span>{notice}</span>
+              </div>
+            </div>
+          </Card>
+        </Grid2>
+        <Grid2 item xs={12} md={5}>
+          <Box sx={{ position: "sticky", top: 80 }}>
+            <Card>
+              <Calendar
+                onChange={handleSelectDate}
+                value={selectedDate}
+                calendarType="gregory"
+                minDate={new Date(startDate)}
+                maxDate={new Date(endDate)}
+                tileContent={tileContent}
+                tileDisabled={tileDisabled}
+                prev2Label={null}
+                next2Label={null}
+                showNeighboringMonth={false}
+              />
+              <div>
+                <p>선택한 날짜: {format(selectedDate, "yyyy-MM-dd")}</p>
+                <p>공연 시간</p>
+                {getSelectedProductDetails(selectedDate).map((productDetail) => (
+                  <button
+                    key={productDetail.productDetailId}
+                    onClick={() => handleSelectTime(productDetail.productDetailId)}
+                  >
+                    {productDetail.time}
+                  </button>
+                ))}
+              </div>
+              <div>
+                <button>예매하기</button>
+              </div>
+            </Card>
+          </Box>
+        </Grid2>
+      </Grid2>
+    </Container>
   );
 }
 

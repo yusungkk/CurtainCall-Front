@@ -1,11 +1,19 @@
-export const fetcher = async (endPoint, options={}) => {
+export const fetcher = async (endPoint, options = {}) => {
     try {
+        const token = localStorage.getItem("jwt");
+
+        const headers = {
+            "Content-Type": "application/json",
+            ...options.headers,
+        };
+
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(endPoint, {
-            headers: {
-                "Content-Type": "application/json",
-                ...options.headers,
-            },
-            ...options
+            headers: headers,
+            ...options,
         });
 
         if (response.status === 201 || response.status === 204) {
@@ -18,7 +26,7 @@ export const fetcher = async (endPoint, options={}) => {
 
         throw new Error(await response.json());
 
-    }catch (e){
+    } catch (e) {
         console.log(e);
     }
 };

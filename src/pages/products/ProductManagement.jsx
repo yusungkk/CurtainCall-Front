@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import { fetcher } from "../../utils/fetcher";
+import { PRODUCT_URL } from "../../utils/endpoint";
+import { deleteProduct } from "../../api/productApi";
 
 import {
   Box,
@@ -20,7 +22,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ProductSearch from "../../components/products/ProductSearch";
 
 function ProductManagement() {
-  const commonUrl = "http://localhost:8080/api/v1/products";
   let url;
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -33,9 +34,9 @@ function ProductManagement() {
 
   const getProducts = async (page, size) => {
     if (isSearchMode) {
-      url = `${commonUrl}/search?keyword=${keyword}&page=${page}&size=${size}`;
+      url = `${PRODUCT_URL}/search?keyword=${keyword}&page=${page}&size=${size}`;
     } else {
-      url = `${commonUrl}?page=${page}&size=${size}`;
+      url = `${PRODUCT_URL}?page=${page}&size=${size}`;
     }
 
     if (sortBy === "startDate") {
@@ -43,9 +44,11 @@ function ProductManagement() {
     } else if (sortBy === "endDate") {
       url += `&sortBy=${sortBy}&direction=${endDateDirection}`;
     }
-    const response = await axios.get(url);
-    setProducts(response.data.content);
-    setTotalPages(response.data.page.totalPages);
+
+    const response = await fetcher(url);
+
+    setProducts(response.content);
+    setTotalPages(response.page.totalPages);
   };
 
   useEffect(() => {
@@ -59,20 +62,14 @@ function ProductManagement() {
     endDateDirection,
   ]);
 
-  async function handleProductDelete(productId) {
-    try {
-      await axios.delete(`${url}/${productId}`);
+  const handleProductDelete = async (productId) => {
+    const responseStatus = await deleteProduct(productId);
 
-      const updatedProducts = products.filter(
-        (product) => product.productId !== productId
-      );
-      setProducts(updatedProducts);
-
+    if (responseStatus === 204) {
       alert("상품이 삭제되었습니다");
-    } catch (error) {
-      alert("상품 삭제 중 오류가 발생했습니다");
+      getProducts(0, 10);
     }
-  }
+  };
 
   const handleSearch = (searchKeyword) => {
     setSortBy(null);
@@ -175,7 +172,7 @@ function ProductManagement() {
                         onClick={() => {
                           if (
                             window.confirm(
-                              `${product.productName}을(를) 삭제하시겠습니까?`
+                              `"${product.productName}"을(를) 삭제하시겠습니까?`
                             )
                           ) {
                             handleProductDelete(product.productId);

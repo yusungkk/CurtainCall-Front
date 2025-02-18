@@ -1,14 +1,15 @@
 import {Card, CardContent, Icon, Typography} from "@mui/material";
 
-export default function FaqCard({icon: Icon, title, description}) {
+export default function FaqCard({icon: Icon, title, description, onClick = null}) {
     return (
-        <Card sx={{ m: 2 }}>
+        <Card sx={{ m: 2 }} onClick={onClick}>
             <CardContent sx={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
                 '&:hover': {
-                    backgroundColor: '#f5f5f5'
+                    backgroundColor: '#f5f5f5',
+                    cursor: "pointer"
                 }
             }}>
                 <Icon sx={{ mr: 2 }} />
