@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {createFaq} from "../../api/faqApi.js";
 import {useNavigate} from "react-router-dom";
-import CommonFaqForm from "../../components/CommonFaqForm.jsx";
+import CommonFaqForm from "../../components/inquiry/CommonFaqForm.jsx";
 import {Typography} from "@mui/material";
 
 function FaqAddForm() {
@@ -41,7 +41,7 @@ function FaqAddForm() {
 
     return (
         <>
-            <Typography variant="h3" gutterBottom sx={{ color: 'black' }}>
+            <Typography variant="h3" gutterBottom color={"black"}>
                 FAQ 등록
             </Typography>
             <CommonFaqForm
