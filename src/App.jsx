@@ -12,6 +12,11 @@ import FaqEditForm from "./pages/inquiry/FaqEditForm.jsx";
 import Join from "./pages/users/Join.jsx";
 import Login from "./pages/users/Login.jsx";
 import MyPage from "./pages/users/MyPage.jsx";
+import CreateInquiryForm from "./pages/inquiry/CreateInquiryForm.jsx";
+import InquiryList from "./pages/inquiry/InquiryList.jsx";
+import InquiryDetail from "./pages/inquiry/InquiryDetail.jsx";
+import InquiryAdminList from "./pages/inquiry/InquiryAdminList.jsx";
+import InquiryAdminDetail from "./pages/inquiry/InquiryAdminDetail.jsx";
 
 function App() {
   return (
@@ -25,6 +30,11 @@ function App() {
               <Route path={"/faqs"} element={<FaqList/>}></Route>
               <Route path={"/admin/faqs/new"} element={<FaqAddForm/>}></Route>
               <Route path={"/admin/faqs/:id"} element={<FaqEditForm/>}></Route>
+              <Route path={"/inquiries/new"} element={<CreateInquiryForm/>}/>
+              <Route path="/inquiries" element={<InquiryList />} />
+              <Route path="/admin/inquiries" element={<InquiryAdminList />} />
+              <Route path="/inquiries/:id" element={<InquiryDetail />} />
+              <Route path="/admin/inquiries/:id" element={<InquiryAdminDetail />} />
               <Route path="/admin/products" element={<ProductManagement />} />
               <Route path="/products/:id" element={<ProductDetail />}></Route>
               <Route path="/" element={<h1>홈</h1>} />
