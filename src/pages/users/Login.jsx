@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { login } from "../../api/userApi.js";
 import "../../styles/users/Login.css";
 import logo from "../../assets/img.png";
 
@@ -16,10 +16,10 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post("/users/login", { email, password });
+      const response = await login({ email, password });
 
-      if (response.status === 200) {
-        const { role, token } = response.data;
+      if (response.token) {
+        const { role, token } = response;
         localStorage.setItem("jwt", token);
 
         if(role === "ADMIN") {
