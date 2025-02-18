@@ -17,7 +17,6 @@ const BookingSummary = ({ selectedSeats }) => {
                     ))}
                 </ul>
             )}
-            <button className="confirm-btn">좌석 선택 완료</button>
         </div>
     );
 };
