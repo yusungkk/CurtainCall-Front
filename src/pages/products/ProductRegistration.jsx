@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../../styles/products/ProductRegistration.css";
+import { CREATE_PRODUCT_URL } from "../../utils/endpoint";
+import "./ProductRegistration.css";
 
 const ProductRegistration = () => {
   const [productName, setProductName] = useState("");
@@ -83,22 +83,24 @@ const ProductRegistration = () => {
     const formData = new FormData();
     formData.append(
       "product",
-      new Blob([JSON.stringify(productData)], { type: "application/json" })
+      new Blob([JSON.stringify(productData)], {
+        type: "application/json",
+      })
     );
     formData.append("image", image);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/products/create",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      alert("상품이 등록되었습니다!");
-      navigate("/admin/products");
+      const response = await fetch(CREATE_PRODUCT_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.status === 201) {
+        alert("상품이 등록되었습니다!");
+        navigate("/admin/products");
+      } else {
+        throw new Error(await response.json());
+      }
     } catch (error) {
       console.error("상품 등록 실패:", error);
       alert("상품 등록에 실패했습니다.");

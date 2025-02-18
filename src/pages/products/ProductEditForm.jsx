@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { getProduct } from "../../api/productApi";
+import { UPDATE_PRODUCT_URL } from "../../utils/endpoint";
 
 function ProductEditForm() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const url = `http://localhost:8080/api/products/${id}`;
-
   const [productName, setProductName] = useState("");
   const [place, setPlace] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -19,25 +18,29 @@ function ProductEditForm() {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    axios.get(url).then((response) => {
-      setProductName(response.data.productName);
-      setPlace(response.data.place);
-      setStartDate(response.data.startDate);
-      setEndDate(response.data.endDate);
-      setRunningTime(response.data.runningTime);
-      setPrice(response.data.price);
-      setCasting(response.data.casting);
-      setNotice(response.data.notice);
-      setImageUrl(response.data.productImageUrl);
-    });
+    const fetchProduct = async () => {
+      const data = await getProduct(id);
+
+      setProductName(data.productName);
+      setPlace(data.place);
+      setStartDate(data.startDate);
+      setEndDate(data.endDate);
+      setRunningTime(data.runningTime);
+      setPrice(data.price);
+      setCasting(data.casting);
+      setNotice(data.notice);
+      setImageUrl(data.productImageUrl);
+    };
+
+    fetchProduct();
   }, []);
 
-  function handleImageChange(e) {
+  const handleImageChange = (e) => {
     setImage(e.target.files[0]);
-  }
+  };
 
   // 상품 수정 API 요청
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const productData = {
@@ -46,35 +49,36 @@ function ProductEditForm() {
       startDate,
       endDate,
       runningTime,
-      price: parseInt(price, 10),
+      price,
       casting,
       notice,
     };
 
-    console.log("📌 전송할 데이터:", JSON.stringify(productData, null, 2)); // 🚀 API 요청 전 확인
-
     const formData = new FormData();
     formData.append(
       "product",
-      new Blob([JSON.stringify(productData)], { type: "application/json" })
+      new Blob([JSON.stringify(productData)], {
+        type: "application/json",
+      })
     );
     formData.append("image", image);
 
     try {
-      const response = await axios.patch(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await fetch(UPDATE_PRODUCT_URL(id), {
+        method: "PATCH",
+        body: formData,
       });
 
-      alert("✅ 상품이 수정되었습니다!");
-
-      navigate("/admin/products");
-    } catch (error) {
-      console.error("🚨 상품 수정 실패:", error);
-      alert("상품 수정에 실패했습니다.");
+      if (response.status === 204) {
+        alert("✅ 상품이 수정되었습니다!");
+        navigate("/admin/products");
+      } else {
+        throw new Error(await response.json());
+      }
+    } catch (e) {
+      console.log(e);
     }
-  }
+  };
 
   return (
     <div>

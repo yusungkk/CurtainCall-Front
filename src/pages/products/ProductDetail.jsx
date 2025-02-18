@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { getProduct } from "../../api/productApi";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
-import "../../styles/products/ProductDetail.css";
+import "./ProductDetail.css";
 
 function ProductDetail() {
   const { id } = useParams();
-  const url = `http://localhost:8080/api/v1/products/${id}`;
 
   const [productName, setProductName] = useState();
   const [place, setPlace] = useState();
@@ -25,23 +24,22 @@ function ProductDetail() {
   const [selectedProductDetailId, setSelectedProductDetailId] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then((response) => {
-        setProductName(response.data.productName);
-        setPlace(response.data.place);
-        setStartDate(response.data.startDate);
-        setEndDate(response.data.endDate);
-        setRunningTime(response.data.runningTime);
-        setPrice(response.data.price);
-        setProductDetails(response.data.productDetails);
-        setCasting(response.data.casting);
-        setNotice(response.data.notice);
-        setImageUrl(response.data.productImageUrl);
-      })
-      .catch((error) => {
-        console.log("상품 정보를 불러오는 중 오류 발생:", error);
-      });
+    const fetchProduct = async () => {
+      const data = await getProduct(id);
+
+      setProductName(data.productName);
+      setPlace(data.place);
+      setStartDate(data.startDate);
+      setEndDate(data.endDate);
+      setRunningTime(data.runningTime);
+      setPrice(data.price);
+      setProductDetails(data.productDetails);
+      setCasting(data.casting);
+      setNotice(data.notice);
+      setImageUrl(data.productImageUrl);
+    };
+
+    fetchProduct();
   }, []);
 
   const handleSelectDate = (date) => {

@@ -8,3 +8,9 @@ export const FAQ_TYPE_URL = (type) => `${BASIC_URL}${API_VERSION_V1}/faqs?faq-ty
 export const CREATE_FAQ_URL = `${BASIC_URL}${API_VERSION_V1}/admin/faqs/new`;
 export const DELETE_FAQ_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/admin/faqs/${id}`;
 export const UPDATE_FAQ_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/admin/faqs/${id}`;
+
+//==product 관련 API URL==//
+export const PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products`;
+export const CREATE_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products/new`;
+export const UPDATE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
+export const DELETE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
