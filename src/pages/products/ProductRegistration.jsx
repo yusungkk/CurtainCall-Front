@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../../styles/products/ProductRegistration.css";
+import { CREATE_PRODUCT_URL } from "../../utils/endpoint";
+import "./ProductRegistration.css";
 
 const ProductRegistration = () => {
   const [productName, setProductName] = useState("");
+  const [categoryId, setCategoryId] = useState(null);
   const [place, setPlace] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -16,6 +17,35 @@ const ProductRegistration = () => {
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [parentCategories, setParentCategories] = useState([]);
+  const [selectedParentId, setSelectedParentId] = useState(null);
+  const [childCategories, setChildCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/categories", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+          const filteredCategories = data.filter((category) => category.parentId === null);
+          setParentCategories(filteredCategories);
+        } else {
+          throw new Error(await response.json());
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchCategory();
+  }, []);
 
   const addProductDetail = () => {
     setProductDetails([...productDetails, { date: "", time: "", remain: "" }]);
@@ -35,11 +65,25 @@ const ProductRegistration = () => {
     setImage(e.target.files[0]);
   };
 
+  const handleParentCategoryChange = (e) => {
+    const parentId = parseInt(e.target.value, 10);
+    setSelectedParentId(parentId);
+
+    const filteredChildCategories = categories.filter((category) => category.parentId === parentId);
+    setChildCategories(filteredChildCategories);
+  };
+
+  const handleChildCategoryChange = (e) => {
+    const childId = parseInt(e.target.value, 10);
+    setCategoryId(childId);
+  };
+
   // 유효성 검사
   const validateForm = () => {
     let newErrors = {};
 
     if (!productName.trim()) newErrors.productName = "상품명을 입력하세요.";
+    if (!categoryId) newErrors.categoryId = "2차 카테고리를 선택하세요.";
     if (!place.trim()) newErrors.place = "장소를 입력하세요.";
     if (!startDate) newErrors.startDate = "시작 날짜를 선택하세요.";
     if (!endDate) newErrors.endDate = "종료 날짜를 선택하세요.";
@@ -55,8 +99,7 @@ const ProductRegistration = () => {
     productDetails.forEach((detail, index) => {
       if (!detail.date) newErrors[`date${index}`] = "요일을 선택하세요.";
       if (!detail.time) newErrors[`time${index}`] = "시간을 선택하세요.";
-      if (!detail.remain)
-        newErrors[`remain${index}`] = "잔여 좌석을 입력하세요.";
+      if (!detail.remain) newErrors[`remain${index}`] = "잔여 좌석을 입력하세요.";
     });
 
     setErrors(newErrors);
@@ -70,6 +113,7 @@ const ProductRegistration = () => {
 
     const productData = {
       productName,
+      categoryId,
       place,
       startDate,
       endDate,
@@ -83,22 +127,24 @@ const ProductRegistration = () => {
     const formData = new FormData();
     formData.append(
       "product",
-      new Blob([JSON.stringify(productData)], { type: "application/json" })
+      new Blob([JSON.stringify(productData)], {
+        type: "application/json",
+      })
     );
     formData.append("image", image);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/products/create",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      alert("상품이 등록되었습니다!");
-      navigate("/admin/products");
+      const response = await fetch(CREATE_PRODUCT_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.status === 201) {
+        alert("상품이 등록되었습니다!");
+        navigate("/admin/products");
+      } else {
+        throw new Error(await response.json());
+      }
     } catch (error) {
       console.error("상품 등록 실패:", error);
       alert("상품 등록에 실패했습니다.");
@@ -122,6 +168,30 @@ const ProductRegistration = () => {
           {errors.productName && <p className="error">{errors.productName}</p>}
 
           <div className="input-group">
+            <label>장르</label>
+            <div className="category-group">
+              <select onChange={handleParentCategoryChange}>
+                <option value="">1차 카테고리</option>
+                {parentCategories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              <select onChange={handleChildCategoryChange}>
+                <option value="">2차 카테고리</option>
+                {childCategories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          {errors.categoryId && <p className="error">{errors.categoryId}</p>}
+
+          <div className="input-group">
             <label>장소</label>
             <input
               type="text"
@@ -134,21 +204,13 @@ const ProductRegistration = () => {
 
           <div className="input-group">
             <label>시작 날짜</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
+            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
           </div>
           {errors.startDate && <p className="error">{errors.startDate}</p>}
 
           <div className="input-group">
             <label>종료 날짜</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
+            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
           </div>
           {errors.endDate && <p className="error">{errors.endDate}</p>}
 
@@ -200,9 +262,7 @@ const ProductRegistration = () => {
             <div key={index} className="schedule-group">
               <select
                 value={detail.date}
-                onChange={(e) =>
-                  updateProductDetail(index, "date", e.target.value)
-                }
+                onChange={(e) => updateProductDetail(index, "date", e.target.value)}
               >
                 <option value="">요일 선택</option>
                 <option value="월">월</option>
@@ -216,16 +276,11 @@ const ProductRegistration = () => {
 
               <select
                 value={detail.time}
-                onChange={(e) =>
-                  updateProductDetail(index, "time", e.target.value)
-                }
+                onChange={(e) => updateProductDetail(index, "time", e.target.value)}
               >
                 <option value="">시간 선택</option>
                 {[...Array(24).keys()].map((hour) => (
-                  <option
-                    key={hour}
-                    value={`HOUR_${hour.toString().padStart(2, "0")}_00`}
-                  >
+                  <option key={hour} value={`HOUR_${hour.toString().padStart(2, "0")}_00`}>
                     {`${hour.toString().padStart(2, "0")}:00`}
                   </option>
                 ))}
@@ -235,9 +290,7 @@ const ProductRegistration = () => {
                 type="number"
                 placeholder="잔여 좌석"
                 value={detail.remain}
-                onChange={(e) =>
-                  updateProductDetail(index, "remain", e.target.value)
-                }
+                onChange={(e) => updateProductDetail(index, "remain", e.target.value)}
               />
               <button
                 type="button"
@@ -248,9 +301,7 @@ const ProductRegistration = () => {
               </button>
             </div>
           ))}
-          {errors.productDetails && (
-            <p className="error">{errors.productDetails}</p>
-          )}
+          {errors.productDetails && <p className="error">{errors.productDetails}</p>}
 
           <button type="button" onClick={addProductDetail} className="add-btn">
             + 일정 추가
