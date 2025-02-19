@@ -20,10 +20,13 @@ import InquiryAdminDetail from "./pages/inquiry/InquiryAdminDetail.jsx";
 import PaymentPage from "./pages/orders/PaymentPage.jsx";
 
 import Admin from "./pages/users/Admin.jsx";
+import CategoryManagement from "./components/category/CategoryManagement.jsx";
+import NavigationBar from "./components/category/NavigationBar.jsx";
 
 function App() {
   return (
     <BrowserRouter>
+      <NavigationBar />
       <Routes>
         <Route path="/admin/products/new" element={<ProductRegistration />} />
         <Route path="/products" element={<ProductList />} />
@@ -52,6 +55,7 @@ function App() {
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/category" element={<CategoryManagement />} />
       </Routes>
     </BrowserRouter>
   );
