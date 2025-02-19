@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { getCookie, getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
+import UserList from "./UserList";
 
 const MyPage = () => {
   const [selectedMenu, setSelectedMenu] = useState("info");
@@ -12,25 +13,22 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/users/myPage');
-        setUser(response.data);
+        const token = getCookie("jwt");
+        if (!token) {
+          alert("로그인이 필요합니다.");
+          navigate("/login");
+        } else {
+          const response = await getUserData();
+          setUser(response);
+        }
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);
         alert("사용자 정보를 가져오는데 실패했습니다.");
-        if (error.response && error.response.status === 401) {
-          localStorage.removeItem('jwt');
-        }
         navigate('/login');
       }
     };
 
-    const token = localStorage.getItem('jwt');
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate('/login');
-    } else {
-      fetchUserData();
-    }
+    fetchUserData();
   }, [navigate]);
 
   const handleMenuClick = (menu) => {
@@ -50,7 +48,7 @@ const MyPage = () => {
             }}
             onClick={() => handleMenuClick("info")}
           >
-            내 정보
+            관리자 정보
           </li>
           <li
             style={{
@@ -60,7 +58,17 @@ const MyPage = () => {
             }}
             onClick={() => handleMenuClick("update")}
           >
-            회원 정보 수정
+            관리자 정보 수정
+          </li>
+          <li
+            style={{
+              padding: "10px",
+              cursor: "pointer",
+              backgroundColor: selectedMenu === "manage" ? "#f0f0f0" : "transparent"
+            }}
+            onClick={() => handleMenuClick("manage")}
+          >
+            회원 관리
           </li>
         </ul>
       </nav>
@@ -69,6 +77,7 @@ const MyPage = () => {
       <div style={{ flex: 1, padding: "20px" }}>
         {selectedMenu === "info" && <Info user={user} />}
         {selectedMenu === "update" && <Update user={user} />}
+        {selectedMenu === "manage" && <UserList />}
       </div>
     </div>
   );

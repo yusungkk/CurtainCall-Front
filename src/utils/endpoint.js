@@ -21,3 +21,10 @@ export const PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products`;
 export const CREATE_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products/new`;
 export const UPDATE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
 export const DELETE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
+
+export const USER_JOIN_URL = `${BASIC_URL}${API_VERSION_V1}/users`;
+export const CHECK_EMAIL_URL = (email) => `${BASIC_URL}${API_VERSION_V1}/users/check-email?email=${email}`;
+export const USER_LOGIN_URL = `${BASIC_URL}${API_VERSION_V1}/users/login`;
+export const USER_PAGE_URL = `${BASIC_URL}${API_VERSION_V1}/users/myPage`;
+export const USER_UPDATE_URL = `${BASIC_URL}${API_VERSION_V1}/users/update`;
+export const GET_USER_LIST_URL = `${BASIC_URL}${API_VERSION_V1}/users`;

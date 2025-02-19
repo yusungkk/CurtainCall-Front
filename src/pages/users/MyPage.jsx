@@ -1,8 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { getCookie, getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Box,
+  Typography,
+  Container,
+  Paper
+} from "@mui/material";
 
 const MyPage = () => {
   const [selectedMenu, setSelectedMenu] = useState("info");
@@ -12,25 +23,22 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/users/myPage');
-        setUser(response.data);
+        const token = getCookie("jwt");
+        if (!token) {
+          alert("로그인이 필요합니다.");
+          navigate("/login");
+        } else {
+          const response = await getUserData();
+          setUser(response);
+        }
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);
         alert("사용자 정보를 가져오는데 실패했습니다.");
-        if (error.response && error.response.status === 401) {
-          localStorage.removeItem('jwt');
-        }
-        navigate('/login');
+        navigate("/login");
       }
     };
 
-    const token = localStorage.getItem('jwt');
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate('/login');
-    } else {
-      fetchUserData();
-    }
+    fetchUserData();
   }, [navigate]);
 
   const handleMenuClick = (menu) => {
@@ -38,39 +46,42 @@ const MyPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
       {/* 왼쪽 네비게이션 바 */}
-      <nav style={{ width: "200px", padding: "20px", borderRight: "1px solid #ddd", height: "100%" }}>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li
-            style={{
-              padding: "10px",
-              cursor: "pointer",
-              backgroundColor: selectedMenu === "info" ? "#f0f0f0" : "transparent"
-            }}
-            onClick={() => handleMenuClick("info")}
-          >
-            내 정보
-          </li>
-          <li
-            style={{
-              padding: "10px",
-              cursor: "pointer",
-              backgroundColor: selectedMenu === "update" ? "#f0f0f0" : "transparent"
-            }}
-            onClick={() => handleMenuClick("update")}
-          >
-            회원 정보 수정
-          </li>
-        </ul>
-      </nav>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 240,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" }
+        }}
+      >
+        <Box sx={{ textAlign: "center", p: 2 }}>
+          <Typography variant="h6">마이페이지</Typography>
+        </Box>
+        <List>
+          {[
+            { key: "info", label: "내 정보" },
+            { key: "update", label: "회원 정보 수정" }
+          ].map((item) => (
+            <ListItem key={item.key} disablePadding>
+              <ListItemButton
+                selected={selectedMenu === item.key}
+                onClick={() => handleMenuClick(item.key)}
+              >
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
 
-      {/* 오른쪽 화면 */}
-      <div style={{ flex: 1, padding: "20px" }}>
+      {/* 오른쪽 메인 컨텐츠 */}
+      <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
         {selectedMenu === "info" && <Info user={user} />}
         {selectedMenu === "update" && <Update user={user} />}
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };
 

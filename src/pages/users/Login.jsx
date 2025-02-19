@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { login } from "../../api/userApi.js";
 import "../../styles/users/Login.css";
 import logo from "../../assets/img.png";
 
@@ -16,11 +16,11 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post("/users/login", { email, password });
+      const response = await login({ email, password });
 
-      if (response.status === 200) {
-        const { role, token } = response.data;
-        localStorage.setItem("jwt", token);
+      if (response.token) {
+        const { role, token } = response;
+        document.cookie = `jwt=${token}; path=/; max-age=43200; Secure;`;
 
         if(role === "ADMIN") {
           alert("관리자로 로그인 성공.");

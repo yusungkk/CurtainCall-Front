@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { checkEmailDuplicate, createUser } from "../../api/userApi.js";
 import "../../styles/users/Join.css";
 
 const Register = () => {
@@ -17,16 +17,6 @@ const Register = () => {
   const [phoneError, setPhoneError] = useState("");
 
   const navigate = useNavigate();
-
-  const checkEmailDuplicate = async (email) => {
-    try {
-      const response = await axios.get(`/users/check-email?email=${email}`);
-      return response.data;
-    } catch (error) {
-      console.error("이메일 중복 확인 오류:", error);
-      return true;
-    }
-  };
 
   const validateEmail = async (value) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -98,24 +88,15 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("/users", {
-        email,
-        password,
-        name,
-        phone,
-      });
+      const response = await createUser({ email, password, name, phone });
 
-      if (response.status === 201) {
+      if (response === 201) {
         alert("회원가입 성공!");
         navigate("/login");
       }
     } catch (error) {
       console.error("회원가입 중 오류 발생:", error);
-      if (error.response && error.response.status === 400) {
-        alert("이미 사용 중인 이메일입니다.");
-      } else {
-        alert("회원가입 요청 중 오류가 발생했습니다.");
-      }
+      alert("회원가입 요청 중 오류가 발생했습니다.");
     }
   };
 
