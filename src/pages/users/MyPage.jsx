@@ -20,7 +20,12 @@ const MyPage = () => {
           navigate("/login");
         } else {
           const response = await getUserData();
-          setUser(response);
+          if (response == 401) {
+            alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+            navigate("/login");
+          } else {
+            setUser(response);
+          }
         }
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);

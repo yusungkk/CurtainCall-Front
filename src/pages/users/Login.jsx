@@ -17,8 +17,9 @@ const Login = () => {
 
     try {
       const response = await login({ email, password });
-
-      if (response.token) {
+      if (response == 401) {
+        alert("잘못된 이메일이나 비밀번호입니다.");
+      } else {
         const { role, token } = response;
         document.cookie = `jwt=${token}; path=/; max-age=43200; Secure;`;
 
@@ -32,11 +33,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
-      if (error.response && error.response.status === 401) {
-        alert("잘못된 이메일이나 비밀번호입니다.");
-      } else {
-        alert("로그인 요청 중 오류가 발생했습니다.");
-      }
+      alert("로그인 요청 중 오류가 발생했습니다.");
     }
   };
 
