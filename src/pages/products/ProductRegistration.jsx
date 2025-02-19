@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PRODUCT_URL } from "../../utils/endpoint";
-import "./ProductRegistration.css";
+import SaveBtn from "../../components/SaveBtn";
+import CancelBtn from "../../components/CancelBtn";
+import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Box } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { CloudUpload } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ProductRegistration = () => {
   const [productName, setProductName] = useState("");
@@ -25,7 +30,7 @@ const ProductRegistration = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/categories", {
+        const response = await fetch("http://localhost:8080/api/v1/categories", {
           headers: {
             "Content-Type": "application/json",
           },
@@ -152,161 +157,247 @@ const ProductRegistration = () => {
   };
 
   return (
-    <div className="container">
-      <div className="form-box">
-        <h2>🎭 상품 등록</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>상품명</label>
-            <input
-              type="text"
+    <>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid size={12}>
+            <TextField
+              fullWidth
+              label="상품명"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
+              error={!!errors.productName}
+              helperText={errors.productName}
             />
-          </div>
-          {errors.productName && <p className="error">{errors.productName}</p>}
-
-          <div className="input-group">
-            <label>장르</label>
-            <div className="category-group">
-              <select onChange={handleParentCategoryChange}>
-                <option value="">1차 카테고리</option>
+          </Grid>
+          <Grid size={6}>
+            <FormControl fullWidth>
+              <InputLabel>1차 카테고리</InputLabel>
+              <Select
+                value={selectedParentId || ""}
+                onChange={handleParentCategoryChange}
+                label="1차 카테고리"
+              >
+                <MenuItem value="">1차 카테고리</MenuItem>
                 {parentCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
+                  <MenuItem key={category.id} value={category.id}>
                     {category.name}
-                  </option>
+                  </MenuItem>
                 ))}
-              </select>
+              </Select>
+            </FormControl>
+          </Grid>
 
-              <select onChange={handleChildCategoryChange}>
-                <option value="">2차 카테고리</option>
+          <Grid size={6}>
+            <FormControl fullWidth>
+              <InputLabel>2차 카테고리</InputLabel>
+              <Select
+                value={categoryId || ""}
+                onChange={handleChildCategoryChange}
+                label="2차 카테고리"
+                error={!!errors.categoryId}
+              >
+                <MenuItem value="">2차 카테고리</MenuItem>
                 {childCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
+                  <MenuItem key={category.id} value={category.id}>
                     {category.name}
-                  </option>
+                  </MenuItem>
                 ))}
-              </select>
-            </div>
-          </div>
-          {errors.categoryId && <p className="error">{errors.categoryId}</p>}
+              </Select>
+              {errors.categoryId && (
+                <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
+                  {errors.categoryId}
+                </Box>
+              )}
+            </FormControl>
+          </Grid>
 
-          <div className="input-group">
-            <label>장소</label>
-            <input type="text" value={place} onChange={(e) => setPlace(e.target.value)} />
-          </div>
-          {errors.place && <p className="error">{errors.place}</p>}
+          <Grid size={6}>
+            <TextField
+              fullWidth
+              label="시작 날짜"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              slotProps={{ inputLabel: { shrink: true } }}
+              error={!!errors.startDate}
+              helperText={errors.startDate}
+            />
+          </Grid>
 
-          <div className="input-group">
-            <label>시작 날짜</label>
-            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-          </div>
-          {errors.startDate && <p className="error">{errors.startDate}</p>}
+          <Grid size={6}>
+            <TextField
+              fullWidth
+              label="종료 날짜"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              slotProps={{ inputLabel: { shrink: true } }}
+              error={!!errors.endDate}
+              helperText={errors.endDate}
+            />
+          </Grid>
 
-          <div className="input-group">
-            <label>종료 날짜</label>
-            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-          </div>
-          {errors.endDate && <p className="error">{errors.endDate}</p>}
+          <Grid size={4}>
+            <TextField
+              fullWidth
+              label="장소"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
+              error={!!errors.place}
+              helperText={errors.place}
+            />
+          </Grid>
 
-          <div className="input-group">
-            <label>러닝타임 (분)</label>
-            <input
+          <Grid size={4}>
+            <TextField
+              fullWidth
+              label="러닝타임 (분)"
               type="number"
               value={runningTime}
               onChange={(e) => setRunningTime(e.target.value)}
+              error={!!errors.runningTime}
+              helperText={errors.runningTime}
             />
-          </div>
-          {errors.runningTime && <p className="error">{errors.runningTime}</p>}
+          </Grid>
 
-          <div className="input-group">
-            <label>가격 (원)</label>
-            <input
+          <Grid size={4}>
+            <TextField
+              fullWidth
+              label="가격 (원)"
               type="number"
-              placeholder="가격 (원)"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              error={!!errors.price}
+              helperText={errors.price}
             />
-          </div>
-          {errors.price && <p className="error">{errors.price}</p>}
+          </Grid>
 
-          <div className="input-group">
-            <label>캐스팅</label>
-            <input type="text" value={casting} onChange={(e) => setCasting(e.target.value)} />
-          </div>
-          {errors.casting && <p className="error">{errors.casting}</p>}
+          <Grid size={12}>
+            <TextField
+              fullWidth
+              label="캐스팅"
+              value={casting}
+              onChange={(e) => setCasting(e.target.value)}
+              error={!!errors.casting}
+              helperText={errors.casting}
+            />
+          </Grid>
 
-          <div className="input-group">
-            <label>공지사항</label>
-            <textarea
-              placeholder="500자 내외"
-              rows="5"
-              cols="50"
+          <Grid size={12}>
+            <TextField
+              fullWidth
+              label="공지사항"
+              multiline
+              rows={4}
               value={notice}
               onChange={(e) => setNotice(e.target.value)}
+              error={!!errors.notice}
+              helperText={errors.notice}
             />
-          </div>
-          {errors.notice && <p className="error">{errors.notice}</p>}
+          </Grid>
 
-          <h3>📅 공연 일정</h3>
-          {productDetails.map((detail, index) => (
-            <div key={index} className="schedule-group">
-              <select
-                value={detail.date}
-                onChange={(e) => updateProductDetail(index, "date", e.target.value)}
-              >
-                <option value="">요일 선택</option>
-                <option value="월">월</option>
-                <option value="화">화</option>
-                <option value="수">수</option>
-                <option value="목">목</option>
-                <option value="금">금</option>
-                <option value="토">토</option>
-                <option value="일">일</option>
-              </select>
+          <Grid size={12}>
+            {productDetails.map((detail, index) => (
+              <Box key={index} sx={{ display: "flex", gap: 2, mb: 2 }}>
+                <FormControl fullWidth>
+                  <InputLabel>요일 선택</InputLabel>
+                  <Select
+                    value={detail.date}
+                    onChange={(e) => updateProductDetail(index, "date", e.target.value)}
+                    label="요일 선택"
+                    error={!!errors[`date${index}`]}
+                  >
+                    <MenuItem value="">요일 선택</MenuItem>
+                    <MenuItem value="월">월</MenuItem>
+                    <MenuItem value="화">화</MenuItem>
+                    <MenuItem value="수">수</MenuItem>
+                    <MenuItem value="목">목</MenuItem>
+                    <MenuItem value="금">금</MenuItem>
+                    <MenuItem value="토">토</MenuItem>
+                    <MenuItem value="일">일</MenuItem>
+                  </Select>
+                  {errors[`date${index}`] && (
+                    <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
+                      {errors[`date${index}`]}
+                    </Box>
+                  )}
+                </FormControl>
 
-              <select
-                value={detail.time}
-                onChange={(e) => updateProductDetail(index, "time", e.target.value)}
-              >
-                <option value="">시간 선택</option>
-                {[...Array(24).keys()].map((hour) => (
-                  <option key={hour} value={`HOUR_${hour.toString().padStart(2, "0")}_00`}>
-                    {`${hour.toString().padStart(2, "0")}:00`}
-                  </option>
-                ))}
-              </select>
+                <FormControl fullWidth>
+                  <InputLabel>시간 선택</InputLabel>
+                  <Select
+                    value={detail.time}
+                    onChange={(e) => updateProductDetail(index, "time", e.target.value)}
+                    label="시간 선택"
+                    error={!!errors[`time${index}`]}
+                  >
+                    <MenuItem value="">시간 선택</MenuItem>
+                    {[...Array(24).keys()].map((hour) => (
+                      <MenuItem key={hour} value={`HOUR_${hour.toString().padStart(2, "0")}_00`}>
+                        {`${hour.toString().padStart(2, "0")}:00`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors[`time${index}`] && (
+                    <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
+                      {errors[`time${index}`]}
+                    </Box>
+                  )}
+                </FormControl>
 
-              <input
-                type="number"
-                placeholder="잔여 좌석"
-                value={detail.remain}
-                onChange={(e) => updateProductDetail(index, "remain", e.target.value)}
-              />
-              <button
-                type="button"
-                className="remove-btn"
-                onClick={() => removeProductDetail(index)}
-              >
-                ❌{" "}
-              </button>
-            </div>
-          ))}
-          {errors.productDetails && <p className="error">{errors.productDetails}</p>}
+                <TextField
+                  fullWidth
+                  label="잔여 좌석"
+                  type="number"
+                  value={detail.remain}
+                  onChange={(e) => updateProductDetail(index, "remain", e.target.value)}
+                  error={!!errors[`remain${index}`]}
+                  helperText={errors[`remain${index}`]}
+                />
 
-          <button type="button" onClick={addProductDetail} className="add-btn">
-            + 일정 추가
-          </button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  onClick={() => removeProductDetail(index)}
+                >
+                  <DeleteIcon />
+                </Button>
+              </Box>
+            ))}
 
-          <h3>🖼️ 이미지 업로드</h3>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          {errors.image && <p className="error">{errors.image}</p>}
+            <Button component="label" variant="contained" onClick={addProductDetail} sx={{ mt: 2 }}>
+              + 일정 추가
+            </Button>
+            {errors.productDetails && (
+              <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
+                {errors.productDetails}
+              </Box>
+            )}
+          </Grid>
 
-          <button type="submit" className="submit-btn">
-            상품 등록
-          </button>
-        </form>
-      </div>
-    </div>
+          <Grid size={12}>
+            <Button component="label" variant="contained" startIcon={<CloudUpload />}>
+              포스터 업로드
+              <input type="file" hidden accept="image/*" onChange={handleImageChange} />
+            </Button>
+            {errors.image && (
+              <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>{errors.image}</Box>
+            )}
+          </Grid>
+
+          <Grid container>
+            <Grid size={6}>
+              <SaveBtn btnType={"submit"} viewName={"등록"} />
+            </Grid>
+            <Grid size={6}>
+              <CancelBtn onClick={() => navigate("/admin/products")} viewName={"취소"} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </form>
+    </>
   );
 };
 
