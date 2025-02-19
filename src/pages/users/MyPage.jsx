@@ -3,16 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getCookie, getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Box,
-  Typography,
-  Container,
-  Paper
+import { Drawer, List, ListItem, ListItemButton, ListItemText, Box, Typography, Container, Paper
 } from "@mui/material";
 
 const MyPage = () => {
