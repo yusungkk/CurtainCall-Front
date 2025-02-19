@@ -17,7 +17,7 @@ import Grid from "@mui/material/Grid2";
 import QuizIcon from '@mui/icons-material/Quiz';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ChatIcon from '@mui/icons-material/Chat';
-import FaqCard from "../../components/FaqCard.jsx";
+import FaqCard from "../../components/inquiry/FaqCard.jsx";
 
 
 function FaqList() {
@@ -137,6 +137,13 @@ function FaqList() {
         }
     };
 
+    const handleInquiryBtn = () => {
+        navigate("/inquiries/new")
+    }
+
+    const handleInquiriesBtn = () => {
+        navigate("/inquiries")
+    }
     return (
         <div style={{width: '100vw', maxWidth: '70%'}}>
             <Box sx={{
@@ -223,11 +230,13 @@ function FaqList() {
                         icon={QuizIcon}
                         title="1:1 문의하기"
                         description="상담 내역을 남길 수 있습니다."
+                        onClick={handleInquiryBtn}
                     />
                     <FaqCard
                         icon={EditNoteIcon}
                         title="내 문의 내역 확인하기"
                         description="문의한 내용을 확인해 보세요."
+                        onClick={handleInquiriesBtn}
                     />
                     <FaqCard
                         icon={ChatIcon}

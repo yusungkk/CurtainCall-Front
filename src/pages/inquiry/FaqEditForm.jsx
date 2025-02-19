@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {getFaq, updateFaq} from "../../api/faqApi.js";
 import {Typography} from "@mui/material";
-import CommonFaqForm from "../../components/CommonFaqForm.jsx";
+import CommonFaqForm from "../../components/inquiry/CommonFaqForm.jsx";
 
 function FaqEditForm() {
     const {id} = useParams();
