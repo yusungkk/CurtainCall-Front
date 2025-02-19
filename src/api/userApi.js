@@ -1,5 +1,5 @@
 import { fetcher } from "../utils/fetcher.js";
-import { CHECK_EMAIL_URL, USER_JOIN_URL, USER_LOGIN_URL, USER_PAGE_URL, USER_UPDATE_URL, GET_USER_LIST_URL } from "../utils/endpoint.js";
+import { CHECK_EMAIL_URL, USER_JOIN_URL, USER_LOGIN_URL, USER_PAGE_URL, USER_UPDATE_URL, GET_USER_LIST_URL, USER_LOGOUT_URL } from "../utils/endpoint.js";
 
 export const getCookie = (name) => {
     const value = `; ${document.cookie}`;
@@ -59,3 +59,9 @@ export const getUserList = async () => {
     }
     throw new Error("No token found in cookies");
 };
+
+export const logout = async () => {
+    return await fetcher(USER_LOGOUT_URL, {
+        method: "POST",
+    });
+}
