@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { getCookie, getUserList } from "../../api/userApi.js";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -10,8 +10,8 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/users");
-        setUsers(response.data);
+        const response = await getUserList();
+        setUsers(response);
       } catch (error) {
         console.error("유저 목록을 가져오는 데 실패했습니다:", error);
       } finally {

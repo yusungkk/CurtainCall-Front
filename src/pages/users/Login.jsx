@@ -20,7 +20,7 @@ const Login = () => {
 
       if (response.token) {
         const { role, token } = response;
-        localStorage.setItem("jwt", token);
+        document.cookie = `jwt=${token}; path=/; max-age=43200; Secure;`;
 
         if(role === "ADMIN") {
           alert("관리자로 로그인 성공.");

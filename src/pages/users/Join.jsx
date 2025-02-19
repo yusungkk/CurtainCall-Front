@@ -90,7 +90,7 @@ const Register = () => {
     try {
       const response = await createUser({ email, password, name, phone });
 
-      if (response.status === 201) {
+      if (response === 201) {
         alert("회원가입 성공!");
         navigate("/login");
       }

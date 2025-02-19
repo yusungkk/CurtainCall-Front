@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../utils/axios";
+import { getCookie, updateUser } from "../../api/userApi.js";
 
 const UpdateUser = ({ user }) => {
   if (!user) {
@@ -74,7 +74,7 @@ const UpdateUser = ({ user }) => {
   const handleUpdate = async () => {
     if (!validateInputs()) return;
 
-    const token = localStorage.getItem("jwt");
+    const token = getCookie("jwt");
     if (!token) {
       alert("로그인이 필요합니다.");
       navigate("/login");
@@ -82,13 +82,13 @@ const UpdateUser = ({ user }) => {
     }
 
     try {
-      const response = await axios.put("/users/update", {
+      const response = await updateUser({
         password: formData.password,
         name: formData.name,
         phone: formData.phone,
       });
 
-      if (response.status === 200) {
+      if (response.email) {
         alert("회원정보가 수정되었습니다.");
         window.location.reload();
       } else {
