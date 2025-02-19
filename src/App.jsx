@@ -17,6 +17,7 @@ import InquiryList from "./pages/inquiry/InquiryList.jsx";
 import InquiryDetail from "./pages/inquiry/InquiryDetail.jsx";
 import InquiryAdminList from "./pages/inquiry/InquiryAdminList.jsx";
 import InquiryAdminDetail from "./pages/inquiry/InquiryAdminDetail.jsx";
+import PaymentPage from "./pages/orders/PaymentPage.jsx";
 
 import Admin from "./pages/users/Admin.jsx";
 
@@ -50,6 +51,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </BrowserRouter>
   );
