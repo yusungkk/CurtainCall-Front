@@ -12,6 +12,7 @@ import FaqEditForm from "./pages/inquiry/FaqEditForm.jsx";
 import Join from "./pages/users/Join.jsx";
 import Login from "./pages/users/Login.jsx";
 import MyPage from "./pages/users/MyPage.jsx";
+import PaymentPage from "./pages/orders/PaymentPage.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/join" element={<Join />} />
               <Route path="/login" element={<Login />} />
               <Route path="/myPage" element={<MyPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
           </Routes>
       </BrowserRouter>
   );
