@@ -30,7 +30,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
-const AdminCategoryManagement = () => {
+const PraCategory = () => {
   // 탭: 0 = 활성, 1 = 삭제된 카테고리
   const [tabIndex, setTabIndex] = useState(0);
   const [activeCategories, setActiveCategories] = useState([]);
@@ -450,4 +450,4 @@ const AdminCategoryManagement = () => {
   );
 };
 
-export default AdminCategoryManagement;
+export default PraCategory;
