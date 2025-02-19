@@ -15,3 +15,6 @@ export const FIND_INQUIRY_USER_URL= (id)  => `${BASIC_URL}${API_VERSION_V1}/inqu
 export const FIND_INQUIRIES_ADMIN_URL = `${BASIC_URL}${API_VERSION_V1}/admin/inquiries`;
 export const FIND_INQUIRY_ADMIN_URL= (id) => `${BASIC_URL}${API_VERSION_V1}/admin/inquiries/${id}`;
 export const CREATE_REPLY_ADMIN_URL= (id) => `${BASIC_URL}${API_VERSION_V1}/admin/inquiries/${id}/replies`;
+
+//== Category 관련 API URL ==//
+export const CATEGORY_URL = `${BASIC_URL}${API_VERSION_V1}/categories`;

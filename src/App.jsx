@@ -19,6 +19,8 @@ import InquiryAdminList from "./pages/inquiry/InquiryAdminList.jsx";
 import InquiryAdminDetail from "./pages/inquiry/InquiryAdminDetail.jsx";
 
 import Admin from "./pages/users/Admin.jsx";
+import PraCategory from "./category/PraCategory.jsx";
+
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/category" element={<PraCategory />} />
+
       </Routes>
     </BrowserRouter>
   );
