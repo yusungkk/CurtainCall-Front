@@ -61,7 +61,9 @@ export const getUserList = async () => {
 };
 
 export const logout = async () => {
+    const token = getCookie("jwt");
     return await fetcher(USER_LOGOUT_URL, {
         method: "POST",
+        credentials: 'include',
     });
 }
