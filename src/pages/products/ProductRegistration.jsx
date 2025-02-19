@@ -160,7 +160,6 @@ const ProductRegistration = () => {
             <label>상품명</label>
             <input
               type="text"
-              placeholder="상품명"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
             />
@@ -193,12 +192,7 @@ const ProductRegistration = () => {
 
           <div className="input-group">
             <label>장소</label>
-            <input
-              type="text"
-              placeholder="장소"
-              value={place}
-              onChange={(e) => setPlace(e.target.value)}
-            />
+            <input type="text" value={place} onChange={(e) => setPlace(e.target.value)} />
           </div>
           {errors.place && <p className="error">{errors.place}</p>}
 
@@ -218,7 +212,6 @@ const ProductRegistration = () => {
             <label>러닝타임 (분)</label>
             <input
               type="number"
-              placeholder="러닝타임 (분)"
               value={runningTime}
               onChange={(e) => setRunningTime(e.target.value)}
             />
@@ -238,19 +231,16 @@ const ProductRegistration = () => {
 
           <div className="input-group">
             <label>캐스팅</label>
-            <input
-              type="text"
-              placeholder="캐스팅"
-              value={casting}
-              onChange={(e) => setCasting(e.target.value)}
-            />
+            <input type="text" value={casting} onChange={(e) => setCasting(e.target.value)} />
           </div>
           {errors.casting && <p className="error">{errors.casting}</p>}
 
           <div className="input-group">
             <label>공지사항</label>
             <textarea
-              placeholder="공지사항(500자 내외)"
+              placeholder="500자 내외"
+              rows="5"
+              cols="50"
               value={notice}
               onChange={(e) => setNotice(e.target.value)}
             />
