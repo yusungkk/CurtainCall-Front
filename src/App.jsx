@@ -22,6 +22,7 @@ import PaymentPage from "./pages/orders/PaymentPage.jsx";
 import Admin from "./pages/users/Admin.jsx";
 import CategoryManagement from "./components/category/CategoryManagement.jsx";
 import NavigationBar from "./components/category/NavigationBar.jsx";
+import SpecialProductManagement from "./components/specialProduct/SpecialProductManagement.jsx";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/category" element={<CategoryManagement />} />
+        <Route path="/specialProduct" element={<SpecialProductManagement />} />
       </Routes>
     </BrowserRouter>
   );
