@@ -247,7 +247,7 @@ const SpecialProductManagement = () => {
             </Box>
 
             <Tabs value={tabIndex} onChange={(e, newValue) => setTabIndex(newValue)}>
-                <Tab label="활성 특가상품" />
+                <Tab label="특가상품" />
                 <Tab label="삭제된 특가상품" />
             </Tabs>
 
@@ -400,9 +400,17 @@ const SpecialProductManagement = () => {
                 </DialogActions>
             </Dialog>
 
-            <Snackbar open={alert.open} autoHideDuration={3000} onClose={() => setAlert({ ...alert, open: false })}>
-                <Alert severity={alert.severity}>{alert.message}</Alert>
+            <Snackbar
+                open={alert.open}
+                autoHideDuration={3000}
+                onClose={() => setAlert({ ...alert, open: false })}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }} // 📌 Snackbar를 상단 중앙에 배치
+            >
+                <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, open: false })}>
+                    {alert.message}
+                </Alert>
             </Snackbar>
+
         </Container>
     );
 };

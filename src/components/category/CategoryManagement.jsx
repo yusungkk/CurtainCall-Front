@@ -243,7 +243,7 @@ const CategoryManagement = () => {
             </Typography>
 
             <Tabs value={tabIndex} onChange={handleTabChange}>
-                <Tab label="활성 카테고리" />
+                <Tab label="카테고리" />
                 <Tab label="삭제된 카테고리" />
             </Tabs>
 
