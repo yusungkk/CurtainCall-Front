@@ -91,7 +91,7 @@ const Info = ({ user }) => {
               backgroundColor: "#800000",
               color: "white",
               padding: "10px 20px",
-              borderRadius: "5px",
+              borderRadius: 2,
               cursor: "pointer",
               "&:hover": { backgroundColor: "#660000" },
             }}

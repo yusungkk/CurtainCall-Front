@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie, updateUser } from "../../api/userApi.js";
+import { updateUser } from "../../api/userApi.js";
 import {
   Container, Box, TextField, Button, Typography
 } from "@mui/material";
@@ -76,13 +76,6 @@ const UpdateUser = ({ user }) => {
 
   const handleUpdate = async () => {
     if (!validateInputs()) return;
-
-    const token = getCookie("jwt");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
-      return;
-    }
 
     try {
       const response = await updateUser({
