@@ -251,24 +251,22 @@ const CategoryManagement = () => {
                 <Box sx={{ mt: 2 }}>
                     {/* 신규 카테고리 생성 폼 */}
                     <Paper sx={{ p: 2, mb: 2 }}>
-                        <Typography variant="h6" gutterBottom>
-                            신규 카테고리 생성
-                        </Typography>
-                        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            {/* 카테고리 이름 입력 */}
                             <TextField
                                 label="카테고리 이름"
                                 value={newCategory.name}
                                 onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
                                 size="small"
+                                sx={{ minWidth: 200 }}
                             />
-                            <FormControl size="small" sx={{ minWidth: 180 }}>
+
+                            {/* 부모 카테고리 선택 */}
+                            <FormControl size="small" sx={{ minWidth: 200, flexShrink: 0 }}>
                                 <InputLabel>부모 카테고리 (선택)</InputLabel>
                                 <Select
-                                    label="부모 카테고리 (선택)"
                                     value={newCategory.parentId}
-                                    onChange={(e) =>
-                                        setNewCategory({ ...newCategory, parentId: e.target.value })
-                                    }
+                                    onChange={(e) => setNewCategory({ ...newCategory, parentId: e.target.value })}
                                 >
                                     <MenuItem value="">
                                         <em>없음</em>
@@ -280,11 +278,25 @@ const CategoryManagement = () => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <Button variant="contained" onClick={handleCreateCategory}>
+
+                            {/* 생성 버튼 - 오른쪽으로 이동 및 검색 버튼 크기와 맞춤 */}
+                            <Button
+                                variant="contained"
+                                size="small"
+                                onClick={handleCreateCategory}
+                                sx={{
+                                    width: 100,
+                                    height: '40px',  // 검색 버튼과 높이 맞춤
+                                    flexShrink: 0,
+                                }}
+                            >
                                 생성
                             </Button>
                         </Box>
                     </Paper>
+
+
+
 
                     {/* 활성 카테고리 목록 - 부모와 오른쪽에 자식 카테고리 보여주기 */}
                     <TableContainer component={Paper}>
