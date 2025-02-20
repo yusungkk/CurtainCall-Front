@@ -32,8 +32,8 @@ const UserList = () => {
   }
 
   return (
-    <Container sx={{ mt: 7 }}>
-      <Typography variant="h4" sx={{ mb: 4 }}>
+    <Container sx={{ mt: 7, pb: 7 }}>
+      <Typography variant="h4" sx={{ mb: 6 }}>
         회원 관리
       </Typography>
       {users.map((user) => (

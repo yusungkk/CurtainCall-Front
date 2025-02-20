@@ -21,7 +21,6 @@ const Login = () => {
         alert("잘못된 이메일이나 비밀번호입니다.");
       } else {
         const { role, token } = response;
-        document.cookie = `jwt=${token}; path=/; max-age=1800; Secure;`;
 
         if(role === "ADMIN") {
           alert("관리자로 로그인 성공.");

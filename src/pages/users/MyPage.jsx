@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie, getUserData } from "../../api/userApi.js";
+import { getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
 import { Drawer, List, ListItem, ListItemButton, ListItemText, Box, Typography, Container, Paper
@@ -14,18 +14,13 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = getCookie("jwt");
-        if (!token) {
+        const response = await getUserData();
+
+        if (!response) {
           alert("로그인이 필요합니다.");
           navigate("/login");
         } else {
-          const response = await getUserData();
-          if (response == 401) {
-            alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-            navigate("/login");
-          } else {
-            setUser(response);
-          }
+          setUser(response);
         }
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);
