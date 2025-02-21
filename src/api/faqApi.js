@@ -15,7 +15,9 @@ export const getFaq = async (id) => {
 
 export const getFaqs = async (offset = 0, limit = 10) => {
     const URL = `${FAQ_URL}?offset=${offset}&limit=${limit}`
-    return await fetcher(URL);
+    return await fetcher(URL, {
+        credentials: "include",
+    });
 }
 
 export const getFaqsByType = async (faqType, offset = 0, limit = 10) => {
@@ -46,30 +48,19 @@ export const deleteFaq = async (id) => {
 export const createInquiry = async (inquiryData) => {
     return fetcher(CREATE_INQUIRY_URL, {
         method: "POST",
+
         body: JSON.stringify(inquiryData),
     });
 };
 
 export const getInquiriesByUser = async (navigate) => {
 
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-        navigate("/login");
-        return;
-    }
     return await fetcher(FIND_INQUIRIES_USER_URL);
 };
 
 export const getInquiriesByAdmin = async (navigate, searchCond, offset = 0) => {
 
-    const token = localStorage.getItem("jwt");
     let URL = FIND_INQUIRIES_ADMIN_URL;
-
-    if (!token) {
-        navigate("/login");
-        return;
-    }
 
     const queryParam = Object.entries(searchCond)
         .filter(([key, value]) => value !== '')
