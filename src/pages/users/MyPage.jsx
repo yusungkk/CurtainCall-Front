@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie, getUserData } from "../../api/userApi.js";
+import { getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Box,
-  Typography,
-  Container,
-  Paper
+import { Drawer, List, ListItem, ListItemButton, ListItemText, Box, Typography, Container, Paper
 } from "@mui/material";
 
 const MyPage = () => {
@@ -23,12 +14,12 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = getCookie("jwt");
-        if (!token) {
+        const response = await getUserData();
+
+        if (!response) {
           alert("로그인이 필요합니다.");
           navigate("/login");
         } else {
-          const response = await getUserData();
           setUser(response);
         }
       } catch (error) {

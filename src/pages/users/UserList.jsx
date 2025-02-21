@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie, getUserList } from "../../api/userApi.js";
+import { getUserList } from "../../api/userApi.js";
+import { Card, CardContent, Typography, Container, CircularProgress } from "@mui/material";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -23,20 +24,31 @@ const UserList = () => {
   }, []);
 
   if (loading) {
-    return <div>로딩 중...</div>;
+    return (
+      <Container sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+        <CircularProgress />
+      </Container>
+    );
   }
 
   return (
-    <div>
-      <h2>전체 유저 목록</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.email}>
-            <span>{user.name} ({user.email})</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container sx={{ mt: 7, pb: 7 }}>
+      <Typography variant="h4" sx={{ mb: 6 }}>
+        회원 관리
+      </Typography>
+      {users.map((user) => (
+        <Card key={user.email} sx={{ mb: 2, borderRadius: 4, padding: 2, width: "550px", maxWidth: 800 }}>
+          <CardContent sx={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="h6" fontWeight="bold" sx={{ mr: 2 }}>
+              {user.name}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {user.email}
+            </Typography>
+          </CardContent>
+        </Card>
+      ))}
+    </Container>
   );
 };
 

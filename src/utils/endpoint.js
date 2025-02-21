@@ -35,3 +35,4 @@ export const USER_LOGIN_URL = `${BASIC_URL}${API_VERSION_V1}/users/login`;
 export const USER_PAGE_URL = `${BASIC_URL}${API_VERSION_V1}/users/myPage`;
 export const USER_UPDATE_URL = `${BASIC_URL}${API_VERSION_V1}/users/update`;
 export const GET_USER_LIST_URL = `${BASIC_URL}${API_VERSION_V1}/users`;
+export const USER_LOGOUT_URL = `${BASIC_URL}${API_VERSION_V1}/users/logout`;

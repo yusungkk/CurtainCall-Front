@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie, updateUser } from "../../api/userApi.js";
+import { updateUser } from "../../api/userApi.js";
+import {
+  Container, Box, TextField, Button, Typography
+} from "@mui/material";
 
 const UpdateUser = ({ user }) => {
   if (!user) {
-      return <div>사용자 정보를 불러올 수 없습니다.</div>;
-    }
+    return <div>사용자 정보를 불러올 수 없습니다.</div>;
+  }
 
   const [formData, setFormData] = useState({
     email: user.email,
@@ -74,13 +77,6 @@ const UpdateUser = ({ user }) => {
   const handleUpdate = async () => {
     if (!validateInputs()) return;
 
-    const token = getCookie("jwt");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
-      return;
-    }
-
     try {
       const response = await updateUser({
         password: formData.password,
@@ -101,54 +97,125 @@ const UpdateUser = ({ user }) => {
   };
 
   return (
-    <div>
-      <h2>회원정보 수정</h2>
+    <Container
+      maxWidth="xs"
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh", justifyContent: "center" }}
+    >
+      <Box
+        sx={{
+          p: 6,
+          bgcolor: "white",
+          boxShadow: 2,
+          borderRadius: 5,
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          회원정보 수정
+        </Typography>
 
-      <input
-        type="text"
-        value={formData.email}
-        disabled
-      />
-      <br />
+        <TextField
+          label="이메일"
+          type="email"
+          variant="outlined"
+          margin="dense"
+          value={formData.email}
+          disabled
+          sx={{ width: "400px", mt: 4 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
+        />
 
-      <input
-        type="password"
-        placeholder="비밀번호"
-        value={formData.password}
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-      />
-      {passwordError && <p style={{ color: "red", fontSize: "12px" }}>{passwordError}</p>}
-      <br />
+        <TextField
+          label="비밀번호"
+          type="password"
+          variant="outlined"
+          margin="dense"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          error={!!passwordError}
+          helperText={passwordError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
+        />
 
-      <input
-        type="password"
-        placeholder="비밀번호 확인"
-        value={formData.confirmPassword}
-        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-      />
-      {confirmPasswordError && <p style={{ color: "red", fontSize: "12px" }}>{confirmPasswordError}</p>}
-      <br />
+        <TextField
+          label="비밀번호 확인"
+          type="password"
+          variant="outlined"
+          margin="dense"
+          value={formData.confirmPassword}
+          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+          error={!!confirmPasswordError}
+          helperText={confirmPasswordError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
+        />
 
-      <input
-        type="text"
-        placeholder="이름"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-      />
-      {nameError && <p style={{ color: "red", fontSize: "12px" }}>{nameError}</p>}
-      <br />
+        <TextField
+          label="이름"
+          type="text"
+          variant="outlined"
+          margin="dense"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          error={!!nameError}
+          helperText={nameError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
+        />
 
-      <input
-        type="text"
-        placeholder="전화번호"
-        value={formData.phone}
-        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-      />
-      {phoneError && <p style={{ color: "red", fontSize: "12px" }}>{phoneError}</p>}
-      <br />
+        <TextField
+          label="전화번호"
+          type="text"
+          variant="outlined"
+          margin="dense"
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          error={!!phoneError}
+          helperText={phoneError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
+        />
 
-      <button onClick={handleUpdate}>수정하기</button>
-    </div>
+        <Button
+          variant="contained"
+          sx={{
+            mt: 3,
+            borderRadius: 2,
+            width: "400px",
+            height: "56px",
+            bgcolor: "#800000",
+            fontSize: "1.1rem",
+            "&:hover": { bgcolor: "#660000" },
+          }}
+          onClick={handleUpdate}
+          disabled={!!passwordError || !!confirmPasswordError || !!nameError || !!phoneError}
+        >
+          수정하기
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

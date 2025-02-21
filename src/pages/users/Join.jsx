@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkEmailDuplicate, createUser } from "../../api/userApi.js";
-import "../../styles/users/Join.css";
+import {
+  Container, Box, TextField, Button, Typography
+} from "@mui/material";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -40,20 +42,18 @@ const Register = () => {
     if (!passwordRegex.test(value)) {
       setPasswordError("비밀번호는 영대소문자, 특수문자, 숫자를 포함한 8자 이상 16자 이하여야 합니다.");
       return false;
-    } else {
-      setPasswordError("");
-      return true;
     }
+    setPasswordError("");
+    return true;
   };
 
   const validateConfirmPassword = (value) => {
     if (value !== password) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       return false;
-    } else {
-      setConfirmPasswordError("");
-      return true;
     }
+    setConfirmPasswordError("");
+    return true;
   };
 
   const validateName = (value) => {
@@ -61,10 +61,9 @@ const Register = () => {
     if (!nameRegex.test(value)) {
       setNameError("이름은 한글만 입력 가능합니다.");
       return false;
-    } else {
-      setNameError("");
-      return true;
     }
+    setNameError("");
+    return true;
   };
 
   const validatePhone = (value) => {
@@ -72,10 +71,9 @@ const Register = () => {
     if (!phoneRegex.test(value)) {
       setPhoneError("'-' 없이 010으로 시작하는 11자리 전화번호를 입력해 주세요.");
       return false;
-    } else {
-      setPhoneError("");
-      return true;
     }
+    setPhoneError("");
+    return true;
   };
 
   const handleRegister = async () => {
@@ -101,74 +99,137 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-box">
-        <h2>회원가입</h2>
+    <Container
+      maxWidth="xs"
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh", justifyContent: "center" }}
+    >
+      <Box
+        sx={{
+          p: 6,
+          bgcolor: "white",
+          boxShadow: 2,
+          borderRadius: 5,
+          textAlign: "center",
+          width: "100%"
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          회원가입
+        </Typography>
 
-        <input
-          className="register-input"
-          type="text"
-          placeholder="이메일"
+        <TextField
+          label="이메일"
+          type="email"
+          variant="outlined"
+          margin="dense"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           onBlur={(e) => validateEmail(e.target.value)}
+          error={!!emailError}
+          helperText={emailError}
+          sx={{ width: "400px", mt: 4 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
         />
-        {emailError && <p className="error-message">{emailError}</p>}
 
-        <input
-          className="register-input"
+        <TextField
+          label="비밀번호"
           type="password"
-          placeholder="비밀번호 (8~16자 영어 대소문자, 숫자, 특수문자)"
+          variant="outlined"
+          margin="dense"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
             validatePassword(e.target.value);
           }}
+          error={!!passwordError}
+          helperText={passwordError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
         />
-        {passwordError && <p className="error-message">{passwordError}</p>}
 
-        <input
-          className="register-input"
+        <TextField
+          label="비밀번호 확인"
           type="password"
-          placeholder="비밀번호 확인"
+          variant="outlined"
+          margin="dense"
           value={confirmPassword}
           onChange={(e) => {
             setConfirmPassword(e.target.value);
             validateConfirmPassword(e.target.value);
           }}
+          error={!!confirmPasswordError}
+          helperText={confirmPasswordError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
         />
-        {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
 
-        <input
-          className="register-input"
+        <TextField
+          label="이름"
           type="text"
-          placeholder="이름"
+          variant="outlined"
+          margin="dense"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          error={!!nameError}
+          helperText={nameError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
         />
-        {nameError && <p className="error-message">{nameError}</p>}
 
-        <input
-          className="register-input"
+        <TextField
+          label="휴대폰 번호"
           type="text"
-          placeholder="휴대폰"
+          variant="outlined"
+          margin="dense"
           value={phone}
           onChange={(e) => {
             setPhone(e.target.value);
             validatePhone(e.target.value);
           }}
+          error={!!phoneError}
+          helperText={phoneError}
+          sx={{ width: "400px", mt: 3 }}
+          InputProps={{
+            sx: {
+              borderRadius: 2,
+            },
+          }}
         />
-        {phoneError && <p className="error-message">{phoneError}</p>}
 
-        <button
-          className="register-button"
+        <Button
+          variant="contained"
+          sx={{
+            mt: 3,
+            borderRadius: 2,
+            width: "400px",
+            height: "56px",
+            bgcolor: "#800000",
+            fontSize: "1.1rem",
+            "&:hover": { bgcolor: "#660000" }
+          }}
           onClick={handleRegister}
-          disabled={!!emailError}
+          disabled={!!emailError || !!passwordError || !!confirmPasswordError || !!nameError || !!phoneError}
         >
-          가입완료
-        </button>
-      </div>
-    </div>
+          가입 완료
+        </Button>
+      </Box>
+    </Container>
   );
 };
 
