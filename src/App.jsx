@@ -56,8 +56,8 @@ function App() {
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/category" element={<CategoryManagement />} />
-        <Route path="/specialProduct" element={<SpecialProductManagement />} />
+        <Route path="/admin/category" element={<CategoryManagement />} />
+        <Route path="/admin/specialProduct" element={<SpecialProductManagement />} />
       </Routes>
     </BrowserRouter>
   );
