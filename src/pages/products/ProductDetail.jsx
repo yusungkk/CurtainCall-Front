@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getProduct } from "../../api/productApi";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
@@ -54,6 +54,13 @@ function ProductDetail() {
     setRemain(remain);
   };
 
+  const handleValid = (e) => {
+    if (selectedProductDetailId === null) {
+      e.preventDefault();
+      alert("관람 시간을 선택해주세요!");
+    }
+  };
+
   // 선택한 날짜의 상품 상세
   const getSelectedProductDetails = (date) => {
     const dateStr = format(date, "yyyy-MM-dd");
@@ -78,7 +85,7 @@ function ProductDetail() {
       const dateStr = format(date, "yyyy-MM-dd"); // 선택 날짜
       const todayStr = format(new Date(), "yyyy-MM-dd"); // 오늘 날짜
       return !productDetails.some(
-        (productDetail) => productDetail.performanceDate === dateStr && dateStr > todayStr
+        (productDetail) => productDetail.performanceDate === dateStr && dateStr >= todayStr
       );
     }
 
@@ -150,7 +157,7 @@ function ProductDetail() {
                   formatYear={(locale, date) => format(date, "yyyy")}
                   formatMonthYear={(locale, date) => format(date, "yyyy. MM")}
                   calendarType="gregory"
-                  minDate={new Date(startDate)}
+                  minDate={new Date()}
                   maxDate={new Date(endDate)}
                   tileClassName={tileClassName}
                   tileDisabled={tileDisabled}
@@ -187,9 +194,11 @@ function ProductDetail() {
             </div>
           </div>
 
-          <div className="side-btn">
-            <button>예매하기</button>
-          </div>
+          <Link to={`/seat-selection/${selectedProductDetailId}`}>
+            <div className="side-btn">
+              <button onClick={handleValid}>예매하기</button>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
