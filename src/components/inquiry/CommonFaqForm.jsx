@@ -25,7 +25,7 @@ export default function CommonFaqForm({onSubmit, onClose,  formData, onChange, s
 
     return (
         <>
-            <form onSubmit={onSubmit} style={{width: "100vw", maxWidth: "80%"}}>
+            <form onSubmit={onSubmit} style={{width: "100vw", maxWidth: "100%"}}>
                 <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <FormControl sx={{width: "70%", mb: 2}}>
                         <InputLabel id="faq-type-label">유형</InputLabel>

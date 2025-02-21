@@ -16,6 +16,13 @@ export const FIND_INQUIRIES_ADMIN_URL = `${BASIC_URL}${API_VERSION_V1}/admin/inq
 export const FIND_INQUIRY_ADMIN_URL= (id) => `${BASIC_URL}${API_VERSION_V1}/admin/inquiries/${id}`;
 export const CREATE_REPLY_ADMIN_URL= (id) => `${BASIC_URL}${API_VERSION_V1}/admin/inquiries/${id}/replies`;
 
+//==채팅 관련 API URL ==//
+export const CREATE_CHAT_ROOM_URL = (userId) => `${BASIC_URL}${API_VERSION_V1}/chat/create?user=${userId}`
+export const FIND_ALL_CHAT_ROOM_URL = `${BASIC_URL}${API_VERSION_V1}/chat/rooms`
+export const WS_CONNECT_URL = `${BASIC_URL}/ws-chat-connect`;
+export const WS_CHAT_PUB_URL = (roomId) => `/app/chat/${roomId}`;
+export const WS_CHAT_SUB_URL = (roomId) => `/queue/chat/${roomId}`;
+
 //==product 관련 API URL==//
 export const PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products`;
 export const CREATE_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products/new`;
