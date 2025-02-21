@@ -269,6 +269,14 @@ const SpecialProductManagement = () => {
                 특가상품 관리
             </Typography>
 
+            <Tabs
+                value={tabIndex}
+                onChange={(e, newValue) => setTabIndex(newValue)}
+                sx={{ mb: 2 }} // 탭과 검색창 사이의 간격 조정
+            >
+                <Tab label="특가상품" />
+                <Tab label="삭제된 특가상품" />
+            </Tabs>
             {/* 검색 영역 */}
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -295,10 +303,7 @@ const SpecialProductManagement = () => {
                 </Link>
             </Box>
 
-            <Tabs value={tabIndex} onChange={(e, newValue) => setTabIndex(newValue)}>
-                <Tab label="특가상품" />
-                <Tab label="삭제된 특가상품" />
-            </Tabs>
+
 
             {/* 활성 특가상품 목록 */}
             {tabIndex === 0 && (
