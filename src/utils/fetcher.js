@@ -16,7 +16,8 @@ export const fetcher = async (endPoint, options = {}) => {
         }
 
         if (response.ok) {
-            return await response.json();
+            const data = await response.json().catch(() => null);
+            return data;
         }
 
         throw new Error(await response.json());
