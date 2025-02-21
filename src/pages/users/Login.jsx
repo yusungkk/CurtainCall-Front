@@ -20,7 +20,7 @@ const Login = () => {
       if (response == 401) {
         alert("잘못된 이메일이나 비밀번호입니다.");
       } else {
-        const { role, token } = response;
+        const { role } = response;
 
         if(role === "ADMIN") {
           alert("관리자로 로그인 성공.");
