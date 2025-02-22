@@ -38,3 +38,6 @@ export const GET_USER_LIST_URL = `${BASIC_URL}${API_VERSION_V1}/users`;
 export const USER_LOGOUT_URL = `${BASIC_URL}${API_VERSION_V1}/users/logout`;
 export const USER_ACTIVATE_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/users/${id}/activate`;
 export const USER_DEACTIVATE_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/users/${id}/deactivate`;
+
+//홈화면
+export const ACTIVE_SPECIAL_PRODUCT_URL =`${BASIC_URL}${API_VERSION_V1}/specialProduct/active`;

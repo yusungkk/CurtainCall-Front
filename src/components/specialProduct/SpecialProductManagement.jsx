@@ -297,7 +297,7 @@ const SpecialProductManagement = () => {
                     </Button>
                 </Box>
                 <Link to="/admin/special-products/new" style={{ textDecoration: 'none' }}>
-                    <Button variant="contained" color="secondary" size="small">
+                    <Button variant="contained" color="primary" size="small">
                         특가상품 등록
                     </Button>
                 </Link>
@@ -324,26 +324,26 @@ const SpecialProductManagement = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {activeProducts.map((product) => (
-                                    <TableRow key={product.specialProductId}>
-                                        <TableCell>{product.specialProductId}</TableCell>
-                                        <TableCell>{product.productName}</TableCell>
-                                        <TableCell>{product.price?.toLocaleString() + '원'}</TableCell>
-                                        <TableCell>{product.discountRate}%</TableCell>
-                                        <TableCell>{calcDiscountedPrice(product.price, product.discountRate)}</TableCell>
-                                        <TableCell>{formatDateRange(product.discountStartDate, product.discountEndDate)}</TableCell>
+                                {activeProducts.map((specialProductDto) => (
+                                    <TableRow key={specialProductDto.specialProductId}>
+                                        <TableCell>{specialProductDto.specialProductId}</TableCell>
+                                        <TableCell>{specialProductDto.productName}</TableCell>
+                                        <TableCell>{specialProductDto.price?.toLocaleString() + '원'}</TableCell>
+                                        <TableCell>{specialProductDto.discountRate}%</TableCell>
+                                        <TableCell>{calcDiscountedPrice(specialProductDto.price, specialProductDto.discountRate)}</TableCell>
+                                        <TableCell>{formatDateRange(specialProductDto.discountStartDate, specialProductDto.discountEndDate)}</TableCell>
                                         <TableCell>
-                                            <Typography style={{ color: statusColors[product.status] }}>
-                                                {statusLabels[product.status]}
+                                            <Typography style={{ color: statusColors[specialProductDto.status] }}>
+                                                {statusLabels[specialProductDto.status]}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
-                                            {product.status === 'UPCOMING' ? (
+                                            {specialProductDto.status === 'UPCOMING' ? (
                                                 <Button
                                                     variant="contained"
                                                     color="primary"
                                                     size="small"
-                                                    onClick={() => handleApproveProduct(product.specialProductId)}
+                                                    onClick={() => handleApproveProduct(specialProductDto.specialProductId)}
                                                 >
                                                     승인
                                                 </Button>
@@ -352,17 +352,17 @@ const SpecialProductManagement = () => {
                                                     variant="contained"
                                                     color="warning"
                                                     size="small"
-                                                    onClick={() => handleCancelApproveProduct(product.specialProductId)}
+                                                    onClick={() => handleCancelApproveProduct(specialProductDto.specialProductId)}
                                                 >
                                                     승인 취소
                                                 </Button>
                                             )}
                                         </TableCell>
                                         <TableCell align="center">
-                                            <IconButton color="secondary" size="small" onClick={() => openEditDialog(product)}>
+                                            <IconButton color="secondary" size="small" onClick={() => openEditDialog(specialProductDto)}>
                                                 <EditIcon />
                                             </IconButton>
-                                            <IconButton color="error" size="small" onClick={() => openDeleteDialog(product.specialProductId)}>
+                                            <IconButton color="error" size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>

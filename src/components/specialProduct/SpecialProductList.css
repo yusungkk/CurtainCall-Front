@@ -1,0 +1,17 @@
+/*할인 상품*/
+.product-discount {
+    font-size: 20px;  /* 전체 폰트 크기 */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 할인율과 할인가 사이 간격 추가 */
+}
+
+.discount-rate {
+    color: red; /* 할인율만 빨간색 */
+    font-size: 22px; /* 할인율을 좀 더 강조 */
+}
+
+.discount-price {
+    font-size: 20px;
+}

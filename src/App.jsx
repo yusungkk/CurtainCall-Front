@@ -23,6 +23,8 @@ import Admin from "./pages/users/Admin.jsx";
 import CategoryManagement from "./components/category/CategoryManagement.jsx";
 import NavigationBar from "./components/category/NavigationBar.jsx";
 import SpecialProductManagement from "./components/specialProduct/SpecialProductManagement.jsx";
+import SpecialProductList from "./components/specialProduct/SpcialProductList.jsx";
+import Home from "./pages/Home.jsx";
 
 function App() {
   return (
@@ -50,7 +52,7 @@ function App() {
         <Route path={"/admin/faqs/:id"} element={<FaqEditForm />}></Route>
         <Route path="/admin/products" element={<ProductManagement />} />
         <Route path="/products/:id" element={<ProductDetail />}></Route>
-        <Route path="/" element={<h1>홈</h1>} />
+        <Route path="/" element={<Home />} />
         <Route path="/join" element={<Join />} />
         <Route path="/login" element={<Login />} />
         <Route path="/myPage" element={<MyPage />} />
