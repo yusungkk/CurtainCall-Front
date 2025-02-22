@@ -18,6 +18,7 @@ import InquiryDetail from "./pages/inquiry/InquiryDetail.jsx";
 import InquiryAdminList from "./pages/inquiry/InquiryAdminList.jsx";
 import InquiryAdminDetail from "./pages/inquiry/InquiryAdminDetail.jsx";
 import PaymentPage from "./pages/orders/PaymentPage.jsx";
+import OrderSuccess from "./pages/orders/OrderSuccess.jsx";
 
 import Admin from "./pages/users/Admin.jsx";
 import CategoryManagement from "./components/category/CategoryManagement.jsx";
@@ -31,21 +32,14 @@ function App() {
       <Routes>
         <Route path="/admin/products/new" element={<ProductRegistration />} />
         <Route path="/products" element={<ProductList />} />
-        <Route
-          path="/seat-selection/:productDetailId"
-          element={<BookingPage />}
-        />
+        <Route path="/seat-selection/:productDetailId" element={<BookingPage />} />
         <Route path="/admin/products/:id/edit" element={<ProductEditForm />} />
         <Route path={"/faqs"} element={<FaqList />}></Route>
-        <Route path={"/faqs"} element={<FaqList/>}></Route>
-        <Route path={"/admin/faqs/new"} element={<FaqAddForm/>}></Route>
-        <Route path={"/admin/faqs/:id"} element={<FaqEditForm/>}></Route>
-        <Route path={"/inquiries/new"} element={<CreateInquiryForm/>}/>
+        <Route path={"/inquiries/new"} element={<CreateInquiryForm />} />
         <Route path="/inquiries" element={<InquiryList />} />
         <Route path="/admin/inquiries" element={<InquiryAdminList />} />
         <Route path="/inquiries/:id" element={<InquiryDetail />} />
         <Route path="/admin/inquiries/:id" element={<InquiryAdminDetail />} />
-        <Route path="/admin/products" element={<ProductManagement />} />
         <Route path={"/admin/faqs/new"} element={<FaqAddForm />}></Route>
         <Route path={"/admin/faqs/:id"} element={<FaqEditForm />}></Route>
         <Route path="/admin/products" element={<ProductManagement />} />
@@ -56,6 +50,7 @@ function App() {
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/confirmation" element={<OrderSuccess />} />
         <Route path="/admin/category" element={<CategoryManagement />} />
         <Route path="/admin/specialProduct" element={<SpecialProductManagement />} />
       </Routes>

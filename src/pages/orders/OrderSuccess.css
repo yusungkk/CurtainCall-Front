@@ -1,0 +1,46 @@
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.success-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.success-main-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.success-main-top .order-label {
+    margin-right: 10px;
+}
+
+.success-main-body {
+    display: flex;
+}
+
+.success-main-body .poster-box {
+    width: 150px;
+    height: 200px;
+}
+
+.success-container .order-list-btn {
+    background: #800000;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 10px;
+}
