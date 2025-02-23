@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "/src/pages/orders/OrderSuccess.css";
 
 function OrderSuccess() {
   const location = useLocation();
   const { orderId } = location.state || { orderId: null };
+  const navigate = useNavigate();
   const [orderSuccess, setOrderSuccess] = useState({
-    orderNo: "",
+    orderNo: null,
     orderPrice: null,
-    productName: "",
+    productName: null,
     performanceDate: null,
     performanceTime: null,
     seats: [],
-    imageUrl: "",
+    imageUrl: null,
   });
 
   // 주문 성공 응답 받아오기
@@ -32,7 +33,7 @@ function OrderSuccess() {
             orderNo: data.orderNo,
             orderPrice: data.orderPrice,
             productName: data.productName,
-            performanceDate: data.performanceDate,
+            performanceDate: data.performanceDate.replace(/-/g, "."),
             performanceTime: data.performanceTime,
             seats: data.seats,
             imageUrl: data.imageUrl,
@@ -48,7 +49,9 @@ function OrderSuccess() {
     fetchOrderSuccess();
   }, []);
 
-  console.log(orderSuccess);
+  const handleOrderHistoryClick = () => {
+    navigate("/mypage?menu=orders");
+  };
 
   return (
     <div className="success-container">
@@ -73,14 +76,20 @@ function OrderSuccess() {
               <p className="info-text">{orderSuccess.productName}</p>
             </li>
             <li className="info-item">
+              <strong className="info-label">장소</strong>
+              <p className="info-text">{orderSuccess.productName}</p>
+            </li>
+            <li className="info-item">
               <strong className="info-label">공연시작</strong>
               <p className="info-text">
-                {orderSuccess.performanceDate.replace(/-/g, ".")} {orderSuccess.performanceTime}
+                {orderSuccess.performanceDate} {orderSuccess.performanceTime}
               </p>
             </li>
             <li className="info-item">
               <strong className="info-label">좌석</strong>
-              <p className="info-text">{orderSuccess.seats}</p>
+              <p className="info-text">
+                {orderSuccess.seats.length > 1 ? orderSuccess.seats.join(", ") : orderSuccess.seats}
+              </p>
             </li>
             <li className="info-item">
               <strong className="info-label">주문가격</strong>
@@ -91,9 +100,9 @@ function OrderSuccess() {
       </div>
 
       <div>
-        <Link to="/myPage">
-          <button className="order-list-btn">예매 목록</button>
-        </Link>
+        <button className="order-list-btn" onClick={handleOrderHistoryClick}>
+          예매 목록
+        </button>
       </div>
     </div>
   );
