@@ -24,7 +24,6 @@ import CategoryManagement from "./components/category/CategoryManagement.jsx";
 import NavigationBar from "./components/category/NavigationBar.jsx";
 import SpecialProductManagement from "./components/specialProduct/SpecialProductManagement.jsx";
 import Home from "./pages/Home.jsx";
-import SpecialProductDetail from "./components/productCommon/ SpecialProductDetail.jsx";
 
 function App() {
   return (
@@ -52,8 +51,6 @@ function App() {
         <Route path={"/admin/faqs/:id"} element={<FaqEditForm />}></Route>
         <Route path="/admin/products" element={<ProductManagement />} />
         <Route path="/products/:id" element={<ProductDetail />}></Route>
-        {/*연습용*/}
-        <Route path="/special-product/:id" element={<SpecialProductDetail />} />
 
         <Route path="/" element={<Home />} />
         <Route path="/join" element={<Join />} />

@@ -191,3 +191,23 @@
     cursor: pointer;
     width: 100%;
 }
+
+/* 가격 관련 스타일 */
+.original-price {
+    text-decoration: line-through;
+    margin-right: 8px;
+}
+
+.discount-price {
+    color: red;
+    font-weight: bold;
+}
+
+.discount-rate {
+    color: green !important;
+}
+/* 할인 기간 스타일 */
+.discount-label {
+    color: red;
+    font-weight: bold;
+}
