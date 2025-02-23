@@ -5,12 +5,12 @@ import "C:/Users/User/Desktop/curtainCall/backstage-front/src/pages/products/pro
 import  "./SpecialProductList.css";
 
 const SpecialProductList = () => {
-    const [products, setProducts] = useState([]);
+    const [specialProducts, setSpecialProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 5;
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchSpecialProducts = async () => {
             try {
                 const response = await fetch(ACTIVE_SPECIAL_PRODUCT_URL, {
                     headers: {
@@ -19,22 +19,22 @@ const SpecialProductList = () => {
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    setProducts(data);
+                    setSpecialProducts(data);
                 } else {
                     const errorData = await response.json();
-                    throw new Error(errorData.message || "Error fetching products");
+                    throw new Error(errorData.message || "Error fetching specialProducts");
                 }
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchProducts();
+        fetchSpecialProducts();
     }, []);
 
     // 페이지네이션 계산
-    const totalPages = Math.ceil(products.length / itemsPerPage);
-    const displayedProducts = products.slice(
+    const totalPages = Math.ceil(specialProducts.length / itemsPerPage);
+    const displayedProducts = specialProducts.slice(
         currentPage * itemsPerPage,
         (currentPage + 1) * itemsPerPage
     );
