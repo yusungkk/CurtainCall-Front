@@ -11,7 +11,7 @@ const BookingSummary = ({ selectedSeats }) => {
             {selectedSeats.length === 0 ? (
                 <p>선택된 좌석이 없습니다.</p>
             ) : (
-                <ul>
+                <ul className="seatUl">
                     {selectedSeats.map((seat, index) => (
                         <p key={index}>{seat}</p>  // 선택한 좌석을 화면에 출력
                     ))}
