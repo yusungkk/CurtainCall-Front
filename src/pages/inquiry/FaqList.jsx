@@ -69,9 +69,9 @@ function FaqList() {
         setOffset(0);
         setPageInfo({
             ...pageInfo,
-            totalPage: data.page.totalPages,
-            totalElements: data.page.totalElements,
-            size: data.page.totalElements === 0 ? 0 : data.content.length
+            totalPage: data.totalPages,
+            totalElements: data.totalElements,
+            size: data.totalElements === 0 ? 0 : data.content.length
         });
     }
 
@@ -83,9 +83,9 @@ function FaqList() {
             setOffset(prevState => prevState + 1);
             setPageInfo({
                 ...pageInfo,
-                totalPage: data.page.totalPages,
-                totalElements: data.page.totalElements,
-                size: data.page.totalElements === 0 ? 0 : data.content.length
+                totalPage: data.totalPages,
+                totalElements: data.totalElements,
+                size: data.totalElements === 0 ? 0 : data.content.length
             });
         };
         fetchFaqs();

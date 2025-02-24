@@ -1,18 +1,13 @@
 export const fetcher = async (endPoint, options = {}) => {
     try {
-        const token = localStorage.getItem("jwt");
-
         const headers = {
             "Content-Type": "application/json",
             ...options.headers,
         };
 
-        if (token) {
-            headers["Authorization"] = `Bearer ${token}`;
-        }
-
         const response = await fetch(endPoint, {
             headers: headers,
+            credentials: 'include',
             ...options,
         });
 
@@ -21,7 +16,8 @@ export const fetcher = async (endPoint, options = {}) => {
         }
 
         if (response.ok) {
-            return await response.json();
+            const data = await response.json().catch(() => null);
+            return data;
         }
 
         throw new Error(await response.json());

@@ -147,7 +147,7 @@ export default function InquiryDetail() {
                     <Typography
                         mt={2}
                         variant="body2" color="text.secondary">
-                        {inquiryData.reply ? inquiryData.reply.createAt.replace("T", " ").slice(0, 16) : "답변 대기 중"}
+                        {inquiryData.replyAt ? inquiryData.replyAt.replace("T", " ").slice(0, 16) : "답변 대기 중"}
                     </Typography>
                 </Box>
             </Box>

@@ -4,6 +4,7 @@ import { getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
 import UserList from "./UserList";
+
 import {
   Drawer,
   List,
@@ -14,6 +15,8 @@ import {
   Typography,
   Container
 } from "@mui/material";
+import CategoryManagement from "../../components/category/CategoryManagement.jsx";
+import SpecialProductManagement from "../../components/specialProduct/SpecialProductManagement.jsx";
 
 const MyPage = () => {
   const [selectedMenu, setSelectedMenu] = useState("info");
@@ -57,7 +60,9 @@ const MyPage = () => {
           {[
             { key: "info", label: "관리자 정보" },
             { key: "update", label: "관리자 정보 수정" },
-            { key: "manage", label: "회원 관리" }
+            { key: "manage", label: "회원 관리" },
+            { key: "category", label: "카테고리 관리" },
+            { key: "specialProduct", label: "특가상품 관리" }
           ].map((item) => (
             <ListItem key={item.key} disablePadding>
               <ListItemButton
@@ -76,6 +81,8 @@ const MyPage = () => {
         {selectedMenu === "info" && <Info user={user} />}
         {selectedMenu === "update" && <Update user={user} />}
         {selectedMenu === "manage" && <UserList />}
+        {selectedMenu === "category" && <CategoryManagement />}
+        {selectedMenu === "specialProduct" && <SpecialProductManagement />}
       </Container>
     </Box>
   );

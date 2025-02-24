@@ -1,3 +1,213 @@
-.react-calendar__tile abbr {
-    display: none;
+.product-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-main {
+    max-width: 64%;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0 0 20px;
+}
+
+.summary-top {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.summary-body {
+    display: flex;
+    padding-bottom: 65px;
+}
+
+.summary-body .poster-box {
+    width: 300px;
+    height: 400px;
+    flex-shrink: 0;
+}
+
+.poster-box img {
+    width: 100%;
+    height: 100%;
+}
+
+.info {
+    list-style: none;
+    margin-top: 4px;
+    margin-left: 25px;
+    padding-left: 0;
+}
+
+.info-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    padding-left: 25px;
+}
+
+.info-item:first-child {
+    margin-top: 0;
+}
+
+.info-label {
+    display: flex;
+    justify-content: flex-start;
+    font-weight: normal;
+    min-width: 100px;
+}
+
+.info-text {
+    margin: 0;
+}
+
+.product-main-body .casting-container {
+    padding-bottom: 65px;
+}
+
+.casting-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.casting-content {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0;
+}
+
+.notice-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.notice-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.product-side {
+    max-width: 29%;
+    margin-top: 40px;
+}
+
+.product-side .side-wrapper {
+    position: sticky;
+    top: 0;
+}
+
+.side-main {
+    background: #fff;
+    border-radius: 15px;
+    border: 1px solid #b6bdc7;
+}
+
+.product-side .container-top {
+    padding: 20px;
+    border-bottom: 1px solid #dadee3;
+}
+
+.product-side .side-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.container-top .side-title {
+    margin-bottom: 0;
+}
+
+.product-side .side-title {
+    font-size: 14px;
+}
+
+.side-calendar {
+    margin-bottom: 15px;
+}
+
+.product-side .container-bottom {
+    padding: 0 20px 20px;
+}
+
+.time-selection {
+    display: flex;
+    gap: 10px;
+}
+
+.time-btn {
+    width: 50%;
+    border: 1px solid #dadee3;
+    color: #666;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.time-btn.selected {
+    border: 1px solid #800000;
+    color: #800000;
+}
+
+.container-bottom .seat-remain {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.container-bottom .seat-remain .remain-title {
+    margin: 0;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.container-bottom .seat-remain .remain-value {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.side-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.side-btn button {
+    background: #800000;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* 가격 관련 스타일 */
+.original-price {
+    text-decoration: line-through;
+    margin-right: 8px;
+}
+
+.discount-price {
+    color: red;
+    font-weight: bold;
+}
+
+.discount-rate {
+    color: green !important;
+}
+/* 할인 기간 스타일 */
+.discount-label {
+    color: red;
+    font-weight: bold;
 }

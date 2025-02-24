@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
     AppBar,
     Toolbar,
-    Typography,
     TextField,
     Box,
     IconButton,
@@ -11,14 +10,31 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import useCategoryStore from "./useCategoryStore";
+import logo from "../../assets/img.png";
+import { getUserData } from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+    const navigate = useNavigate();
     const { categories, getCategories, loading } = useCategoryStore();
     const [searchText, setSearchText] = useState("");
+    const [user, setUser] = useState(null);
+    const [loadingUser, setLoadingUser] = useState(true);
 
     // 컴포넌트 마운트 시 카테고리 불러오기
     useEffect(() => {
         getCategories();
+        const fetchUserData = async () => {
+            try {
+                const userData = await getUserData(); // 로그인 여부 확인 로직 수정 예정
+                setUser(userData);
+            } catch (error) {
+                setUser(null);
+            } finally {
+                setLoadingUser(false);
+            }
+        };
+        fetchUserData();
     }, [getCategories]);
 
     const handleSearch = () => {
@@ -33,13 +49,12 @@ const NavigationBar = () => {
         <>
             {/* 상단: 로고, 사이트명 + 검색창, 로그인/회원가입/마이페이지 */}
             <AppBar position="static" color="inherit" sx={{ boxShadow: 0, p: 1 }}>
-                <Toolbar sx={{ justifyContent: "space-between" }}>
+                <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
-                    <Box display="flex" alignItems="center" gap={2}>
-                        <img src="/logo.png" alt="CurtainCall Logo" style={{ height: "40px" }} />
-                        <Typography variant="h6" color="primary">
-                            CurtainCall
-                        </Typography>
+                    <Box display="flex" alignItems="center" gap={2} sx={{ flex: 1 }}>
+                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }}
+                             onClick={() => navigate("/")} // 클릭 시 홈으로 이동
+                        />
                         {/* 검색창 */}
                         <TextField
                             variant="outlined"
@@ -47,7 +62,7 @@ const NavigationBar = () => {
                             placeholder="검색어 입력"
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
-                            sx={{ width: "200px" }}
+                            sx={{ width: "400px", height: "70px" }}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -62,24 +77,31 @@ const NavigationBar = () => {
 
                     {/* 오른쪽 영역 */}
                     <Box display="flex" gap={2}>
-                        <a
-                            href="/login"
-                            style={{ textDecoration: "none", color: "inherit", fontSize: "14px" }}
-                        >
-                            로그인
-                        </a>
-                        <a
-                            href="/signup"
-                            style={{ textDecoration: "none", color: "inherit", fontSize: "14px" }}
-                        >
-                            회원가입
-                        </a>
-                        <a
-                            href="/mypage"
-                            style={{ textDecoration: "none", color: "inherit", fontSize: "14px" }}
-                        >
-                            마이페이지
-                        </a>
+                        {loadingUser ? (
+                            <CircularProgress size={20} />
+                        ) : user ? (
+                            <a
+                                href="/myPage"
+                                style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                            >
+                                마이페이지
+                            </a>
+                        ) : (
+                            <>
+                                <a
+                                    href="/login"
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                                >
+                                    로그인
+                                </a>
+                                <a
+                                    href="/join"
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                                >
+                                    회원가입
+                                </a>
+                            </>
+                        )}
                     </Box>
                 </Toolbar>
             </AppBar>
