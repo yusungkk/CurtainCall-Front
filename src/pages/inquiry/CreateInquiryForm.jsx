@@ -1,15 +1,15 @@
 import {useState} from "react";
 import {Box, Typography} from "@mui/material";
-import InputText from "../../components/InputText.js";
-import SaveBtn from "../../components/SaveBtn.jsx";
+import InputText from "/src/components/InputText.js";
+import SaveBtn from "/src/components/SaveBtn.jsx";
 import Grid from "@mui/material/Grid2";
-import CancelBtn from "../../components/CancelBtn.jsx";
+import CancelBtn from "/src/components/CancelBtn.jsx";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {useNavigate} from "react-router-dom";
-import {createInquiry} from "../../api/faqApi.js";
+import {createInquiry} from "/src/api/faqApi.js";
 
 export default function CreateInquiryForm() {
 

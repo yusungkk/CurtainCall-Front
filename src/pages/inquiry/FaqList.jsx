@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {deleteFaq, getFaqs, getFaqsByType} from "../../api/faqApi.js";
+import {deleteFaq, getFaqs, getFaqsByType} from "/src/api/faqApi.js";
 import {
     Typography,
     List,
@@ -18,10 +18,12 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ChatIcon from '@mui/icons-material/Chat';
 import FaqCard from "../../components/inquiry/FaqCard.jsx";
+import {useToggle} from "../../components/chat/ToggleContext.jsx";
 
 
-function FaqList() {
+function FaqList({setActive}) {
 
+    const {setIsToggled} = useToggle();
     const defaultOffset = 0;
     const limit = 10;
     const faqTypes = [
@@ -144,6 +146,12 @@ function FaqList() {
     const handleInquiriesBtn = () => {
         navigate("/inquiries")
     }
+
+    const handleChatBtn = () => {
+        window.sessionStorage.setItem("toggleActive", "true");
+        setActive(true);
+        setIsToggled(true);
+    };
     return (
         <div style={{width: '100vw', maxWidth: '70%'}}>
             <Box sx={{
@@ -240,6 +248,7 @@ function FaqList() {
                     />
                     <FaqCard
                         icon={ChatIcon}
+                        onClick={handleChatBtn}
                         title="채팅상담하기"
                         description="실시간으로 채팅으로 문의하여 보세요."
                     />

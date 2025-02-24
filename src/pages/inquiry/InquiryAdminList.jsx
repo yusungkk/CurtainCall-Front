@@ -1,10 +1,10 @@
 import {Box, Divider, FormControl, InputLabel, List, MenuItem, Pagination, Select, Typography} from "@mui/material";
-import InputText from "../../components/InputText";
+import InputText from "/src/components/InputText";
 import {useEffect, useState} from "react";
 import SearchIcon from '@mui/icons-material/Search';
-import {getInquiriesByAdmin} from '../../api/faqApi';
+import {getInquiriesByAdmin} from '/src/api/faqApi';
 import {useNavigate} from "react-router-dom";
-import InquiryListItem from "../../components/inquiry/InquiryListItem.js";
+import InquiryListItem from "/src/components/inquiry/InquiryListItem.js";
 
 export default function InquiryAdminList() {
 

@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import {createReplyByAdmin, getInquiryByAdmin} from "../../api/faqApi.js"
+import {createReplyByAdmin, getInquiryByAdmin} from "/src/api/faqApi.js"
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, Button, Chip, Divider, Typography} from "@mui/material";
+import {Box, Chip, Divider, Typography} from "@mui/material";
 import {CheckCircleOutline} from "@mui/icons-material";
-import InputText from "../../components/InputText.js";
-import SaveBtn from "../../components/SaveBtn.jsx";
-import CancelBtn from "../../components/CancelBtn.jsx";
+import InputText from "/src/components/InputText.js";
+import SaveBtn from "/src/components/SaveBtn.jsx";
+import CancelBtn from "/src/components/CancelBtn.jsx";
 
 export default function InquiryAdminDetail() {
     const [inquiryData, setInquiryData] = useState({});
