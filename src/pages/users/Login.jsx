@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { login } from "../../api/userApi.js";
 import "../../styles/users/Login.css";
 import logo from "../../assets/img.png";
@@ -8,6 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -21,13 +22,14 @@ const Login = () => {
         alert("잘못된 이메일이나 비밀번호입니다.");
       } else {
         const { role } = response;
+        const { from } = location.state || { from: "/myPage" };
 
-        if(role === "ADMIN") {
+        if (role === "ADMIN") {
           alert("관리자로 로그인 성공.");
           navigate("/admin");
         } else {
           alert("로그인 성공!");
-          navigate("/myPage");
+          navigate(from, { replace: true });
         }
       }
     } catch (error) {

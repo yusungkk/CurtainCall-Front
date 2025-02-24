@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/orders/PaymentPage.css";
+import { getUserData } from "/src/api/userApi.js";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -13,11 +14,32 @@ const PaymentPage = () => {
   const [timeLeft, setTimeLeft] = useState(null); // 타이머 시작 전까지는 null
   const [isPaymentStarted, setIsPaymentStarted] = useState(false); // 결제 시작 여부
   const [orderId, setOrderId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     alert(
       "*** 주의: 결제하기 버튼을 누르신 후 5분 안에 결제가 완료되지 않으면 결제가 자동으로 취소되니 유의 바랍니다. ***\n(선택하신 좌석도 해제됩니다.)"
     );
+
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserData();
+        console.log(response);
+
+        if (!response) {
+          alert("로그인이 필요합니다.");
+          navigate("/login");
+        } else {
+          setUserId(response.id);
+        }
+      } catch (error) {
+        console.error("사용자 정보 요청 중 오류 발생:", error);
+        alert("사용자 정보를 가져오는데 실패했습니다.");
+        navigate("/login");
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   useEffect(() => {
@@ -65,7 +87,7 @@ const PaymentPage = () => {
 
     // 초기 주문은 PENDING 상태로 생성
     const orderData = {
-      userId: 1, // 임시 userId
+      userId: userId,
       productDetailId: Number(productDetailId),
       price: selectedSeats.length * product.price,
       selectedSeats,

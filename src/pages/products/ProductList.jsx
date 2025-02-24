@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PRODUCT_URL, RECOMMEND_URL } from "../../utils/endpoint";
-import "./ProductList.css";
+import { PRODUCT_URL, RECOMMEND_URL } from "/src/utils/endpoint";
+import "/src/pages/products/ProductList.css";
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -95,9 +95,7 @@ const ProductList = () => {
                                 className="product-image"
                             />
 
-                            <h3 className="product-title">
-                                {product.productName}
-                            </h3>
+                            <h3 className="product-title">{product.productName}</h3>
 
                             <p className="product-place">{product.place}</p>
 
