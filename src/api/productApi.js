@@ -1,5 +1,5 @@
-import { fetcher } from "../utils/fetcher";
-import { PRODUCT_URL, DELETE_PRODUCT_URL } from "../utils/endpoint";
+import { fetcher } from "/src/utils/fetcher";
+import { PRODUCT_URL, DELETE_PRODUCT_URL } from "/src/utils/endpoint";
 
 export const getProduct = async (id) => {
     const URL = `${PRODUCT_URL}/${id}`;
