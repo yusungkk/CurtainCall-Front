@@ -43,6 +43,11 @@ const UserList = () => {
     fetchUsers();
   }, [page, searchKeyword]);
 
+  const handleSearchChange = (e) => {
+    setSearchKeyword(e.target.value);
+    setPage(1);
+  };
+
   const handleToggleActivation = async (user) => {
     const confirmMessage = user.active
       ? "이 유저를 비활성화하시겠습니까?"
@@ -89,7 +94,7 @@ const UserList = () => {
         variant="outlined"
         fullWidth
         value={searchKeyword}
-        onChange={(e) => setSearchKeyword(e.target.value)}
+        onChange={handleSearchChange}
         sx={{ mb: 2, maxWidth: 800, margin: "0 auto" }}
         InputProps={{
           endAdornment: (
