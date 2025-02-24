@@ -12,7 +12,7 @@ export default function AdminChatRoom() {
     useEffect(() => {
         const fetchRooms = async () => {
             try {
-                const rooms = await getAllChatRooms();
+                const rooms = await getAllRoomsWithoutAdmin();
                 console.log(rooms);
                 setChatRooms(rooms);
             } catch (error) {

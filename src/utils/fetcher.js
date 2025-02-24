@@ -11,7 +11,7 @@ export const fetcher = async (endPoint, options = {}) => {
             ...options,
         });
 
-        if (response.status === 201 || response.status === 204 || response.status === 401) {
+        if (response.status === 201 || response.status === 204 || response.status === 401 || response.status === 403) {
             return response.status;
         }
 
