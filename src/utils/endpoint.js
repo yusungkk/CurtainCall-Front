@@ -28,6 +28,7 @@ export const PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products`;
 export const CREATE_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products/new`;
 export const UPDATE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
 export const DELETE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
+export const RECOMMEND_URL = "http://localhost:8080/api/recommend";
 
 //==유저 관련 API URL==//
 export const USER_JOIN_URL = `${BASIC_URL}${API_VERSION_V1}/users`;

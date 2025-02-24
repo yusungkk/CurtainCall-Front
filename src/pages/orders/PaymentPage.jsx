@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/orders/PaymentPage.css";
+import { getUserData } from "/src/api/userApi.js";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -13,11 +14,32 @@ const PaymentPage = () => {
   const [timeLeft, setTimeLeft] = useState(null); // 타이머 시작 전까지는 null
   const [isPaymentStarted, setIsPaymentStarted] = useState(false); // 결제 시작 여부
   const [orderId, setOrderId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     alert(
       "*** 주의: 결제하기 버튼을 누르신 후 5분 안에 결제가 완료되지 않으면 결제가 자동으로 취소되니 유의 바랍니다. ***\n(선택하신 좌석도 해제됩니다.)"
     );
+
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserData();
+        console.log(response);
+
+        if (!response) {
+          alert("로그인이 필요합니다.");
+          navigate("/login");
+        } else {
+          setUserId(response.id);
+        }
+      } catch (error) {
+        console.error("사용자 정보 요청 중 오류 발생:", error);
+        alert("사용자 정보를 가져오는데 실패했습니다.");
+        navigate("/login");
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   useEffect(() => {
@@ -65,7 +87,7 @@ const PaymentPage = () => {
 
     // 초기 주문은 PENDING 상태로 생성
     const orderData = {
-      userId: 1, // 임시 userId
+      userId: userId,
       productDetailId: Number(productDetailId),
       price: selectedSeats.length * product.price,
       selectedSeats,
@@ -169,69 +191,79 @@ const PaymentPage = () => {
     navigate(`/seat-selection/${productDetailId}`, { state: { productDetailId } });
   };
 
-  return (
-    <div className="payment-page">
-      <h2>🎟 예매</h2>
-      <div className="product-info">
-        {product ? (
-          <>
-            <img src={product.productImageUrl} alt={product.productName} />
-            <table>
-              <tbody>
-                <tr>
-                  <td>제목</td>
-                  <td>{product.productName}</td>
-                </tr>
-                <tr>
-                  <td>장소</td>
-                  <td>{product.place}</td>
-                </tr>
-                <tr>
-                  <td>날짜</td>
-                  <td>{productDetail.performanceDate}</td>
-                </tr>
-                <tr>
-                  <td>시간</td>
-                  <td>{productDetail.time}</td>
-                </tr>
-                <tr>
-                  <td>좌석</td>
-                  <td>
-                    {selectedSeats.length > 0 ? selectedSeats.join(", ") : "선택된 좌석 없음"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>가격</td>
-                  <td>{selectedSeats.length * product.price}원</td>
-                </tr>
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <p>상품 정보를 불러오는 중...</p>
-        )}
-      </div>
 
-      <label>결제 방법 선택</label>
-      <select
-        className="payment-method"
-        value={paymentMethod}
-        onChange={(e) => setPaymentMethod(e.target.value)}
-      >
-        <option value="card">신용카드</option>
-        <option value="kakaopay">카카오페이</option>
-        <option value="naverpay">네이버페이</option>
-      </select>
+    return (
+        <div className="payment-page">
+            <h2>🎟 예매</h2>
+            <div className="payment-product-info">
+                {product ? (
+                    <>
+                        <img
+                            className="payment-product-image"
+                            src={product.productImageUrl}
+                            alt={product.productName}
+                        />
+                        <table className="payment-info-table">
+                            <tbody>
+                            <tr>
+                                <td className="payment-info-title">제목</td>
+                                <td>{product.productName}</td>
+                            </tr>
+                            <tr>
+                                <td className="payment-info-title">장소</td>
+                                <td>{product.place}</td>
+                            </tr>
+                            <tr>
+                                <td className="payment-info-title">날짜</td>
+                                <td>{productDetail.performanceDate}</td>
+                            </tr>
+                            <tr>
+                                <td className="payment-info-title">시간</td>
+                                <td>{productDetail.time}</td>
+                            </tr>
+                            <tr>
+                                <td className="payment-info-title">좌석</td>
+                                <td>
+                                    {selectedSeats.length > 0
+                                        ? selectedSeats.join(", ")
+                                        : "선택된 좌석 없음"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="payment-info-title">가격</td>
+                                <td>{selectedSeats.length * product.price}원</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </>
+                ) : (
+                    <p>상품 정보를 불러오는 중...</p>
+                )}
+            </div>
 
-      {isPaymentStarted && (
-        <p>
-          남은 결제 시간: {Math.floor(timeLeft / 60)}분 {timeLeft % 60}초
-        </p>
-      )}
+            <label className="payment-label">결제 방법 선택</label>
+            <select
+                className="payment-method-select"
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+            >
+                <option value="card">신용카드</option>
+                <option value="kakaopay">카카오페이</option>
+                <option value="naverpay">네이버페이</option>
+            </select>
 
-      <button onClick={handlePayment}>결제하기</button>
-    </div>
-  );
+            {isPaymentStarted && (
+                <p className="payment-timer">
+                    남은 결제 시간: {Math.floor(timeLeft / 60)}분 {timeLeft % 60}초
+                </p>
+            )}
+
+            <button className="payment-submit-button" onClick={handlePayment}>
+                결제하기
+            </button>
+        </div>
+    );
+
 };
 
 export default PaymentPage;
