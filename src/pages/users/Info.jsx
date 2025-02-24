@@ -35,7 +35,6 @@ const Info = ({ user }) => {
       <Box
         sx={{
           p: 8,
-          bgcolor: "white",
           boxShadow: 2,
           borderRadius: 5,
           textAlign: "center",
