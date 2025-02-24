@@ -64,7 +64,7 @@ const NavigationBar = () => {
     return (
         <>
             {/* 상단: 로고, 사이트명 + 검색창, 로그인/회원가입/마이페이지 */}
-            <AppBar position="static" color="inherit" sx={{ boxShadow: 0, p: 1 }}>
+            <AppBar position="static" color="inherit" sx={{ boxShadow: 0, p: 1, mb: 5 }}>
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
@@ -78,7 +78,7 @@ const NavigationBar = () => {
                             placeholder="검색어 입력"
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
-                            sx={{ width: "400px", height: "80px" }}
+                            sx={{ width: "400px" }}
                             InputProps={{
                                 sx: {
                                     height: "50px",

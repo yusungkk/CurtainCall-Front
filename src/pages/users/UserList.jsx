@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserList, activate, deactivate } from "../../api/userApi.js";
+import { getUserList, activate, deactivate, searchUsers } from "../../api/userApi.js";
 import {
   Container,
   CircularProgress,
@@ -13,18 +13,24 @@ import {
   TableRow,
   Paper,
   Typography,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await getUserList(page - 1, 10);
+        const response = searchKeyword
+          ? await searchUsers(searchKeyword, page - 1, 10)
+          : await getUserList(page - 1, 10);
         setUsers(response.content);
         setTotalPages(response.totalPages);
       } catch (error) {
@@ -35,7 +41,7 @@ const UserList = () => {
     };
 
     fetchUsers();
-  }, [page]);
+  }, [page, searchKeyword]);
 
   const handleToggleActivation = async (user) => {
     const confirmMessage = user.active
@@ -76,8 +82,26 @@ const UserList = () => {
   }
 
   return (
-    <Container sx={{ mt: 2, pb: 6 }}>
-      <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "0 auto" }}>
+    <Container sx={{ mt: 2, pb: 6, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      {/* 검색 창 */}
+      <TextField
+        placeholder="이름 또는 이메일로 검색"
+        variant="outlined"
+        fullWidth
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        sx={{ mb: 2, maxWidth: 800, margin: "0 auto" }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      {/* 유저 리스트 */}
+      <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "0 auto", mt: 4 }}>
         <Table>
           <TableHead>
             <TableRow>

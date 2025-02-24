@@ -1,6 +1,6 @@
 import { fetcher } from "../utils/fetcher.js";
 import { CHECK_EMAIL_URL, USER_JOIN_URL, USER_LOGIN_URL, USER_PAGE_URL, USER_UPDATE_URL, GET_USER_LIST_URL, USER_LOGOUT_URL,
- USER_ACTIVATE_URL, USER_DEACTIVATE_URL } from "../utils/endpoint.js";
+ USER_ACTIVATE_URL, USER_DEACTIVATE_URL, GET_SEARCH_USER_URL } from "../utils/endpoint.js";
 
 export const checkEmailDuplicate = async (email) => {
     return await fetcher(CHECK_EMAIL_URL(email));
@@ -54,5 +54,11 @@ export const activate = async (id) => {
 export const deactivate = async (id) => {
     return await fetcher(USER_DEACTIVATE_URL(id), {
         method: "PATCH",
+    });
+};
+
+export const searchUsers = async (searchKeyword, page, size) => {
+    return await fetcher(GET_SEARCH_USER_URL(searchKeyword, page, size), {
+        method: "GET",
     });
 };
