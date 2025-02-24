@@ -31,6 +31,7 @@ import ChatWindow from "./components/chat/ChatWindow.jsx";
 import {useToggleActive} from "./hooks/UseToggleActive.jsx";
 import AdminChatWindow from "./components/chat/AdminChatWindow.jsx";
 import UseUserRole from "./hooks/UseUserRole.jsx";
+import Home from "./pages/Home.jsx";
 
 function App() {
     const [active, setActive] = useToggleActive();

@@ -1,8 +1,8 @@
-import { fetcher } from "../utils/fetcher.js";
+import {fetcher} from "../utils/fetcher.js";
 
 import {
     CHECK_EMAIL_URL, USER_JOIN_URL, USER_LOGIN_URL, USER_PAGE_URL, USER_UPDATE_URL, GET_USER_LIST_URL, USER_LOGOUT_URL,
-    USER_ACTIVATE_URL, USER_DEACTIVATE_URL, CHECK_ADMIN_URL
+    USER_ACTIVATE_URL, USER_DEACTIVATE_URL, CHECK_ADMIN_URL, GET_SEARCH_USER_URL
 } from "../utils/endpoint.js";
 
 export const checkEmailDuplicate = async (email) => {
@@ -62,10 +62,10 @@ export const deactivate = async (id) => {
 
 export const getUserRole = async () => {
     return await fetcher(CHECK_ADMIN_URL);
+};
 
 export const searchUsers = async (searchKeyword, page, size) => {
     return await fetcher(GET_SEARCH_USER_URL(searchKeyword, page, size), {
         method: "GET",
-    });
-
+    })
 };
