@@ -143,8 +143,15 @@ const UserList = () => {
         count={totalPages}
         page={page}
         onChange={(event, value) => setPage(value)}
-        sx={{ mt: 5, display: "flex", justifyContent: "center" }}
-        color="primary"
+        sx={{
+            mt: 5,
+            display: "flex",
+            justifyContent: "center",
+            "& .Mui-selected": {
+              backgroundColor: "#800000",
+              color: "#fff",
+            },
+          }}
       />
     </Container>
   );

@@ -25,9 +25,10 @@ const Login = () => {
         if(role === "ADMIN") {
           alert("관리자로 로그인 성공.");
           navigate("/admin");
+          window.location.reload();
         } else {
-          alert("로그인 성공!");
           navigate("/myPage");
+          window.location.reload();
         }
       }
     } catch (error) {
