@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProduct } from "../../api/productApi";
+import { getUserData } from "/src/api/userApi.js";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "./ProductDetail.css";
@@ -8,6 +9,7 @@ import "./CustomCalendar.css";
 
 function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [productName, setProductName] = useState();
   const [place, setPlace] = useState();
@@ -25,14 +27,13 @@ function ProductDetail() {
   const [discountStartDate, setDiscountStartDate] = useState();
   const [discountEndDate, setDiscountEndDate] = useState();
 
-
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedProductDetailId, setSelectedProductDetailId] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       const data = await getProduct(id);
-      console.log("상품 데이터:", data);  // 👉 여기서 확인
+      console.log("상품 데이터:", data); // 👉 여기서 확인
 
       setProductName(data.productName);
       setPlace(data.place);
@@ -64,11 +65,25 @@ function ProductDetail() {
     setRemain(remain);
   };
 
-  const handleValid = (e) => {
-    if (selectedProductDetailId === null) {
-      e.preventDefault();
-      alert("관람 시간을 선택해주세요!");
+  const handleValid = async (e) => {
+    try {
+      const response = await getUserData();
+
+      if (!response) {
+        navigate("/login", { state: { from: `/products/${id}` } });
+        return;
+      }
+    } catch (error) {
+      console.error("사용자 정보 요청 중 오류 발생:", error);
+      return;
     }
+
+    if (selectedProductDetailId === null) {
+      alert("관람 시간을 선택해주세요!");
+      return;
+    }
+
+    navigate(`/seat-selection/${selectedProductDetailId}`);
   };
 
   // 선택한 날짜의 상품 상세
@@ -132,31 +147,26 @@ function ProductDetail() {
                 <li className="info-item">
                   <strong className="info-label">가격</strong>
                   {discountRate > 0 ? (
-                      <div className="info-text">
-                        <span className="original-price">
-                          {price.toLocaleString("ko-KR")}원
-                        </span>
-                        <span className="discount-price">
-                          {Math.round(price * (1 - discountRate / 100)).toLocaleString("ko-KR")}원
-                        </span>
-                        <span className="discount-rate">
-                          ({discountRate}% 할인)
-                        </span>
-                      </div>
+                    <div className="info-text">
+                      <span className="original-price">{price.toLocaleString("ko-KR")}원</span>
+                      <span className="discount-price">
+                        {Math.round(price * (1 - discountRate / 100)).toLocaleString("ko-KR")}원
+                      </span>
+                      <span className="discount-rate">({discountRate}% 할인)</span>
+                    </div>
                   ) : (
-                      <p className="info-text">{price.toLocaleString("ko-KR")}원</p>
+                    <p className="info-text">{price.toLocaleString("ko-KR")}원</p>
                   )}
                 </li>
                 {discountRate > 0 && (
-                    <li className="info-item">
-                      <strong className="info-label discount-label">할인기간</strong>
-                      <p className="info-text discount-period">
-                        {format(new Date(discountStartDate), "yyyy-MM-dd")} ~ {format(new Date(discountEndDate), "yyyy-MM-dd")}
-                      </p>
-                    </li>
+                  <li className="info-item">
+                    <strong className="info-label discount-label">할인기간</strong>
+                    <p className="info-text discount-period">
+                      {format(new Date(discountStartDate), "yyyy-MM-dd")} ~{" "}
+                      {format(new Date(discountEndDate), "yyyy-MM-dd")}
+                    </p>
+                  </li>
                 )}
-
-
               </ul>
             </div>
           </div>
@@ -228,11 +238,9 @@ function ProductDetail() {
             </div>
           </div>
 
-          <Link to={`/seat-selection/${selectedProductDetailId}`}>
-            <div className="side-btn">
-              <button onClick={handleValid}>예매하기</button>
-            </div>
-          </Link>
+          <div className="side-btn">
+            <button onClick={handleValid}>예매하기</button>
+          </div>
         </div>
       </div>
     </div>
