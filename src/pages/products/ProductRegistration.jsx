@@ -424,7 +424,7 @@ const ProductRegistration = () => {
                         </Grid>
                         <Grid size={6}>
                             <CancelBtn
-                                onClick={() => navigate("/admin/products")}
+                                onClick={() => navigate("/admin?menu=product")}
                                 viewName={"취소"}
                             />
                         </Grid>
