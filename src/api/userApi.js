@@ -33,8 +33,8 @@ export const updateUser = async (updateData) => {
     });
 };
 
-export const getUserList = async () => {
-    return await fetcher(GET_USER_LIST_URL, {
+export const getUserList = async (page, size) => {
+    return await fetcher(GET_USER_LIST_URL(page, size), {
         method: "GET",
     });
 };
