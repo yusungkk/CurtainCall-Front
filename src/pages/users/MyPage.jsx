@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/userApi.js";
-import Info from "./Info";
 import Update from "./Update";
 import OrderList from "/src/pages/users/OrderList";
 import {
-  Drawer,
+  Box,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
-  Box,
   Typography,
   Container,
-  Paper,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
 
 const MyPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const initMenu = queryParams.get("menu") || "info"; // 예매 성공 후 접근 시
+  const initMenu = queryParams.get("menu") || "orders"; // 예매 성공 후 접근 시
   const [selectedMenu, setSelectedMenu] = useState(initMenu);
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
@@ -80,45 +79,53 @@ const MyPage = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      {/* 왼쪽 네비게이션 바 */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" },
-        }}
-      >
-        <Box sx={{ textAlign: "center", p: 2 }}>
-          <Typography variant="h6">마이페이지</Typography>
-        </Box>
-        <List>
-          {[
-            { key: "info", label: "내 정보" },
-            { key: "update", label: "회원 정보 수정" },
-            { key: "orders", label: "예매 내역" },
-          ].map((item) => (
-            <ListItem key={item.key} disablePadding>
-              <ListItemButton
-                selected={selectedMenu === item.key}
-                onClick={() => handleMenuClick(item.key)}
-              >
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+    <Box sx={{ display: "flex", height: "100vh", flexDirection: "column" }}>
+      {/* 상단 내비게이션 바 */}
+      <AppBar position="sticky" sx={{ backgroundColor: "#800000", borderRadius: 2 }}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            마이페이지
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-      {/* 오른쪽 메인 컨텐츠 */}
-      <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
-        {selectedMenu === "info" && <Info user={user} />}
-        {selectedMenu === "update" && <Update user={user} />}
-        {selectedMenu === "orders" && (
-          <OrderList user={user} orders={orders} updateOrders={updateOrders} />
-        )}
-      </Container>
+      <Box sx={{ display: "flex", flexGrow: 1 }}>
+        {/* 왼쪽 내비게이션 바 */}
+        <Box
+          sx={{
+            width: 240,
+            height: "50vh",
+            top: 64,
+            position: "sticky",
+            borderRadius: 2,
+            backgroundColor: "#f4f4f4",
+            p: 2,
+            boxShadow: 2,
+          }}
+        >
+          <List>
+            {[
+                { key: "orders", label: "예매 내역" },
+                { key: "update", label: "회원 정보 수정" },
+             ].map((item) => (
+                <ListItem key={item.key} disablePadding>
+                  <ListItemButton
+                    selected={selectedMenu === item.key}
+                    onClick={() => handleMenuClick(item.key)}
+                  >
+                    <ListItemText primary={item.label} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+          </List>
+        </Box>
+
+        {/* 오른쪽 메인 컨텐츠 */}
+        <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
+          {selectedMenu === "update" && <Update user={user} />}
+          {selectedMenu === "orders" && <OrderList user={user} orders={orders} updateOrders={updateOrders} />}
+        </Container>
+      </Box>
     </Box>
   );
 };
