@@ -14,12 +14,17 @@ function ProductDetail() {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [runningTime, setRunningTime] = useState();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [productDetails, setProductDetails] = useState([]);
   const [casting, setCasting] = useState();
   const [formattedNotice, setFormattedNtice] = useState();
   const [remain, setRemain] = useState();
   const [imageUrl, setImageUrl] = useState();
+  // specialProduct 정보 추가
+  const [discountRate, setDiscountRate] = useState(0);
+  const [discountStartDate, setDiscountStartDate] = useState();
+  const [discountEndDate, setDiscountEndDate] = useState();
+
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedProductDetailId, setSelectedProductDetailId] = useState(null);
@@ -27,6 +32,7 @@ function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       const data = await getProduct(id);
+      console.log("상품 데이터:", data);  // 👉 여기서 확인
 
       setProductName(data.productName);
       setPlace(data.place);
@@ -44,6 +50,10 @@ function ProductDetail() {
           )
       );
       setImageUrl(data.productImageUrl);
+      // specialProduct 정보 추가
+      setDiscountRate(data.discountRate);
+      setDiscountStartDate(data.discountStartDate);
+      setDiscountEndDate(data.discountEndDate);
     };
 
     fetchProduct();
@@ -121,8 +131,32 @@ function ProductDetail() {
                 </li>
                 <li className="info-item">
                   <strong className="info-label">가격</strong>
-                  <p className="info-text">{price}</p>
+                  {discountRate > 0 ? (
+                      <div className="info-text">
+                        <span className="original-price">
+                          {price.toLocaleString("ko-KR")}원
+                        </span>
+                        <span className="discount-price">
+                          {Math.round(price * (1 - discountRate / 100)).toLocaleString("ko-KR")}원
+                        </span>
+                        <span className="discount-rate">
+                          ({discountRate}% 할인)
+                        </span>
+                      </div>
+                  ) : (
+                      <p className="info-text">{price.toLocaleString("ko-KR")}원</p>
+                  )}
                 </li>
+                {discountRate > 0 && (
+                    <li className="info-item">
+                      <strong className="info-label discount-label">할인기간</strong>
+                      <p className="info-text discount-period">
+                        {format(new Date(discountStartDate), "yyyy-MM-dd")} ~ {format(new Date(discountEndDate), "yyyy-MM-dd")}
+                      </p>
+                    </li>
+                )}
+
+
               </ul>
             </div>
           </div>

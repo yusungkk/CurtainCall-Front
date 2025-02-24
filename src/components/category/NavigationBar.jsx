@@ -12,8 +12,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import useCategoryStore from "./useCategoryStore";
 import logo from "../../assets/img.png";
 import { getUserData } from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+    const navigate = useNavigate();
     const { categories, getCategories, loading } = useCategoryStore();
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
@@ -50,7 +52,9 @@ const NavigationBar = () => {
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={2} sx={{ flex: 1 }}>
-                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }} />
+                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }}
+                             onClick={() => navigate("/")} // 클릭 시 홈으로 이동
+                        />
                         {/* 검색창 */}
                         <TextField
                             variant="outlined"
