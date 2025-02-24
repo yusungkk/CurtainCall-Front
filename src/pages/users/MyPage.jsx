@@ -54,12 +54,12 @@ const MyPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: user.email,
+          body: JSON.stringify({ email: user.email }),
         });
 
         if (response.ok) {
           const data = await response.json();
-          setOrders(data);
+          updateOrders(data);
         } else {
           throw new Error(await response.json());
         }
@@ -69,7 +69,11 @@ const MyPage = () => {
     if (selectedMenu === "orders") {
       fetchOrderHistory();
     }
-  }, [selectedMenu]);
+  }, [user, selectedMenu]);
+
+  const updateOrders = (orders) => {
+    setOrders(orders);
+  };
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -111,7 +115,9 @@ const MyPage = () => {
       <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
         {selectedMenu === "info" && <Info user={user} />}
         {selectedMenu === "update" && <Update user={user} />}
-        {selectedMenu === "orders" && <OrderList user={user} orders={orders} />}
+        {selectedMenu === "orders" && (
+          <OrderList user={user} orders={orders} updateOrders={updateOrders} />
+        )}
       </Container>
     </Box>
   );
