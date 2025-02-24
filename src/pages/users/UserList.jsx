@@ -148,7 +148,7 @@ const UserList = () => {
             display: "flex",
             justifyContent: "center",
             "& .Mui-selected": {
-              backgroundColor: "#800000",
+              backgroundColor: "#800000 !important",
               color: "#fff",
             },
           }}
