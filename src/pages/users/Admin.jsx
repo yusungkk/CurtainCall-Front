@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/userApi.js";
-import Info from "./Info";
 import Update from "./Update";
 import UserList from "./UserList";
+
 import {
-  Drawer,
+  Box,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
-  Box,
   Typography,
-  Container
+  Container,
+  AppBar,
+  Toolbar
 } from "@mui/material";
+import CategoryManagement from "../../components/category/CategoryManagement.jsx";
+import SpecialProductManagement from "../../components/specialProduct/SpecialProductManagement.jsx";
 
 const MyPage = () => {
-  const [selectedMenu, setSelectedMenu] = useState("info");
+  const [selectedMenu, setSelectedMenu] = useState("update");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -40,43 +43,57 @@ const MyPage = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      {/* 왼쪽 네비게이션 바 */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" }
-        }}
-      >
-        <Box sx={{ textAlign: "center", p: 2 }}>
-          <Typography variant="h6">관리자 페이지</Typography>
-        </Box>
-        <List>
-          {[
-            { key: "info", label: "관리자 정보" },
-            { key: "update", label: "관리자 정보 수정" },
-            { key: "manage", label: "회원 관리" }
-          ].map((item) => (
-            <ListItem key={item.key} disablePadding>
-              <ListItemButton
-                selected={selectedMenu === item.key}
-                onClick={() => handleMenuClick(item.key)}
-              >
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+    <Box sx={{ display: "flex", height: "100vh", width: "80vw", flexDirection: "column" }}>
+      {/* 상단 내비게이션 바 */}
+      <AppBar position="sticky" sx={{ backgroundColor: "#800000", borderRadius: 2 }}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            관리자 페이지
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-      {/* 오른쪽 메인 컨텐츠 */}
-      <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
-        {selectedMenu === "info" && <Info user={user} />}
-        {selectedMenu === "update" && <Update user={user} />}
-        {selectedMenu === "manage" && <UserList />}
-      </Container>
+      <Box sx={{ display: "flex", flexGrow: 1 }}>
+        {/* 왼쪽 내비게이션 바 */}
+        <Box
+          sx={{
+            width: 240,
+            height: "50vh",
+            top: 64,
+            position: "sticky",
+            borderRadius: 2,
+            backgroundColor: "#f4f4f4",
+            p: 2,
+            boxShadow: 2,
+          }}
+        >
+          <List>
+            {[
+              { key: "update", label: "관리자 정보 수정" },
+              { key: "manage", label: "회원 관리" },
+              { key: "category", label: "카테고리 관리" },
+              { key: "specialProduct", label: "특가상품 관리" }
+            ].map((item) => (
+              <ListItem key={item.key} disablePadding>
+                <ListItemButton
+                  selected={selectedMenu === item.key}
+                  onClick={() => handleMenuClick(item.key)}
+                >
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
+        {/* 오른쪽 메인 컨텐츠 */}
+        <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
+          {selectedMenu === "update" && <Update user={user} />}
+          {selectedMenu === "manage" && <UserList />}
+          {selectedMenu === "category" && <CategoryManagement />}
+          {selectedMenu === "specialProduct" && <SpecialProductManagement />}
+        </Container>
+      </Box>
     </Box>
   );
 };

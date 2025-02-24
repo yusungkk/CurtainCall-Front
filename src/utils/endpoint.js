@@ -31,14 +31,26 @@ export const PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products`;
 export const CREATE_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products/new`;
 export const UPDATE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
 export const DELETE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
+export const RECOMMEND_URL = "http://localhost:8080/api/recommend";
 
+//==유저 관련 API URL==//
 export const USER_JOIN_URL = `${BASIC_URL}${API_VERSION_V1}/users`;
 export const CHECK_EMAIL_URL = (email) => `${BASIC_URL}${API_VERSION_V1}/users/check-email?email=${email}`;
 export const USER_LOGIN_URL = `${BASIC_URL}${API_VERSION_V1}/users/login`;
 export const USER_PAGE_URL = `${BASIC_URL}${API_VERSION_V1}/users/myPage`;
 export const USER_UPDATE_URL = `${BASIC_URL}${API_VERSION_V1}/users/update`;
-export const GET_USER_LIST_URL = `${BASIC_URL}${API_VERSION_V1}/users`;
+export const GET_USER_LIST_URL = (page, size) => `${BASIC_URL}${API_VERSION_V1}/users?page=${page}&size=${size}`;
 export const USER_LOGOUT_URL = `${BASIC_URL}${API_VERSION_V1}/users/logout`;
 export const USER_ACTIVATE_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/users/${id}/activate`;
 export const USER_DEACTIVATE_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/users/${id}/deactivate`;
+
 export const CHECK_ADMIN_URL = `${BASIC_URL}${API_VERSION_V1}/users/role`
+
+export const GET_SEARCH_USER_URL = (keyword, page, size) => `${BASIC_URL}${API_VERSION_V1}/users/search?keyword=${keyword}&page=${page}&size=${size}`;
+
+//special-product
+export const SPECIAL_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/special-product`;
+
+
+//홈화면
+export const ACTIVE_SPECIAL_PRODUCT_URL =`${BASIC_URL}${API_VERSION_V1}/specialProduct/active`;

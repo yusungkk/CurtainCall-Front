@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../api/userApi.js";
 import {
-  Container, Box, TextField, Button, Typography
+  Container, Box, TextField, Button
 } from "@mui/material";
 
 const UpdateUser = ({ user }) => {
@@ -99,7 +99,7 @@ const UpdateUser = ({ user }) => {
   return (
     <Container
       maxWidth="xs"
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh", justifyContent: "center" }}
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 3 }}
     >
       <Box
         sx={{
@@ -111,10 +111,6 @@ const UpdateUser = ({ user }) => {
           width: "100%",
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          회원정보 수정
-        </Typography>
-
         <TextField
           label="이메일"
           type="email"
@@ -122,7 +118,7 @@ const UpdateUser = ({ user }) => {
           margin="dense"
           value={formData.email}
           disabled
-          sx={{ width: "400px", mt: 4 }}
+          sx={{ width: "400px", mt: 2 }}
           InputProps={{
             sx: {
               borderRadius: 2,

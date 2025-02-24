@@ -1,0 +1,53 @@
+/* 할인 상품 제목 */
+.discount-title {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.product-place{
+    font-weight: bold;
+}
+.product-discount {
+    font-size: 1.25em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 가로 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    gap: 0.5em; /* 할인율과 할인가 사이 간격 추가 (8px → 0.5em) */
+    width: 100%; /* 부모 요소의 전체 너비 사용 */
+}
+
+
+.discount-rate {
+    color: red;
+    font-size: 1.25em;
+}
+
+.discount-price {
+    font-size: 1.25em;
+}
+
+/* 상품 제목 */
+.product-title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+/* 링크 안의 텍스트 색상 변경 */
+a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 기본 링크 색상 */
+}
+
+/* 방문한 링크 색상도 검정색 유지 */
+a:visited {
+    color: black;
+}
+
+/* 호버(마우스 오버) 시 색상 유지 */
+a:hover {
+    color: black;
+}

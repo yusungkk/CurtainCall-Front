@@ -11,9 +11,11 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import useCategoryStore from "./useCategoryStore";
 import logo from "../../assets/img.png";
-import { getUserData } from "../../api/userApi";
+import { getUserData, logout } from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+    const navigate = useNavigate();
     const { categories, getCategories, loading } = useCategoryStore();
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
@@ -43,23 +45,47 @@ const NavigationBar = () => {
         alert(`카테고리 #${categoryId} 클릭!`);
     };
 
+    const handleLogout = async () => {
+        const confirmed = window.confirm("로그아웃 하시겠습니까?");
+        if (confirmed) {
+            try {
+                const response = await logout();
+                setUser(null);
+                alert("로그아웃 되었습니다.");
+                navigate("/");
+                window.location.reload();
+            } catch (error) {
+                console.error("로그아웃 중 오류 발생:", error);
+                alert("로그아웃 요청 중 오류가 발생했습니다.");
+                navigate("/");
+                window.location.reload();
+            }
+        }
+    };
+
     return (
         <>
             {/* 상단: 로고, 사이트명 + 검색창, 로그인/회원가입/마이페이지 */}
-            <AppBar position="static" color="inherit" sx={{ boxShadow: 0, p: 1 }}>
+            <AppBar position="static" color="inherit" sx={{ boxShadow: 0, p: 1, mb: 5 }}>
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
-                    <Box display="flex" alignItems="center" gap={2} sx={{ flex: 1 }}>
-                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }} />
+                    <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
+                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }}
+                             onClick={() => navigate("/")} // 클릭 시 홈으로 이동
+                        />
                         {/* 검색창 */}
                         <TextField
                             variant="outlined"
-                            size="small"
+                            size="medium"
                             placeholder="검색어 입력"
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
-                            sx={{ width: "400px", height: "70px" }}
+                            sx={{ width: "400px" }}
                             InputProps={{
+                                sx: {
+                                    height: "50px",
+                                    padding: "5px",
+                                },
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleSearch}>
@@ -76,23 +102,34 @@ const NavigationBar = () => {
                         {loadingUser ? (
                             <CircularProgress size={20} />
                         ) : user ? (
-                            <a
-                                href="/myPage"
-                                style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
-                            >
-                                마이페이지
-                            </a>
+                            <>
+                                <a
+                                    href="/myPage"
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                >
+                                    마이페이지
+                                </a>
+                                <a
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleLogout();
+                                    }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px", cursor: "pointer" }}
+                                >
+                                    로그아웃
+                                </a>
+                            </>
                         ) : (
                             <>
                                 <a
                                     href="/login"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
                                 >
                                     로그인
                                 </a>
                                 <a
                                     href="/join"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
                                 >
                                     회원가입
                                 </a>
