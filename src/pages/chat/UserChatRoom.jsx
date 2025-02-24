@@ -3,18 +3,24 @@ import {createChatRoom} from "../../api/chatApi.js";
 import {enterRoom, sendMessage} from "../../utils/webSocket.js";
 
 export default function UserChatRoom() {
+
     const [stompClient, setStompClient] = useState(null);
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [roomId, setRoomId] = useState("");
+    const [isConnected] = useState(() => {
+        return localStorage.getItem("wsConnected") === "true";
+    });
 
     useEffect(() => {
-        const initializeChat = async () => {
-            const roomId = (await createChatRoom("user")).roomId;
-            setRoomId(roomId);
-            enterRoom(roomId, setMessages, setStompClient);
-        };
-        initializeChat();
+        if (!isConnected) {
+            const initializeChat = async () => {
+                const roomId = (await createChatRoom("user")).roomId;
+                setRoomId(roomId);
+                enterRoom(roomId, setMessages, setStompClient);
+            };
+            initializeChat();
+        }
     }, []);
 
     const handleSendMessage = () => {

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {getInquiryByUser} from "../../api/faqApi.js";
+import {getInquiryByUser} from "/src/api/faqApi.js";
 import {Box, Chip, Divider, Typography} from "@mui/material";
 import {CheckCircleOutline} from "@mui/icons-material";
 

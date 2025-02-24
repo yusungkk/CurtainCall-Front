@@ -1,4 +1,4 @@
-import {fetcher} from "../utils/fetcher.js";
+import {fetcher} from "/src/utils/fetcher.js";
 import {
     CREATE_FAQ_URL,
     CREATE_INQUIRY_URL, CREATE_REPLY_ADMIN_URL,
