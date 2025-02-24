@@ -1,14 +1,28 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/userApi.js";
 import Info from "./Info";
 import Update from "./Update";
-import { Drawer, List, ListItem, ListItemButton, ListItemText, Box, Typography, Container, Paper
+import OrderList from "/src/pages/users/OrderList";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Box,
+  Typography,
+  Container,
+  Paper,
 } from "@mui/material";
 
 const MyPage = () => {
-  const [selectedMenu, setSelectedMenu] = useState("info");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initMenu = queryParams.get("menu") || "info"; // 예매 성공 후 접근 시
+  const [selectedMenu, setSelectedMenu] = useState(initMenu);
   const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +46,31 @@ const MyPage = () => {
     fetchUserData();
   }, [navigate]);
 
+  useEffect(() => {
+    const fetchOrderHistory = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/orders/history`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: user.email,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setOrders(data);
+        } else {
+          throw new Error(await response.json());
+        }
+      } catch (error) {}
+    };
+
+    if (selectedMenu === "orders") {
+      fetchOrderHistory();
+    }
+  }, [selectedMenu]);
+
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
   };
@@ -44,7 +83,7 @@ const MyPage = () => {
         sx={{
           width: 240,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" }
+          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" },
         }}
       >
         <Box sx={{ textAlign: "center", p: 2 }}>
@@ -53,7 +92,8 @@ const MyPage = () => {
         <List>
           {[
             { key: "info", label: "내 정보" },
-            { key: "update", label: "회원 정보 수정" }
+            { key: "update", label: "회원 정보 수정" },
+            { key: "orders", label: "예매 내역" },
           ].map((item) => (
             <ListItem key={item.key} disablePadding>
               <ListItemButton
@@ -71,6 +111,7 @@ const MyPage = () => {
       <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
         {selectedMenu === "info" && <Info user={user} />}
         {selectedMenu === "update" && <Update user={user} />}
+        {selectedMenu === "orders" && <OrderList user={user} orders={orders} />}
       </Container>
     </Box>
   );
