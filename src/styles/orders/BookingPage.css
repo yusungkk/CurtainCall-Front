@@ -1,7 +1,3 @@
-#root {
-    margin-top : -5rem;
-}
-
 .booking-page {
     display: flex;
     justify-content: center;
@@ -15,7 +11,8 @@
     padding: 50px;
     border-right: 2px solid #ddd;
 }
-ul {
+
+.seatUl {
     padding: 0;
 }
 
