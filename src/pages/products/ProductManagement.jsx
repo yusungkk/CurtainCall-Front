@@ -48,7 +48,7 @@ function ProductManagement() {
     const response = await fetcher(url);
 
     setProducts(response.content);
-    setTotalPages(response.page.totalPages);
+    setTotalPages(response.totalPages);
   };
 
   useEffect(() => {
