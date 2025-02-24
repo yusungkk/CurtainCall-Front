@@ -5,7 +5,7 @@ const ProductInfo = ({ productDetailId }) => {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/products/detail/${productDetailId}`)
+        axios.get(`http://localhost:8080/api/v1/products/detail/${productDetailId}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error("상품 정보 로드 실패:", error));
     }, [productDetailId]);

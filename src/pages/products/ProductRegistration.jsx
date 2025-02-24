@@ -25,7 +25,7 @@ const ProductRegistration = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/categories", {
+        const response = await fetch("http://localhost:8080/api/v1/categories", {
           headers: {
             "Content-Type": "application/json",
           },

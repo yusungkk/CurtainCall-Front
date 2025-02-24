@@ -36,13 +36,13 @@ const PaymentPage = () => {
     const [paymentMethod, setPaymentMethod] = useState("card"); // 기본 결제 방법 설정
 
     useEffect(() => {   // 상품 정보 가져오기
-        axios.get(`http://localhost:8080/api/products/detail/${productDetailId}`)
+        axios.get(`http://localhost:8080/api/v1/products/detail/${productDetailId}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error("상품 정보 로드 실패:", error));
     }, [productDetailId]);
 
     useEffect(() => {   // 상품 세부 정보 가져오기
-        axios.get(`http://localhost:8080/api/products/details/${productDetailId}`)
+        axios.get(`http://localhost:8080/api/v1/products/details/${productDetailId}`)
             .then(response => setProductDetail(response.data))
             .catch(error => console.error("상품 세부 정보 로드 실패:", error));
     }, [productDetailId]);
@@ -144,34 +144,42 @@ const PaymentPage = () => {
     return (
         <div className="payment-page">
             <h2>🎟 예매</h2>
-            <div className="product-info">
+            <div className="payment-product-info">
                 {product ? (
                     <>
-                        <img src={product.productImageUrl} alt={product.productName} />
-                        <table>
+                        <img
+                            className="payment-product-image"
+                            src={product.productImageUrl}
+                            alt={product.productName}
+                        />
+                        <table className="payment-info-table">
                             <tbody>
                             <tr>
-                                <td>제목</td>
+                                <td className="payment-info-title">제목</td>
                                 <td>{product.productName}</td>
                             </tr>
                             <tr>
-                                <td>장소</td>
+                                <td className="payment-info-title">장소</td>
                                 <td>{product.place}</td>
                             </tr>
                             <tr>
-                                <td>날짜</td>
+                                <td className="payment-info-title">날짜</td>
                                 <td>{productDetail.performanceDate}</td>
                             </tr>
                             <tr>
-                                <td>시간</td>
+                                <td className="payment-info-title">시간</td>
                                 <td>{productDetail.time}</td>
                             </tr>
                             <tr>
-                                <td>좌석</td>
-                                <td>{selectedSeats.length > 0 ? selectedSeats.join(", ") : "선택된 좌석 없음"}</td>
+                                <td className="payment-info-title">좌석</td>
+                                <td>
+                                    {selectedSeats.length > 0
+                                        ? selectedSeats.join(", ")
+                                        : "선택된 좌석 없음"}
+                                </td>
                             </tr>
                             <tr>
-                                <td>가격</td>
+                                <td className="payment-info-title">가격</td>
                                 <td>{selectedSeats.length * product.price}원</td>
                             </tr>
                             </tbody>
@@ -182,18 +190,29 @@ const PaymentPage = () => {
                 )}
             </div>
 
-            <label>결제 방법 선택</label>
-            <select className="payment-method" value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+            <label className="payment-label">결제 방법 선택</label>
+            <select
+                className="payment-method-select"
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+            >
                 <option value="card">신용카드</option>
                 <option value="kakaopay">카카오페이</option>
                 <option value="naverpay">네이버페이</option>
             </select>
 
-            {isPaymentStarted && <p>남은 결제 시간: {Math.floor(timeLeft / 60)}분 {timeLeft % 60}초</p>}
+            {isPaymentStarted && (
+                <p className="payment-timer">
+                    남은 결제 시간: {Math.floor(timeLeft / 60)}분 {timeLeft % 60}초
+                </p>
+            )}
 
-            <button onClick={handlePayment}>결제하기</button>
+            <button className="payment-submit-button" onClick={handlePayment}>
+                결제하기
+            </button>
         </div>
     );
+
 };
 
 export default PaymentPage;
