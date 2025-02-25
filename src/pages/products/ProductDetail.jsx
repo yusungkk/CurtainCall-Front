@@ -73,7 +73,10 @@ function ProductDetail() {
         try {
             const response = await getUserData();
 
-            if (!response) {
+            console.log(response);
+
+            if (response === 403) {
+                console.log(response);
                 navigate("/login", { state: { from: `/products/${id}` } });
                 return;
             }

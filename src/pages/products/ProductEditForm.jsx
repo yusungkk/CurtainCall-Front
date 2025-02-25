@@ -325,7 +325,10 @@ function ProductEditForm() {
                         <SaveBtn btnType={"submit"} viewName={"수정"} />
                     </Grid>
                     <Grid size={6}>
-                        <CancelBtn onClick={() => navigate("/admin/products")} viewName={"취소"} />
+                        <CancelBtn
+                            onClick={() => navigate("/admin?menu=product")}
+                            viewName={"취소"}
+                        />
                     </Grid>
                 </Grid>
             </Grid>
