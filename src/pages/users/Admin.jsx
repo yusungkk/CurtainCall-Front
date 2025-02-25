@@ -27,17 +27,22 @@ const MyPage = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await getUserData();
-                setUser(response);
-            } catch (error) {
-                console.error("사용자 정보 요청 중 오류 발생:", error);
-                alert("사용자 정보를 가져오는데 실패했습니다.");
-                navigate("/login");
-            }
-        };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserData();
+        if (response === 403) {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+        } else {
+            setUser(response);
+        }
+      } catch (error) {
+        console.error("사용자 정보 요청 중 오류 발생:", error);
+        alert("사용자 정보를 가져오는데 실패했습니다.");
+        navigate("/login");
+      }
+    };
 
         fetchUserData();
     }, [navigate]);
