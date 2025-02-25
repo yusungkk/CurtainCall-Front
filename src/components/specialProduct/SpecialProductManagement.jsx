@@ -26,6 +26,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
 
 const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
 
@@ -418,50 +419,16 @@ const SpecialProductManagement = () => {
             )}
 
             {/* 수정 다이얼로그 */}
-            <Dialog open={editDialogOpen} onClose={closeEditDialog}>
-                <DialogTitle>특가상품 수정</DialogTitle>
-                <DialogContent>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 1 }}>
-                        <TextField
-                            label="상품 이름"
-                            value={editProduct.productName}
-                            onChange={(e) => setEditProduct({ ...editProduct, productName: e.target.value })}
-                        />
-                        <TextField
-                            type="number"
-                            label="가격"
-                            value={editProduct.price}
-                            onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
-                        />
-                        <TextField
-                            type="date"
-                            label="할인 시작일"
-                            value={editProduct.discountStartDate}
-                            onChange={(e) => setEditProduct({ ...editProduct, discountStartDate: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                        />
-                        <TextField
-                            type="date"
-                            label="할인 종료일"
-                            value={editProduct.discountEndDate}
-                            onChange={(e) => setEditProduct({ ...editProduct, discountEndDate: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                        />
-                        <TextField
-                            type="number"
-                            label="할인율(%)"
-                            value={editProduct.discountRate}
-                            onChange={(e) => setEditProduct({ ...editProduct, discountRate: e.target.value })}
-                        />
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" onClick={handleUpdateProduct}>
-                        수정
-                    </Button>
-                    <Button onClick={closeEditDialog}>취소</Button>
-                </DialogActions>
-            </Dialog>
+            <EditSpecialProductDialog
+                open={editDialogOpen}
+                onClose={closeEditDialog}
+                product={editProduct}
+                setProduct={setEditProduct}
+                onUpdate={handleUpdateProduct}
+            />
+
+
+
 
             {/* 삭제 확인 다이얼로그 */}
             <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
