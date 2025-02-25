@@ -4,6 +4,7 @@ import { checkEmailDuplicate, createUser } from "../../api/userApi.js";
 import {
   Container, Box, TextField, Button, Typography
 } from "@mui/material";
+import logo from "../../assets/img.png";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -101,21 +102,18 @@ const Register = () => {
   return (
     <Container
       maxWidth="xs"
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh", justifyContent: "center" }}
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "calc(100vh - 4rem)", justifyContent: "center" }}
     >
       <Box
         sx={{
           p: 6,
-          bgcolor: "white",
           boxShadow: 2,
           borderRadius: 5,
           textAlign: "center",
           width: "100%"
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          회원가입
-        </Typography>
+        <img src={logo} alt="Curtaincall Logo" onClick={() => navigate("/")} className="login-logo" style={{ width: '260px', cursor: 'pointer' }} />
 
         <TextField
           label="이메일"
@@ -226,7 +224,7 @@ const Register = () => {
           onClick={handleRegister}
           disabled={!!emailError || !!passwordError || !!confirmPasswordError || !!nameError || !!phoneError}
         >
-          가입 완료
+          회원가입
         </Button>
       </Box>
     </Container>

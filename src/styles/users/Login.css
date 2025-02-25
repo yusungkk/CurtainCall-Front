@@ -2,23 +2,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: calc(100vh - 4rem)
 }
 
 .login-box {
   background-color: white;
-  padding: 3rem;
+  padding: 2.2rem 3rem;
   border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 370px;
   text-align: center;
-}
-
-.login-box h2 {
-  margin-top: 0rem;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  color: #333;
 }
 
 .login-input {
@@ -45,7 +38,8 @@
   color: white;
   border: none;
   border-radius: 0.5rem;
-  font-size: 1.1rem;
+  font-family: "BMJUA", sans-serif;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -55,14 +49,14 @@
 }
 
 .login-logo {
-  width: 250px;
-  margin-top: -1rem;
+  width: 260px;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .signup-prompt {
-  margin-top: 10px;
-  font-size: 12px;
+  margin-top: 14px;
+  font-size: 14px;
   color: #888;
   text-align: center;
 }

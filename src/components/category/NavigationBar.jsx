@@ -7,6 +7,7 @@ import {
     IconButton,
     InputAdornment,
     CircularProgress,
+    Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import useCategoryStore from "./useCategoryStore";
@@ -68,11 +69,11 @@ const NavigationBar = () => {
     return (
         <>
             {/* 상단: 로고, 사이트명 + 검색창, 로그인/회원가입/마이페이지 */}
-            <AppBar position="static" color="inherit" sx={{ boxShadow: 0, p: 1, mb: 5 }}>
+            <AppBar position="static" color="inherit" sx={{ boxShadow: 0, mb: 3 }}>
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
-                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }}
+                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px", marginLeft: "-16px" }}
                              onClick={() => navigate("/")} // 클릭 시 홈으로 이동
                         />
                         {/* 검색창 */}
@@ -107,7 +108,7 @@ const NavigationBar = () => {
                             <>
                                 <a
                                     href="/myPage"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
                                 >
                                     마이페이지
                                 </a>
@@ -116,7 +117,7 @@ const NavigationBar = () => {
                                         e.preventDefault();
                                         handleLogout();
                                     }}
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px", cursor: "pointer" }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px", cursor: "pointer" }}
                                 >
                                     로그아웃
                                 </a>
@@ -125,13 +126,13 @@ const NavigationBar = () => {
                             <>
                                 <a
                                     href="/login"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
                                 >
                                     로그인
                                 </a>
                                 <a
                                     href="/join"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
                                 >
                                     회원가입
                                 </a>
@@ -147,8 +148,8 @@ const NavigationBar = () => {
                 flexDirection="row"
                 alignItems="center"
                 justifyContent="flex-start"
-                gap={2}
-                sx={{ p: 1 }}
+                gap={4}
+                sx={{ p: 1, mb: 3, ml: 0.5 }}
             >
                 {loading ? (
                     <CircularProgress size={20} />
@@ -167,7 +168,7 @@ const NavigationBar = () => {
                                 sx={{
                                     textDecoration: "none",
                                     color: "inherit",
-                                    fontSize: "1em",
+                                    fontSize: "24px",
                                     fontWeight: "bold",
                                     cursor: "pointer",
                                     position: "relative",
@@ -189,6 +190,7 @@ const NavigationBar = () => {
                         ))
                 )}
             </Box>
+            <Divider sx={{ width: "100vw", bgcolor: "#e0e0e0", height: "1px", mb: 7, ml: -24 }} />
         </>
     );
 };
