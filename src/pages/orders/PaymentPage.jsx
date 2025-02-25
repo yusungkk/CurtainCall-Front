@@ -14,6 +14,13 @@ const PaymentPage = () => {
   const [isPaymentStarted, setIsPaymentStarted] = useState(false); // 결제 시작 여부
   const [orderId, setOrderId] = useState(null);
 
+  const [discountRate, setDiscountRate] = useState(0); // 할인율 저장
+  const [discountStartDate, setDiscountStartDate] = useState(null);
+  const [discountEndDate, setDiscountEndDate] = useState(null);
+  const [performanceDate, setPerformanceDate] = useState(null); // 공연 날짜 저장
+
+
+
   useEffect(() => {
     alert(
       "*** 주의: 결제하기 버튼을 누르신 후 5분 안에 결제가 완료되지 않으면 결제가 자동으로 취소되니 유의 바랍니다. ***\n(선택하신 좌석도 해제됩니다.)"
@@ -45,7 +52,16 @@ const PaymentPage = () => {
     // 상품 정보 가져오기
     axios
       .get(`http://localhost:8080/api/v1/products/detail/${productDetailId}`)
-      .then((response) => setProduct(response.data))
+        .then((response) => {
+          console.log("🎯 상품 정보 API 응답:", response.data); // API 응답 데이터 확인
+          console.log("🎯 상품 할인율:",response.data.discountRate); // API 응답 데이터 확인
+          console.log("🎯 상품 할인시작날짜:", response.data.discountStartDate); // API 응답 데이터 확인
+
+          setProduct(response.data);
+          setDiscountRate(response.data.discountRate);
+          setDiscountStartDate(response.data.discountStartDate);
+          setDiscountEndDate(response.data.discountEndDate);
+        })
       .catch((error) => console.error("상품 정보 로드 실패:", error));
   }, [productDetailId]);
 
@@ -53,9 +69,32 @@ const PaymentPage = () => {
     // 상품 세부 정보 가져오기
     axios
       .get(`http://localhost:8080/api/v1/products/details/${productDetailId}`)
-      .then((response) => setProductDetail(response.data))
+      .then((response) => {
+        setProductDetail(response.data);
+        setPerformanceDate(response.data.performanceDate); // 공연 날짜 저장
+      })
       .catch((error) => console.error("상품 세부 정보 로드 실패:", error));
   }, [productDetailId]);
+
+  const getFinalPrice = () => {
+    if (!product) return 0;
+
+    // 할인 적용 여부 확인
+    if (performanceDate && discountStartDate && discountEndDate) {
+      const perfDate = new Date(performanceDate);
+      const startDate = new Date(discountStartDate);
+      const endDate = new Date(discountEndDate);
+
+      if (!isNaN(perfDate) && !isNaN(startDate) && !isNaN(endDate)) {
+        if (perfDate >= startDate && perfDate <= endDate) {
+          return Math.round(product.price * (1 - discountRate / 100)); // 할인 적용 가격 반환
+        }
+      }
+    }
+
+    return product.price; // 할인 적용 안됨 -> 원래 가격 반환
+  };
+
 
   const handlePayment = async () => {
     if (!product || !productDetail) {
@@ -99,7 +138,7 @@ const PaymentPage = () => {
         pay_method: paymentMethod,
         merchant_uid: `order_${orderId}`,
         name: product.productName,
-        amount: selectedSeats.length * product.price,
+        amount: selectedSeats.length * getFinalPrice(),
         buyer_email: "test@example.com",
         buyer_name: "홍길동",
       },
@@ -202,7 +241,11 @@ const PaymentPage = () => {
                 </tr>
                 <tr>
                   <td>가격</td>
-                  <td>{selectedSeats.length * product.price}원</td>
+                  <td>
+                    {discountRate > 0 && performanceDate
+                        ? `${(getFinalPrice() * selectedSeats.length).toLocaleString()}원 (${discountRate}% 할인 적용)`
+                        : `${(product.price * selectedSeats.length).toLocaleString()}원`}
+                  </td>
                 </tr>
               </tbody>
             </table>
