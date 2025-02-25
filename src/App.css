@@ -7,3 +7,14 @@
 P {
   color: black;
 }
+
+@font-face {
+    font-family: 'BMJUA';
+    src: url('./components/BMJUA_ttf.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  font-family: "BMJUA";
+}
