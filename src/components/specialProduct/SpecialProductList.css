@@ -52,87 +52,87 @@ a:hover {
     color: black;
 }
 
-.product-list-container {
-    text-align: center;
-    padding: 20px;
-}
+/*.product-list-container {*/
+/*    text-align: center;*/
+/*    padding: 20px;*/
+/*}*/
 
-.discount-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
+/*.discount-title {*/
+/*    font-size: 24px;*/
+/*    margin-bottom: 20px;*/
+/*}*/
 
-.slick-prev, .slick-next {
-    z-index: 10;
-    width: 40px;
-    height: 40px;
-}
+/*.slick-prev, .slick-next {*/
+/*    z-index: 10;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*}*/
 
-.slick-prev {
-    left: -50px;
-}
+/*.slick-prev {*/
+/*    left: -50px;*/
+/*}*/
 
-.slick-next {
-    right: -50px;
-}
+/*.slick-next {*/
+/*    right: -50px;*/
+/*}*/
 
-.slick-prev::before, .slick-next::before {
-    font-size: 30px;
-    color: #333;
-}
+/*.slick-prev::before, .slick-next::before {*/
+/*    font-size: 30px;*/
+/*    color: #333;*/
+/*}*/
 
-.product-card {
-    padding: 10px;
-    transition: transform 0.3s ease-in-out;
-}
+/*.product-card {*/
+/*    padding: 10px;*/
+/*    transition: transform 0.3s ease-in-out;*/
+/*}*/
 
-.product-card:hover {
-    transform: scale(1.05);
-}
+/*.product-card:hover {*/
+/*    transform: scale(1.05);*/
+/*}*/
 
-.product-image {
-    width: 100%;  /* 부모 요소에 맞게 */
-    height: 200px; /* 원하는 높이 지정 */
-    object-fit: contain; /* 이미지가 짤리지 않고 보이도록 */
-    border-radius: 10px; /* 둥근 모서리 추가 */
-    background-color: #f8f8f8; /* 빈 공간이 있을 경우 배경색 */
-}
-
-
-.product-title {
-    font-size: 1rem;
-    font-weight: bold;
-    white-space: nowrap; /* 줄 바꿈 방지 */
-    overflow: hidden; /* 넘치는 내용 숨김 */
-    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
-    max-width: 100%; /* 컨테이너 크기에 맞게 */
-    display: block;
-}
+/*.product-image {*/
+/*    width: 100%;  !* 부모 요소에 맞게 *!*/
+/*    height: 200px; !* 원하는 높이 지정 *!*/
+/*    object-fit: contain; !* 이미지가 짤리지 않고 보이도록 *!*/
+/*    border-radius: 10px; !* 둥근 모서리 추가 *!*/
+/*    background-color: #f8f8f8; !* 빈 공간이 있을 경우 배경색 *!*/
+/*}*/
 
 
-.product-place, .product-dates {
-    font-size: 14px;
-    color: #777;
-}
+/*.product-title {*/
+/*    font-size: 1rem;*/
+/*    font-weight: bold;*/
+/*    white-space: nowrap; !* 줄 바꿈 방지 *!*/
+/*    overflow: hidden; !* 넘치는 내용 숨김 *!*/
+/*    text-overflow: ellipsis; !* 말줄임표(...) 표시 *!*/
+/*    max-width: 100%; !* 컨테이너 크기에 맞게 *!*/
+/*    display: block;*/
+/*}*/
 
-.product-discount {
-    font-size: 16px;
-    color: red;
-    font-weight: bold;
-}
 
-.discount-rate {
-    font-size: 20px;
-    margin-right: 5px;
-}
+/*.product-place, .product-dates {*/
+/*    font-size: 14px;*/
+/*    color: #777;*/
+/*}*/
 
-.product-title {
-    font-size: 1rem;
-    font-weight: bold;
-    white-space: nowrap; /* 줄 바꿈 방지 */
-    overflow: hidden; /* 넘치는 내용 숨김 */
-    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
-    max-width: 100%; /* 컨테이너 크기에 맞게 */
-    display: block;
-}
+/*.product-discount {*/
+/*    font-size: 16px;*/
+/*    color: red;*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.discount-rate {*/
+/*    font-size: 20px;*/
+/*    margin-right: 5px;*/
+/*}*/
+
+/*.product-title {*/
+/*    font-size: 1rem;*/
+/*    font-weight: bold;*/
+/*    white-space: nowrap; !* 줄 바꿈 방지 *!*/
+/*    overflow: hidden; !* 넘치는 내용 숨김 *!*/
+/*    text-overflow: ellipsis; !* 말줄임표(...) 표시 *!*/
+/*    max-width: 100%; !* 컨테이너 크기에 맞게 *!*/
+/*    display: block;*/
+/*}*/
 
