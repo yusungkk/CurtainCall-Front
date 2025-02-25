@@ -32,6 +32,9 @@ export const CREATE_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/products/new`;
 export const UPDATE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
 export const DELETE_PRODUCT_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/products/${id}`;
 export const RECOMMEND_URL = "http://localhost:8080/api/recommend";
+export const PRODUCT_BY_DETAILID_URL =  `${BASIC_URL}${API_VERSION_V1}/products/detail`;
+export const PRODUCT_DETAILS_URL = `${BASIC_URL}${API_VERSION_V1}/products/details`;
+
 
 //==유저 관련 API URL==//
 export const USER_JOIN_URL = `${BASIC_URL}${API_VERSION_V1}/users`;
@@ -47,6 +50,20 @@ export const USER_DEACTIVATE_URL = (id) => `${BASIC_URL}${API_VERSION_V1}/users/
 export const CHECK_ADMIN_URL = `${BASIC_URL}${API_VERSION_V1}/users/role`
 
 export const GET_SEARCH_USER_URL = (keyword, page, size) => `${BASIC_URL}${API_VERSION_V1}/users/search?keyword=${keyword}&page=${page}&size=${size}`;
+
+//==카테고리 관련 API URL==//
+export const CATEGORY_URL = `${BASIC_URL}${API_VERSION_V1}/categories`;
+
+
+//==주문 관련 API URL==//
+export const RESERVED_SEATS_URL = `${BASIC_URL}${API_VERSION_V1}/reserved-seats`;
+export const CREATE_ORDER_URL = `${BASIC_URL}${API_VERSION_V1}/create`;
+export const CANCEL_ORDER_URL = `${BASIC_URL}${API_VERSION_V1}/{orderId}/cancel`;
+export const COMPLETE_ORDER_URL = `${BASIC_URL}${API_VERSION_V1}/{orderId}/complete`;
+export const FAIL_ORDER_URL = `${BASIC_URL}${API_VERSION_V1}/{orderId}/fail`;
+
+//==결제 관련 API URL==//
+export const PAYMENT_URL = `${BASIC_URL}${API_VERSION_V1}/payment`;
 
 //special-product
 export const SPECIAL_PRODUCT_URL = `${BASIC_URL}${API_VERSION_V1}/special-product`;
