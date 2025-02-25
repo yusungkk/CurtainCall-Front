@@ -110,7 +110,7 @@ const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
                 <DialogTitle>특가상품 등록</DialogTitle>
                 <DialogContent>
                     {/* 🔍 검색 필드 */}
-                    <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                    <Box sx={{ display: "flex", gap: 2, mb: 2, mt: 2 }}> {/* `mt: 2` 추가 */}
                         <TextField
                             label="상품 검색"
                             variant="outlined"
