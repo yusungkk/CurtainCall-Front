@@ -1,9 +1,8 @@
 import "./App.css";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductRegistration from "./pages/products/ProductRegistration";
-import ProductList from "./pages/products/productList";
+import ProductList from "/src/pages/products/productList";
 import ProductDetail from "./pages/products/ProductDetail";
-import ProductManagement from "./pages/products/ProductManagement.jsx";
 import ProductEditForm from "./pages/products/ProductEditForm.jsx";
 import BookingPage from "./pages/orders/BookingPage.jsx";
 import FaqList from "./pages/inquiry/FaqList.jsx";
@@ -25,10 +24,10 @@ import CategoryManagement from "./components/category/CategoryManagement.jsx";
 import NavigationBar from "./components/category/NavigationBar.jsx";
 import SpecialProductManagement from "./components/specialProduct/SpecialProductManagement.jsx";
 
-import {ToggleProvider} from "./components/chat/ToggleContext.jsx";
+import { ToggleProvider } from "./components/chat/ToggleContext.jsx";
 import GlobalToggleIcon from "./components/chat/GlobalToggleBtn.jsx";
 import ChatWindow from "./components/chat/ChatWindow.jsx";
-import {useToggleActive} from "./hooks/UseToggleActive.jsx";
+import { useToggleActive } from "./hooks/UseToggleActive.jsx";
 import AdminChatWindow from "./components/chat/AdminChatWindow.jsx";
 import UseUserRole from "./hooks/UseUserRole.jsx";
 import Home from "./pages/Home.jsx";
@@ -40,7 +39,7 @@ function App() {
     return (
         <BrowserRouter>
             <ToggleProvider>
-                <NavigationBar/>
+                <NavigationBar />
                 {active && (
                     <>
                         <GlobalToggleIcon />
@@ -62,7 +61,6 @@ function App() {
                     <Route path="/admin/inquiries/:id" element={<InquiryAdminDetail />} />
                     <Route path={"/admin/faqs/new"} element={<FaqAddForm />}></Route>
                     <Route path={"/admin/faqs/:id"} element={<FaqEditForm />}></Route>
-                    <Route path="/admin/products" element={<ProductManagement />} />
                     <Route path="/products/:id" element={<ProductDetail />}></Route>
 
                     <Route path="/" element={<Home />} />

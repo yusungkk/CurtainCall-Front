@@ -19,7 +19,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import ProductSearch from "../../components/products/ProductSearch";
+import ProductSearch from "/src/components/products/ProductSearch";
 
 function ProductManagement() {
     let url;
@@ -89,23 +89,37 @@ function ProductManagement() {
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Box>
-                <ProductSearch onSearch={handleSearch} />
-
                 <Box sx={{ padding: 2, display: "flex", justifyContent: "center" }}>
                     <Pagination
                         count={totalPages}
                         page={currentPage + 1}
                         onChange={handlePageChange}
-                        color="secondary"
+                        sx={{
+                            "& .MuiPaginationItem-page.Mui-selected": {
+                                backgroundColor: "#800000",
+                                color: "#ffffff",
+                            },
+
+                            "& .MuiPaginationItem-page": {
+                                color: "#555555",
+                                "&:hover": {
+                                    backgroundColor: "#F5F5F5",
+                                },
+                            },
+                        }}
                     />
                 </Box>
-
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Link to="/admin/products/new">
-                        <Button variant="contained" color="secondary">
-                            상품 등록
-                        </Button>
-                    </Link>
+                <Box
+                    sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                >
+                    <ProductSearch onSearch={handleSearch} />
+                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Link to="/admin/products/new">
+                            <Button sx={{ background: "#800000" }} variant="contained" size="small">
+                                상품 등록
+                            </Button>
+                        </Link>
+                    </Box>
                 </Box>
 
                 <Box sx={{ flexGrow: 1 }}>
@@ -113,9 +127,9 @@ function ProductManagement() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>no</TableCell>
+                                    <TableCell>ID</TableCell>
                                     <TableCell>포스터</TableCell>
-                                    <TableCell>제목</TableCell>
+                                    <TableCell>상품명</TableCell>
                                     <TableCell>장소</TableCell>
                                     <TableCell
                                         onClick={() => handleSort("startDate")}
@@ -129,7 +143,6 @@ function ProductManagement() {
                                     >
                                         종료일 {endDateDirection === "asc" ? "▼" : "▲"}
                                     </TableCell>
-                                    <TableCell></TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -150,14 +163,12 @@ function ProductManagement() {
                                         <TableCell>{product.endDate}</TableCell>
                                         <TableCell>
                                             <Link to={`/admin/products/${product.productId}/edit`}>
-                                                <IconButton color="secondary">
+                                                <IconButton color="action">
                                                     <EditIcon />
                                                 </IconButton>
                                             </Link>
-                                        </TableCell>
-                                        <TableCell>
                                             <IconButton
-                                                color="error"
+                                                color="action"
                                                 onClick={() => {
                                                     if (
                                                         window.confirm(

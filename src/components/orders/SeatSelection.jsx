@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "../../styles/orders/SeatSelection.css";
+import "../../pages/orders/SeatSelection.css";
+import {getReservedSeats} from "../../api/orderApi.js";
 
 const ROWS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 const SEAT_LAYOUT = [3, 8, 3]; // 좌석 배치 (3 | 8 | 3)
@@ -11,10 +11,12 @@ const SeatSelection = ({ productDetailId, onSeatSelect }) => {
 
     // 예약된 좌석 불러오기
     useEffect(() => {
-        axios
-            .get(`http://localhost:8080/api/orders/reserved-seats?productDetailId=${productDetailId}`)
-            .then((response) => setReservedSeats(response.data))
-            .catch((error) => console.error("예약된 좌석 로드 실패:", error));
+        const loadReservedSeats = async () => {
+            const data = await getReservedSeats(productDetailId);
+            if (data) setReservedSeats(data);
+        };
+
+        loadReservedSeats();
     }, [productDetailId]);
 
     // 좌석 선택 핸들러

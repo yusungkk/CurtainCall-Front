@@ -26,8 +26,12 @@ const NavigationBar = () => {
         getCategories();
         const fetchUserData = async () => {
             try {
-                const userData = await getUserData(); // 로그인 여부 확인 로직 수정 예정
-                setUser(userData);
+                const userData = await getUserData(); // 로그인 여부 확인 로직 수정
+                if (userData === 403) {
+                    setUser(null);
+                } else {
+                    setUser(userData);
+                }
             } catch (error) {
                 setUser(null);
             } finally {
@@ -53,11 +57,9 @@ const NavigationBar = () => {
                 setUser(null);
                 alert("로그아웃 되었습니다.");
                 navigate("/");
-                window.location.reload();
             } catch (error) {
                 console.error("로그아웃 중 오류 발생:", error);
                 alert("로그아웃 요청 중 오류가 발생했습니다.");
-                navigate("/");
                 window.location.reload();
             }
         }
