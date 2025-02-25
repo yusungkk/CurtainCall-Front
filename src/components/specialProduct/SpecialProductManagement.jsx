@@ -27,6 +27,8 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
+import RegisterSpecialProductDialog from "./RegisterSpecialProductDialog";
+
 
 const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
 
@@ -53,6 +55,9 @@ const SpecialProductManagement = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
+    // 등록 다이얼로그 상태
+    const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
+
     // 수정 다이얼로그 상태 및 대상 데이터
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [editProduct, setEditProduct] = useState({
@@ -69,6 +74,8 @@ const SpecialProductManagement = () => {
     // 삭제 다이얼로그 상태
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [deleteProductId, setDeleteProductId] = useState(null);
+
+    //오류표시
     const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
 
     // 탭 전환 및 페이지 전환 시 데이터 조회
@@ -266,9 +273,9 @@ const SpecialProductManagement = () => {
 
     return (
         <Container sx={{ mt: 4 }}>
-            <Typography variant="h4" gutterBottom align="center">
-                특가상품 관리
-            </Typography>
+            {/*<Typography variant="h4" gutterBottom align="center">*/}
+            {/*    특가상품 관리*/}
+            {/*</Typography>*/}
 
             <Tabs
                 value={tabIndex}
@@ -297,14 +304,17 @@ const SpecialProductManagement = () => {
                         검색
                     </Button>
                 </Box>
-                <Link to="/admin/special-products/new" style={{ textDecoration: 'none' }}>
-                    <Button variant="contained" color="primary" size="small">
-                        특가상품 등록
-                    </Button>
-                </Link>
+                <Button variant="contained" color="primary" size="small" onClick={() => setRegisterDialogOpen(true)}>
+                    특가상품 등록
+                </Button>
             </Box>
 
-
+            {/* 등록 다이얼로그 */}
+            <RegisterSpecialProductDialog
+                open={registerDialogOpen}
+                onClose={() => setRegisterDialogOpen(false)}
+                onRegister={fetchActiveProducts}
+            />
 
             {/* 활성 특가상품 목록 */}
             {tabIndex === 0 && (
@@ -317,7 +327,7 @@ const SpecialProductManagement = () => {
                                     <TableCell>상품 이름</TableCell>
                                     <TableCell>가격</TableCell>
                                     <TableCell>할인율</TableCell>
-                                    <TableCell>할인적용된 금액</TableCell>
+                                    {/*<TableCell>할인적용된 금액</TableCell>*/}
                                     <TableCell>적용기간</TableCell>
                                     <TableCell>상태</TableCell>
                                     <TableCell>승인</TableCell>
@@ -331,7 +341,7 @@ const SpecialProductManagement = () => {
                                         <TableCell>{specialProductDto.productName}</TableCell>
                                         <TableCell>{specialProductDto.price?.toLocaleString() + '원'}</TableCell>
                                         <TableCell>{specialProductDto.discountRate}%</TableCell>
-                                        <TableCell>{calcDiscountedPrice(specialProductDto.price, specialProductDto.discountRate)}</TableCell>
+                                        {/*<TableCell>{calcDiscountedPrice(specialProductDto.price, specialProductDto.discountRate)}</TableCell>*/}
                                         <TableCell>{formatDateRange(specialProductDto.discountStartDate, specialProductDto.discountEndDate)}</TableCell>
                                         <TableCell>
                                             <Typography style={{ color: statusColors[specialProductDto.status] }}>
