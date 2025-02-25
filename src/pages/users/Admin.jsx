@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getUserData } from "../../api/userApi.js";
+import { getUserData, getUserRole } from "../../api/userApi.js";
 import Update from "./Update";
 import UserList from "./UserList";
-
 import {
     Box,
     List,
@@ -32,11 +31,15 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await getUserData();
-        if (response === 403) {
-            alert("로그인이 필요합니다.");
-            navigate("/login");
+        const data = await getUserRole();
+        if (data === 403) {
+            alert("접근 권한이 없습니다.");
+            navigate("/");
+        } else if (data == false) {
+            alert("접근 권한이 없습니다.");
+            navigate("/");
         } else {
+            const response = await getUserData();
             setUser(response);
         }
       } catch (error) {
@@ -46,23 +49,23 @@ const MyPage = () => {
       }
     };
 
-        fetchUserData();
-    }, [navigate]);
+    fetchUserData();
+  }, [navigate]);
 
-    const handleMenuClick = (menu) => {
-        setSelectedMenu(menu);
-    };
+  const handleMenuClick = (menu) => {
+    setSelectedMenu(menu);
+  };
 
-    return (
-        <Box sx={{ display: "flex", height: "100vh", width: "80vw", flexDirection: "column" }}>
-            {/* 상단 내비게이션 바 */}
-            <AppBar position="sticky" sx={{ backgroundColor: "#800000", borderRadius: 2 }}>
-                <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        관리자 페이지
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+  return (
+    <Box sx={{ display: "flex", height: "100vh", flexDirection: "column" }}>
+      {/* 상단 내비게이션 바 */}
+      <AppBar position="sticky" sx={{ backgroundColor: "#800000", borderRadius: 2 }}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            관리자 페이지
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         {/* 왼쪽 내비게이션 바 */}
@@ -94,11 +97,11 @@ const MyPage = () => {
                   onClick={() => handleMenuClick(item.key)}
                 >
                   <ListItemText primary={item.label} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
 
         {/* 오른쪽 메인 컨텐츠 */}
         <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
