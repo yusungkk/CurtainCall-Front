@@ -1,41 +1,55 @@
 import {useToggle} from "./ToggleContext";
 import SendIcon from '@mui/icons-material/Send';
 import {useEffect, useState} from "react";
-import {enterRoom, sendMessage} from "/src/utils/webSocket.js";
-import {createChatRoom} from "/src/api/chatApi.js";
+import {
+    connectWebSocket,
+    disconnectWebSocket,
+    enterRoom,
+    sendMessage,
+    subscribeToRoom,
+    testConnectWebSocket
+} from "/src/utils/webSocket.js";
+import {createChatRoom, endChatRoom, getMessagesByRoomId} from "/src/api/chatApi.js";
+import CancelBtn from "../CancelBtn.jsx";
 
-function ChatWindow() {
+function ChatWindow({setActive}) {
     const {isToggled, setIsToggled} = useToggle();
 
-    const [stomp, setStomp] = useState();
+    const [stomp, setStomp] = useState(null);
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [roomId, setRoomId] = useState(window.sessionStorage.getItem("roomId") || "");
-    const [isConnected] = useState(() => window.sessionStorage.getItem("wsConnected") === "true");
 
     useEffect(() => {
-        if (!isConnected) {
+        console.log(roomId);
+        if (!stomp && roomId === "") {
             const initializeChat = async () => {
-                const roomId = (await createChatRoom("user")).roomId;
-                setRoomId(roomId);
-                enterRoom(roomId, setRoomId, setMessages, setStomp);
+                const resRoomId = (await createChatRoom()).roomId;
+                enterRoom(resRoomId, setRoomId, setMessages, setStomp);
             };
-            initializeChat();
-        }
-    }, []);
 
-    useEffect(() => {
-        console.log(messages);
-    }, [messages])
+            initializeChat();
+            return;
+        }
+
+        const fetchMessages = async () => {
+            const data = await getMessagesByRoomId(roomId);
+            console.log(data);
+            setMessages(data.content);
+
+            const stomp = await testConnectWebSocket();
+            setStomp(stomp);
+            subscribeToRoom(stomp, roomId, setMessages);
+        };
+        fetchMessages();
+    }, []);
 
     const handleSendMessage = () => {
 
+        console.log(roomId);
         if (!stomp) {
             console.warn("STOMP 클라이언트가 연결되지 않음");
-
-            if (isConnected && roomId !== "") {
-                enterRoom(roomId, setRoomId, setMessages, setStomp);
-            }
+            connectWebSocket(setStomp);
         }
 
         if (message.trim() !== "") {
@@ -48,9 +62,19 @@ function ChatWindow() {
         setMessage(e.target.value);
     }
 
+    const handleEndChat = () => {
+        if (confirm("정말로 상담을 종료하실건가요?")) {
+            disconnectWebSocket(stomp, setStomp);
+            endChatRoom(roomId);
+            setIsToggled(false);
+            setActive(false);
+        }
+    };
+
     return (
         <>
-            {isToggled && <div
+            {isToggled &&
+                <div
                 style={{
                     position: "fixed",
                     bottom: "20px",
@@ -64,26 +88,60 @@ function ChatWindow() {
                     display: "flex",
                     flexDirection: "column",
                     padding: "10px",
-                    zIndex: "999"
+                    zIndex: "99999"
                 }}
             >
-                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                    <h3 style={{margin: 0, color: "black"}}>채팅</h3>
-                    <button
-                        onClick={() => setIsToggled(false)}
-                        style={{
-                            background: "none",
-                            border: "none",
-                            fontSize: "18px",
-                            cursor: "pointer",
-                        }}
-                    >
-                        ❌
-                    </button>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px"}}>
+                    <div style={{ flex: 1 }}>
+                        <CancelBtn
+                            viewName={"상담종료"}
+                            onClick={handleEndChat}
+                        />
+                    </div>
+                    <h3 style={{ margin: 0, color: "black", flex: 2, textAlign: "center" }}>채팅</h3>
+                    <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                        <button
+                            onClick={() => setIsToggled(false)}
+                            style={{
+                                background: "none",
+                                border: "none",
+                                fontSize: "18px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            ❌
+                        </button>
+                    </div>
                 </div>
 
                 <div style={{flex: 1, overflowY: "auto", borderBottom: "1px solid #ddd", paddingBottom: "10px"}}>
-                    {messages.map((m, index) => <p key={index}>{m.content}</p> ) }
+                    {messages.map((m, index) => <div
+                        key={index}
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: m.sender === "user" ? "flex-end" : "flex-start",
+                            marginBottom: "10px"
+                        }}
+                    >
+                        <div
+                            style={{
+                                backgroundColor: m.sender === "user" ? "#DFA7B2" : "#F5E6E8",
+                                color: "#000",
+                                padding: "10px",
+                                marginLeft: "5px",
+                                marginRight: "5px",
+                                borderRadius: "10px",
+                                maxWidth: "70%",
+                                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                                wordWrap: "break-word",
+                                fontSize: "14px"
+                            }}
+                        >
+                            {m.content}
+                        </div>
+                    </div>
+                    )}
                 </div>
 
                 <div style={{display: "flex", alignItems: "center", marginTop: "10px"}}>

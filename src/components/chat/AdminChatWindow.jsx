@@ -2,8 +2,9 @@ import {useToggle} from "./ToggleContext";
 import SendIcon from '@mui/icons-material/Send';
 import {useEffect, useRef, useState} from "react";
 import {connectWebSocket, sendMessage, subscribeToRoom} from "/src/utils/webSocket.js";
-import {assignChatRoom, getMessagesByRoomId, getRooms} from "/src/api/chatApi.js";
+import {assignChatRoom, endChatRoom, getMessagesByRoomId, getRooms, ROOM_ACTIVE} from "/src/api/chatApi.js";
 import {Box, Tab, Tabs} from "@mui/material";
+import CancelBtn from "../CancelBtn.jsx";
 
 function AdminChatWindow() {
     const {isToggled, setIsToggled} = useToggle();
@@ -43,12 +44,13 @@ function AdminChatWindow() {
         const fetchTab = async () => {
             switch (activeTab) {
                 case 'waiting':
-                    setWaitingRooms(await getRooms("WITHOUT_ADMIN"));
+                    setWaitingRooms(await getRooms(ROOM_ACTIVE.withoutAdmin));
                     break;
                 case  'joined':
-                    setJoinedRooms(await getRooms("WITH_ADMIN"));
+                    setJoinedRooms(await getRooms(ROOM_ACTIVE.withAdmin));
                     break;
                 case 'chatting':
+                    console.log(selectedRoomId);
                     if (selectedRoomId === "") {
                         setActiveTab('joined');
                         return;
@@ -98,7 +100,7 @@ function AdminChatWindow() {
         }
 
         if (message.trim() !== "") {
-            const chatMessage = {roomId: selectedRoomId, sender: "user", content: message};
+            const chatMessage = {roomId: selectedRoomId, sender: "admin", content: message};
             sendMessage(stomp, chatMessage, setMessage);
         }
     };
@@ -119,9 +121,7 @@ function AdminChatWindow() {
 
         if (containerRef.current.scrollTop === 0) {
             setIsFetching(true);
-            console.log(pageInfo);
             const data = await getMessagesByRoomId(selectedRoomId, pageInfo.pageNum + 1);
-            console.log(data);
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
             setMessages(prevState => [...prevState, ...data.content]);
             setPageInfo({
@@ -129,6 +129,16 @@ function AdminChatWindow() {
                 totalPage: data.totalPages,
             })
             setIsFetching(false);
+        }
+    }
+
+    const handleEndChat = async () => {
+        if (confirm("정말로 상담을 종료하실건가요?")) {
+            const data = await endChatRoom(selectedRoomId);
+            if (data === 204) {
+                setActiveTab(tabs[1].name);
+                setSelectedRoomId("");
+            }
         }
     }
 
@@ -152,19 +162,33 @@ function AdminChatWindow() {
                         zIndex: "999"
                     }}
                 >
-                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <h3 style={{margin: 0, color: "black"}}>채팅</h3>
-                        <button
-                            onClick={() => setIsToggled(false)}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                fontSize: "18px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            ❌
-                        </button>
+                    <div style={{display: "flex", alignItems: "center", marginBottom: "10px"}}>
+                        <div style={{flex: 1}}>
+                            {activeTab === tabs[2].name ? (
+                                <CancelBtn
+                                    viewName={"채팅종료"}
+                                    onClick={handleEndChat}
+                                />
+                            ) : (
+                                <div style={{visibility: "hidden"}}>
+                                    <CancelBtn viewName={"채팅종료"}/>
+                                </div>
+                            )}
+                        </div>
+                        <h3 style={{margin: 0, color: "black", flex: 2, textAlign: "center"}}>채팅</h3>
+                        <div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                            <button
+                                onClick={() => setIsToggled(false)}
+                                style={{
+                                    background: "none",
+                                    border: "none",
+                                    fontSize: "18px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                ❌
+                            </button>
+                        </div>
                     </div>
 
                     <Box sx={{width: '100%', marginBottom: "1rem"}}>
@@ -241,7 +265,34 @@ function AdminChatWindow() {
                             </div>
                         )}
 
-                        {activeTab === "chatting" && messages.map((m, index) => <p key={index}>{m.content}</p>)}
+                        {activeTab === "chatting" && messages.map((m, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: m.sender === "admin" ? "flex-end" : "flex-start",
+                                    marginBottom: "10px"
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        backgroundColor: m.sender === "admin" ? "#DFA7B2" : "#F5E6E8",
+                                        color: "#000",
+                                        padding: "10px",
+                                        marginLeft: "5px",
+                                        marginRight: "5px",
+                                        borderRadius: "10px",
+                                        maxWidth: "70%",
+                                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                                        wordWrap: "break-word",
+                                        fontSize: "14px"
+                                    }}
+                                >
+                                    {m.content}
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
                     {activeTab === "chatting" && (

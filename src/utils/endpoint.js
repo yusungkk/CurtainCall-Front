@@ -17,9 +17,9 @@ export const FIND_INQUIRY_ADMIN_URL= (id) => `${BASIC_URL}${API_VERSION_V1}/admi
 export const CREATE_REPLY_ADMIN_URL= (id) => `${BASIC_URL}${API_VERSION_V1}/admin/inquiries/${id}/replies`;
 
 //==채팅 관련 API URL ==//
-export const CREATE_CHAT_ROOM_URL = (userId) => `${BASIC_URL}${API_VERSION_V1}/chat-rooms/create?user=${userId}`
-export const FIND_ROOMS_WITHOUT_ADMIN_URL = (active) => `${BASIC_URL}${API_VERSION_V1}/chat-rooms?active=${active}`
-export const ASSIGN_CHAT_ROOM_URL = (roomId) => `${BASIC_URL}${API_VERSION_V1}/chat-rooms?roomId=${roomId}`
+export const CREATE_CHAT_ROOM_URL = `${BASIC_URL}${API_VERSION_V1}/chat-rooms/create`
+export const FIND_ROOMS_BY_ACTIVE_URL = (active) => `${BASIC_URL}${API_VERSION_V1}/chat-rooms?active=${active}`
+export const UPDATE_CHAT_ROOM_URL = (roomId, active) => `${BASIC_URL}${API_VERSION_V1}/chat-rooms?roomId=${roomId}&active=${active}`
 export const FIND_MESSAGES_URL = (roomId, offset=0, limit=20) =>
     `${BASIC_URL}${API_VERSION_V1}/chat/${roomId}?offset=${offset}&limit=${limit}`;
 export const WS_CONNECT_URL = `${BASIC_URL}/ws-chat-connect`;

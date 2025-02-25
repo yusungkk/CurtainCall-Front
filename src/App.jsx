@@ -35,7 +35,7 @@ import Home from "./pages/Home.jsx";
 
 function App() {
     const [active, setActive] = useToggleActive();
-    const [role] = UseUserRole();
+    const [role] = UseUserRole(setActive);
 
     return (
         <BrowserRouter>
@@ -45,7 +45,7 @@ function App() {
                     <>
                         <GlobalToggleIcon />
                         {role === "ADMIN" && <AdminChatWindow />}
-                        {role === "USER" && <ChatWindow />}
+                        {role === "USER" && <ChatWindow setActive={setActive}/>}
                     </>
                 )}
 
@@ -54,7 +54,7 @@ function App() {
                     <Route path="/products" element={<ProductList />} />
                     <Route path="/seat-selection/:productDetailId" element={<BookingPage />} />
                     <Route path="/admin/products/:id/edit" element={<ProductEditForm />} />
-                    <Route path={"/faqs"} element={<FaqList />}></Route>
+                    <Route path={"/faqs"} element={<FaqList setActive={setActive} role={role}/>}></Route>
                     <Route path={"/inquiries/new"} element={<CreateInquiryForm />} />
                     <Route path="/inquiries" element={<InquiryList />} />
                     <Route path="/admin/inquiries" element={<InquiryAdminList />} />
