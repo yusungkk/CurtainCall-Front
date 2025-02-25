@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ACTIVE_SPECIAL_PRODUCT_URL } from "../../utils/endpoint";
 import "/src/pages/products/productList.css";
-import "./SpecialProductList.css";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import  "./SpecialProductList.css";
 
 const SpecialProductList = () => {
     const [specialProducts, setSpecialProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 5;
 
     useEffect(() => {
         const fetchSpecialProducts = async () => {
@@ -33,51 +32,37 @@ const SpecialProductList = () => {
         fetchSpecialProducts();
     }, []);
 
+    // 페이지네이션 계산
+    const totalPages = Math.ceil(specialProducts.length / itemsPerPage);
+    const displayedProducts = specialProducts.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
     // 할인된 가격 계산 함수
     const getDiscountedPrice = (price, discountRate) => {
         return price - Math.floor((price * discountRate) / 100);
     };
 
-    // 🟢 React Slick 설정 (5개씩 슬라이드)
-    const settings = {
-        dots: true, // 밑에 페이지네이션 점 표시
-        infinite: true, // 무한 반복
-        speed: 500,
-        slidesToShow: 5, // 한 번에 5개 표시
-        slidesToScroll: 5, // 5개씩 이동
-        arrows: true, // 좌우 화살표 표시
-        responsive: [
-            {
-                breakpoint: 1024, // 태블릿
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                },
-            },
-            {
-                breakpoint: 768, // 모바일
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                },
-            },
-            {
-                breakpoint: 480, // 작은 모바일
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
+    // 페이지 이동 핸들러
+    const handleNextPage = () => {
+        if (currentPage < totalPages - 1) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage((prev) => prev - 1);
+        }
     };
 
     return (
         <div className="product-list-container">
             <h1 className="discount-title">지금 할인중!</h1>
 
-            {/* 🟢 React Slick 캐러셀 적용 */}
-            <Slider {...settings}>
-                {specialProducts.map((specialProductDto) => (
+            <div className="product-grid">
+                {displayedProducts.map((specialProductDto) => (
                     <div key={specialProductDto.productId} className="product-card">
                         <Link to={`/products/${specialProductDto.productId}`}>
                             <img
@@ -85,9 +70,7 @@ const SpecialProductList = () => {
                                 alt={specialProductDto.productName}
                                 className="product-image"
                             />
-                            <h3 className="product-title" title={specialProductDto.productName}>
-                                {specialProductDto.productName}
-                            </h3>
+                            <h3 className="product-title">{specialProductDto.productName}</h3>
                             <p className="product-place">{specialProductDto.place}</p>
                             <p className="product-dates">
                                 {specialProductDto.discountStartDate} ~ {specialProductDto.discountEndDate}
@@ -99,10 +82,23 @@ const SpecialProductList = () => {
                                     {getDiscountedPrice(specialProductDto.price, specialProductDto.discountRate).toLocaleString()}원
                                 </span>
                             </p>
+
                         </Link>
                     </div>
                 ))}
-            </Slider>
+            </div>
+
+            <div className="pagination">
+                <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                    &#8592; 이전
+                </button>
+                <span>
+                    {currentPage + 1} / {totalPages}
+                </span>
+                <button onClick={handleNextPage} disabled={currentPage >= totalPages - 1}>
+                    다음 &#8594;
+                </button>
+            </div>
         </div>
     );
 };
