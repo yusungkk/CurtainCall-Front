@@ -41,8 +41,8 @@ const NavigationBar = () => {
         alert(`검색어: ${searchText}`);
     };
 
-    const handleCategoryClick = (categoryId) => {
-        alert(`카테고리 #${categoryId} 클릭!`);
+    const handleCategoryClick = (categoryName) => {
+        navigate(`/?genre=${categoryName}`);
     };
 
     const handleLogout = async () => {
@@ -70,8 +70,11 @@ const NavigationBar = () => {
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
-                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }}
-                             onClick={() => navigate("/")} // 클릭 시 홈으로 이동
+                        <img
+                            src={logo}
+                            alt="Curtaincall Logo"
+                            style={{ width: "200px" }}
+                            onClick={() => navigate("/")} // 클릭 시 홈으로 이동
                         />
                         {/* 검색창 */}
                         <TextField
@@ -105,7 +108,11 @@ const NavigationBar = () => {
                             <>
                                 <a
                                     href="/myPage"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "18px",
+                                    }}
                                 >
                                     마이페이지
                                 </a>
@@ -114,7 +121,12 @@ const NavigationBar = () => {
                                         e.preventDefault();
                                         handleLogout();
                                     }}
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px", cursor: "pointer" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "18px",
+                                        cursor: "pointer",
+                                    }}
                                 >
                                     로그아웃
                                 </a>
@@ -123,13 +135,21 @@ const NavigationBar = () => {
                             <>
                                 <a
                                     href="/login"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "18px",
+                                    }}
                                 >
                                     로그인
                                 </a>
                                 <a
                                     href="/join"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "18px" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "18px",
+                                    }}
                                 >
                                     회원가입
                                 </a>
@@ -160,7 +180,7 @@ const NavigationBar = () => {
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    handleCategoryClick(cat.id);
+                                    handleCategoryClick(cat.name);
                                 }}
                                 sx={{
                                     textDecoration: "none",

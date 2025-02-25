@@ -6,16 +6,26 @@ import "/src/pages/products/ProductList.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const ProductList = () => {
+const ProductList = ({ genre }) => {
     let url;
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [recommendedProducts, setRecommendedProducts] = useState([]); // 추천 상품 리스트
     const [chainRecommendedProducts, setChainRecommendedProducts] = useState([]); // 추천 상품 리스트
+    const [category, setCategory] = useState(genre);
+
+    useEffect(() => {
+        setCategory(genre);
+        setCurrentPage(0);
+    }, [genre]);
 
     const getProducts = async (page, size) => {
-        url = `${PRODUCT_URL}?page=${page}&size=${size}`;
+        if (genre === "all") {
+            url = `${PRODUCT_URL}?page=${page}&size=${size}`;
+        } else {
+            url = `${PRODUCT_URL}/search?genre=${genre}&page=${page}&size=${size}`;
+        }
 
         const response = await fetcher(url);
         setProducts(response.content);
@@ -24,7 +34,7 @@ const ProductList = () => {
 
     useEffect(() => {
         getProducts(currentPage, 10);
-    }, [currentPage]);
+    }, [category, currentPage]);
 
     // ✅ 사용자 추천 상품 가져오기
     useEffect(() => {
@@ -79,7 +89,9 @@ const ProductList = () => {
     return (
         <div className="product-list-container">
             <div className="product-list-header">
-                <h1 className="product-list-title">지금 상영중!</h1>
+                <h1 className="product-list-title">
+                    {genre === "all" ? "전체" : category} 둘러보기
+                </h1>
             </div>
 
             <div className="product-list-body">
