@@ -34,7 +34,7 @@ export default function CreateInquiryForm() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const handleBlur = (field) => {
-        setTouched((prev) => ({ ...prev, [field]: true }));
+        setTouched((prev) => ({...prev, [field]: true}));
     };
 
     const handleChange = (e) => {
@@ -52,7 +52,7 @@ export default function CreateInquiryForm() {
                 }));
             } else {
                 setErrors((prev) => {
-                    const { replayEmail, ...rest } = prev;
+                    const {replayEmail, ...rest} = prev;
                     return rest;
                 });
             }
@@ -75,7 +75,11 @@ export default function CreateInquiryForm() {
 
     return (
         <>
-            <Typography variant="h3" gutterBottom color={"black"}>
+            <Typography variant="h3" gutterBottom color={"black"}
+                        sx={{
+                            fontFamily: "'Bareun_hipi', sans-serif",
+                            textAlign: "center"
+                        }}>
                 1:1 문의하기
             </Typography>
             <form onSubmit={handleSubmit} style={{width: "100vw", maxWidth: "100%"}}>
@@ -90,7 +94,7 @@ export default function CreateInquiryForm() {
                         isError={touched.replayEmail && (formData.replayEmail === "" || errors.replayEmail)}
                         errorText={touched.replayEmail && (formData.replayEmail === "" ? "답변 받을 이메일 주소를 입력해 주세요" : errors.replayEmail)}
                     />
-                    <FormControl sx={{width: "70%", mb: 2, mt:2}}>
+                    <FormControl sx={{width: "70%", mb: 2, mt: 2}}>
                         <InputLabel id="faq-type-label">문의 유형</InputLabel>
                         <Select
                             labelId="faq-type-label"

@@ -25,10 +25,12 @@ export default function InquiryListItem({inquiry, onClick}) {
                 onClick={onClick}
                 sx={{
                     transition: "background-color 0.2s ease-in-out",
+                    fontFamily: "'Bareun_hipi', sans-serif",
                     "&:hover": {
                         backgroundColor: "#f5f5f5",
                         cursor: "pointer",
-                    }}}
+                    }
+                }}
             >
                 <Chip
                     label={getStatusLabel(inquiry.status)}
@@ -43,7 +45,11 @@ export default function InquiryListItem({inquiry, onClick}) {
                     </Typography>
                     <ListItemText
                         secondary={
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2"
+                                        color="text.secondary"
+                                        sx={{
+                                            fontFamily: "'Bareun_hipi', sans-serif",
+                                        }}>
                                 {getTypeLabel(inquiry.type)} &nbsp;·&nbsp; {new Date(inquiry.createAt).toLocaleDateString()}
                             </Typography>
                         }

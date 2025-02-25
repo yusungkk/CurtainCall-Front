@@ -8,6 +8,7 @@ export default function SaveBtn({btnType, viewName, isDisabled}) {
             color={"success"}
             disabled={isDisabled}
             sx={{
+                fontFamily: "'Bareun_hipi', sans-serif",
                 borderRadius: '10px',
                 fontSize: '15px',
                 '&:focus': {

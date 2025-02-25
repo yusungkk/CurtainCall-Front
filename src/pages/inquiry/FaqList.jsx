@@ -21,7 +21,7 @@ import FaqCard from "../../components/inquiry/FaqCard.jsx";
 import {useToggle} from "../../components/chat/ToggleContext.jsx";
 
 
-function FaqList({setActive}) {
+function FaqList({setActive, role}) {
 
     const {setIsToggled} = useToggle();
     const defaultOffset = 0;
@@ -95,8 +95,8 @@ function FaqList({setActive}) {
 
     useEffect(() => {
 
-        const changeFaqs = async() => {
-             await getData()
+        const changeFaqs = async () => {
+            await getData()
         };
         changeFaqs();
     }, [tab])
@@ -148,9 +148,11 @@ function FaqList({setActive}) {
     }
 
     const handleChatBtn = () => {
-        window.sessionStorage.setItem("toggleActive", "true");
-        setActive(true);
-        setIsToggled(true);
+        if (role === "ANONYMOUS" || role !== "") {
+            window.sessionStorage.setItem("toggleActive", "true");
+            setActive(true);
+            setIsToggled(true);
+        }
     };
     return (
         <div style={{width: '100vw', maxWidth: '70%'}}>
@@ -160,6 +162,7 @@ function FaqList({setActive}) {
                 <Typography variant="h4" sx={{
                     color: 'black',
                     textAlign: 'left',
+                    fontFamily: "'Bareun_hipi', sans-serif",
                 }}>자주 묻는 질문
                 </Typography>
             </Box>
@@ -176,6 +179,7 @@ function FaqList({setActive}) {
                             value={f.name}
                             label={f.value}
                             sx={{
+                                fontFamily: "'Bareun_hipi', sans-serif",
                                 '&.MuiTab-root:focus': {
                                     outline: 'none'
                                 }
@@ -198,20 +202,35 @@ function FaqList({setActive}) {
                         <ListItemButton onClick={() => handleToggle(faq.id)}>
                             <ListItemText
                                 primary={`❓ ${faq.question}`}
+                                sx={{
+                                    fontFamily: "'Bareun_hipi', sans-serif",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                }}
+
                             />
                             {openFaqs[faq.id] ? <ExpandLess/> : <ExpandMore/>}
-                            <Grid container spacing={1}>
-                                <Grid size={7}>
-                                    <EditBtn onClick={e => handleEditBtn(e, faq.id)} viewName={"수정"}/>
+
+                            {role === "ADMIN" &&
+                                <Grid container spacing={1}>
+                                    <Grid size={7}>
+                                        <EditBtn onClick={e => handleEditBtn(e, faq.id)} viewName={"수정"}/>
+                                    </Grid>
+                                    <Grid size={5}>
+                                        <CancelBtn onClick={e => handleCancelBtn(e, faq.id)} viewName={"삭제"}/>
+                                    </Grid>
                                 </Grid>
-                                <Grid size={5}>
-                                    <CancelBtn onClick={e => handleCancelBtn(e, faq.id)} viewName={"삭제"}/>
-                                </Grid>
-                            </Grid>
+                            }
                         </ListItemButton>
                         <Collapse in={openFaqs[faq.id]} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding sx={{pl: 4}}>
                                 <ListItemText
+                                    sx={{
+                                        wordBreak: "break-word",
+                                        overflowY: "auto",
+                                        maxWidth: "90%",
+                                    }}
                                     primary={faq.answer}
                                 />
                             </List>
@@ -230,7 +249,8 @@ function FaqList({setActive}) {
             }}>
                 <Typography variant="h4" sx={{
                     color: 'black',
-                    mb: 2
+                    mb: 2,
+                    fontFamily: "'Bareun_hipi', sans-serif",
                 }}>다른 도움이 필요하신가요?</Typography>
 
                 <div>

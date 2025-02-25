@@ -48,6 +48,7 @@ export default function InquiryDetail() {
                 variant="h4"
                 gutterBottom
                 color={"black"}
+                sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
             >
                 내 문의내역
             </Typography>
@@ -62,11 +63,12 @@ export default function InquiryDetail() {
             <Typography
                 variant="h4"
                 color={"black"}
+                sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
             >
                 {inquiryData.title}
             </Typography>
 
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" color="text.secondary" sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
                 {getTypeLabel(inquiryData.type)} · {inquiryData.createAt?.split("T")[0] || ""}
             </Typography>
 
@@ -78,6 +80,7 @@ export default function InquiryDetail() {
             <Typography
                 variant="h6"
                 color={"black"}
+                sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
             >
                 문의내역
             </Typography>
@@ -91,7 +94,7 @@ export default function InquiryDetail() {
                     variant="h6"
                     fontWeight="bold"
                     color="primary"
-                    sx={{mr: 2}}>
+                    sx={{mr: 2, fontFamily: "'Bareun_hipi', sans-serif",}}>
                     Q
                 </Typography>
 
@@ -105,6 +108,7 @@ export default function InquiryDetail() {
                     <Typography
                         variant="body1"
                         color="black"
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
                     >
                         {inquiryData.content}
                     </Typography>
@@ -113,6 +117,7 @@ export default function InquiryDetail() {
                         variant="body2"
                         color="gray"
                         whiteSpace={"pre-line"}
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
                     >
                         {inquiryData.createAt.replace("T", " ").slice(0, 16)}
                     </Typography>
@@ -137,8 +142,9 @@ export default function InquiryDetail() {
                         color={"black"}
                         variant="body1"
                         whiteSpace={"pre-line"}
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
                     >
-                        {inquiryData.reply !== null ? inquiryData.reply:
+                        {inquiryData.reply !== null ? inquiryData.reply :
                             "고객님, 안녕하세요.\n\n" +
                             "문의하신 내용은 아직 답변이 작성되지 않았습니다.\n\n" +
                             "빠른 도움을 드리지 못해 정말 죄송합니다."
@@ -146,7 +152,9 @@ export default function InquiryDetail() {
                     </Typography>
                     <Typography
                         mt={2}
-                        variant="body2" color="text.secondary">
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
                         {inquiryData.replyAt ? inquiryData.replyAt.replace("T", " ").slice(0, 16) : "답변 대기 중"}
                     </Typography>
                 </Box>

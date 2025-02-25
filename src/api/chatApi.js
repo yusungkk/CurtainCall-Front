@@ -1,23 +1,34 @@
 import {fetcher} from "/src/utils/fetcher.js";
 import {
-    ASSIGN_CHAT_ROOM_URL,
     CREATE_CHAT_ROOM_URL,
-    FIND_MESSAGES_URL,
-    FIND_ROOMS_WITHOUT_ADMIN_URL
+    FIND_MESSAGES_URL, FIND_ROOMS_BY_ACTIVE_URL,
+    UPDATE_CHAT_ROOM_URL
 } from "/src/utils/endpoint.js";
 
-export const createChatRoom = async (userId) => {
-    return await fetcher(CREATE_CHAT_ROOM_URL(userId), {
+export const ROOM_ACTIVE = {
+    withoutAdmin : "WITHOUT_ADMIN",
+    withAdmin : "WITH_ADMIN",
+    endRoom : "END"
+}
+
+export const createChatRoom = async () => {
+    return await fetcher(CREATE_CHAT_ROOM_URL, {
         method: "POST",
     });
 };
 
 export const getRooms = async (active) => {
-    return await fetcher(FIND_ROOMS_WITHOUT_ADMIN_URL(active));
+    return await fetcher(FIND_ROOMS_BY_ACTIVE_URL(active));
 };
 
 export const assignChatRoom = async (roomId) => {
-    return await fetcher(ASSIGN_CHAT_ROOM_URL(roomId), {
+    return await fetcher(UPDATE_CHAT_ROOM_URL(roomId, ROOM_ACTIVE.withAdmin), {
+        method: "PATCH"
+    });
+};
+
+export const endChatRoom = async (roomId) => {
+    return await fetcher(UPDATE_CHAT_ROOM_URL(roomId, ROOM_ACTIVE.endRoom), {
         method: "PATCH"
     });
 };

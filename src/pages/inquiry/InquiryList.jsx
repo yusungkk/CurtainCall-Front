@@ -28,7 +28,13 @@ export default function InquiryList() {
 
     return (
         <Box sx={{width: '100vw', maxWidth: 800, margin: '0 auto', mt: 5}}>
-            <Typography variant="h4" gutterBottom color={"black"} align={"left"} mb={4}>
+            <Typography variant="h4"
+                        gutterBottom
+                        color={"black"}
+                        align={"left"}
+                        mb={4}
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
+            >
                 내 문의내역
             </Typography>
             <Divider/>
@@ -43,7 +49,11 @@ export default function InquiryList() {
                     ))}
                 </List>
             ) : (
-                <Typography variant="h6" gutterBottom color={"gray"} align={"left"} mt={4} mb={4}>
+                <Typography variant="h6"
+                            gutterBottom
+                            color={"gray"}
+                            align={"left"} mt={4} mb={4}
+                            sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
                     문의하신 내역이 없습니다.
                 </Typography>
             )}
