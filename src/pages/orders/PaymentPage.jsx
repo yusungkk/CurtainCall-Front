@@ -76,7 +76,12 @@ const PaymentPage = () => {
       const detailData = await getProductDetail(productDetailId);
 
       setProduct(productData);
+      setDiscountRate(productData.discountRate);
+      setDiscountStartDate(productData.discountStartDate);
+      setDiscountEndDate(productData.discountEndDate);
+
       setProductDetail(detailData);
+      setPerformanceDate(detailData.performanceDate); // 공연 날짜 저장
     };
 
     if (productDetailId) loadProductData();
@@ -120,7 +125,7 @@ const PaymentPage = () => {
     setOrderId(orderResponse.orderId);
 
     // initiatePayment 함수 호출하여 결제 진행
-    initiatePayment(orderResponse.orderId, product, selectedSeats, paymentMethod, navigate);
+    initiatePayment(orderResponse.orderId, product, selectedSeats, paymentMethod, navigate, getFinalPrice());
 
     // 결제창이 열린 후 타이머 시작
     setIsPaymentStarted(true);
@@ -142,7 +147,15 @@ const PaymentPage = () => {
     return (
         <div className="payment-page">
             <h2>🎟 예매</h2>
-          {product && <PaymentInfo product={product} productDetail={productDetail} selectedSeats={selectedSeats} />}
+          {product && (
+              <PaymentInfo
+                  product={product}
+                  productDetail={productDetail}
+                  selectedSeats={selectedSeats}
+                  discountRate={discountRate}
+                  finalPrice={getFinalPrice()}
+              />
+          )}
 
             <label className="payment-label">결제 방법 선택</label>
             <select

@@ -12,7 +12,7 @@ export const savePayment = async (paymentData) => {
 };
 
 // 포트원 결제 실행 함수
-export const initiatePayment = (orderId, product, selectedSeats, paymentMethod, navigate) => {
+export const initiatePayment = (orderId, product, selectedSeats, paymentMethod, navigate, finalPrice) => {
     const { IMP } = window;
     IMP.init("imp67361044"); // 포트원 가맹점 식별 코드
 
@@ -22,7 +22,7 @@ export const initiatePayment = (orderId, product, selectedSeats, paymentMethod, 
             pay_method: paymentMethod,
             merchant_uid: `order_${orderId}`,
             name: product.productName,
-            amount: selectedSeats.length * product.price,
+            amount: selectedSeats.length * finalPrice,
             buyer_email: "test@example.com",
             buyer_name: "홍길동",
         },
