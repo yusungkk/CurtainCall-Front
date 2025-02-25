@@ -29,7 +29,7 @@ const MyPage = () => {
       try {
         const response = await getUserData();
 
-        if (!response) {
+        if (response === 403) {
           alert("로그인이 필요합니다.");
           navigate("/login");
         } else {
