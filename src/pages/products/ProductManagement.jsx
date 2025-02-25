@@ -19,7 +19,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import ProductSearch from "../../components/products/ProductSearch";
+import ProductSearch from "/src/components/products/ProductSearch";
 
 function ProductManagement() {
     let url;

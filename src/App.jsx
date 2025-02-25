@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductRegistration from "./pages/products/ProductRegistration";
-import ProductList from "./pages/products/productList";
+import ProductList from "/src/pages/products/productList";
 import ProductDetail from "./pages/products/ProductDetail";
 import ProductEditForm from "./pages/products/ProductEditForm.jsx";
 import BookingPage from "./pages/orders/BookingPage.jsx";

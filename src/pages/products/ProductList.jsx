@@ -1,35 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetcher } from "/src/utils/fetcher";
 import { PRODUCT_URL, RECOMMEND_URL } from "/src/utils/endpoint";
 import "/src/pages/products/ProductList.css";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const ProductList = () => {
+    let url;
     const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
     const [recommendedProducts, setRecommendedProducts] = useState([]); // 추천 상품 리스트
     const [chainRecommendedProducts, setChainRecommendedProducts] = useState([]); // 추천 상품 리스트
 
+    const getProducts = async (page, size) => {
+        url = `${PRODUCT_URL}?page=${page}&size=${size}`;
+
+        const response = await fetcher(url);
+        setProducts(response.content);
+        setTotalPages(response.totalPages);
+    };
+
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch(PRODUCT_URL, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setProducts(data.content);
-                } else {
-                    throw new Error(await response.json());
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        };
-
-        fetchProducts();
-    }, []);
+        getProducts(currentPage, 10);
+    }, [currentPage]);
 
     // ✅ 사용자 추천 상품 가져오기
     useEffect(() => {
@@ -39,7 +34,7 @@ const ProductList = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    credentials: 'include',
+                    credentials: "include",
                 });
 
                 if (response.ok) {
@@ -64,7 +59,7 @@ const ProductList = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    credentials: 'include',
+                    credentials: "include",
                 });
 
                 if (response.ok) {
@@ -83,28 +78,43 @@ const ProductList = () => {
 
     return (
         <div className="product-list-container">
-            <h2>🎭 상품 조회 페이지</h2>
+            <div className="product-list-header">
+                <h1 className="product-list-title">지금 상영중!</h1>
+            </div>
 
-            <div className="product-grid">
-                {products.map((product) => (
-                    <div key={product.productId} className="product-card">
-                        <Link to={`/products/${product.productId}`}>
-                            <img
-                                src={product.productImageUrl}
-                                alt={product.productName}
-                                className="product-image"
-                            />
+            <div className="product-list-body">
+                {currentPage > 0 && (
+                    <button onClick={() => setCurrentPage(currentPage - 1)}>
+                        <ArrowBackIosNewIcon />
+                    </button>
+                )}
 
-                            <h3 className="product-title">{product.productName}</h3>
+                <div className="product-grid">
+                    {products.map((product) => (
+                        <div key={product.productId} className="product-card">
+                            <Link to={`/products/${product.productId}`}>
+                                <img
+                                    src={product.productImageUrl}
+                                    alt={product.productName}
+                                    className="product-image"
+                                />
 
-                            <p className="product-place">{product.place}</p>
+                                <h3 className="product-title">{product.productName}</h3>
 
-                            <p className="product-dates">
-                                {product.startDate} ~ {product.endDate}
-                            </p>
-                        </Link>
-                    </div>
-                ))}
+                                <p className="product-place">{product.place}</p>
+
+                                <p className="product-dates">
+                                    {product.startDate} ~ {product.endDate}
+                                </p>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+                {currentPage < totalPages - 1 && (
+                    <button onClick={() => setCurrentPage(currentPage + 1)}>
+                        <ArrowForwardIosIcon />
+                    </button>
+                )}
             </div>
 
             {/* ✅ 사용자 추천 상품 */}
@@ -132,8 +142,6 @@ const ProductList = () => {
                 </>
             )}
 
-
-
             {/* ✅ 사용자 추천 상품 */}
             {chainRecommendedProducts.length > 0 && (
                 <>
@@ -158,8 +166,6 @@ const ProductList = () => {
                     </div>
                 </>
             )}
-
-
         </div>
     );
 };
