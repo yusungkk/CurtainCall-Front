@@ -1,9 +1,6 @@
 export const fetcher = async (endPoint, options = {}) => {
     try {
-        const headers = {
-            "Content-Type": "application/json",
-            ...options.headers,
-        };
+        const headers = options.body instanceof FormData ? {} : { "Content-Type": "application/json" };
 
         const response = await fetch(endPoint, {
             headers: headers,

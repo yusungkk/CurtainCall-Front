@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import {getProductByDetailId} from "../../api/productApi.js";
 
 const ProductInfo = ({ productDetailId }) => {
-  const [product, setProduct] = useState(null);
+    const [product, setProduct] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/v1/products/detail/${productDetailId}`)
-      .then((response) => setProduct(response.data))
-      .catch((error) => console.error("상품 정보 로드 실패:", error));
-  }, [productDetailId]);
+    useEffect(() => {
+        const loadProduct = async () => {
+            const data = await getProductByDetailId(productDetailId);
+            if (data) setProduct(data);
+        };
+
+        loadProduct();
+    }, [productDetailId]);
 
   if (!product) return <p>상품 정보를 불러오는 중...</p>;
 

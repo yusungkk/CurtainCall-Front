@@ -1,26 +1,32 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserData, getUserRole } from "../../api/userApi.js";
 import Update from "./Update";
 import UserList from "./UserList";
 import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  Container,
-  AppBar,
-  Toolbar
+    Box,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography,
+    Container,
+    AppBar,
+    Toolbar,
 } from "@mui/material";
 import CategoryManagement from "../../components/category/CategoryManagement.jsx";
 import SpecialProductManagement from "../../components/specialProduct/SpecialProductManagement.jsx";
+import FaqList from "../inquiry/FaqList.jsx";
+import InquiryAdminList from "../inquiry/InquiryAdminList.jsx";
+import ProductManagement from "/src/pages/products/ProductManagement.jsx";
 
 const MyPage = () => {
-  const [selectedMenu, setSelectedMenu] = useState("update");
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initMenu = queryParams.get("menu") || "update"; // 예매 성공 후 접근 시
+    const [selectedMenu, setSelectedMenu] = useState(initMenu);
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -80,7 +86,10 @@ const MyPage = () => {
               { key: "update", label: "관리자 정보 수정" },
               { key: "manage", label: "회원 관리" },
               { key: "category", label: "카테고리 관리" },
-              { key: "specialProduct", label: "특가상품 관리" }
+              { key: "specialProduct", label: "특가상품 관리" },
+              { key: "product", label: "상품 관리" },
+              { key: "faq", label: "FAQ 관리" },
+              { key: "inquiry", label: "문의 내역 보기" },
             ].map((item) => (
               <ListItem key={item.key} disablePadding>
                 <ListItemButton
@@ -99,7 +108,10 @@ const MyPage = () => {
           {selectedMenu === "update" && <Update user={user} />}
           {selectedMenu === "manage" && <UserList />}
           {selectedMenu === "category" && <CategoryManagement />}
+          {selectedMenu === "product" && <ProductManagement />}
           {selectedMenu === "specialProduct" && <SpecialProductManagement />}
+          {selectedMenu === "faq" && <FaqList />}
+          {selectedMenu === "inquiry" && <InquiryAdminList/>}
         </Container>
       </Box>
     </Box>

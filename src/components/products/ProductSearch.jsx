@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function ProductSearch({ onSearch }) {
     const [inputKeyword, setInputKeyword] = useState("");
@@ -16,19 +17,26 @@ export default function ProductSearch({ onSearch }) {
     };
 
     return (
-        <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <TextField
+                label="상품 검색"
                 variant="outlined"
                 size="small"
+                sx={{ width: 350 }}
                 type="text"
                 value={inputKeyword}
                 onChange={(e) => setInputKeyword(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="상품명 검색"
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon onClick={handleSearch} sx={{ cursor: "default" }} />
+                            </InputAdornment>
+                        ),
+                    },
+                }}
             />
-            <Button onClick={handleSearch} variant="contained" color="secondary">
-                검색
-            </Button>
         </Box>
     );
 }

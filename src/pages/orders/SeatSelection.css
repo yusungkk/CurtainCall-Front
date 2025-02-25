@@ -24,7 +24,7 @@
 .seat-row {
     display: grid;
     grid-template-columns: repeat(3, 40px) 50px repeat(8, 40px) 50px repeat(3, 40px);
-    gap: 5px;
+    gap: 8px;
     justify-content: center;
 }
 
@@ -37,8 +37,9 @@
     cursor: pointer;
     transition: 0.3s;
     text-align: center; /* 텍스트 정렬 */
-    display: flex; /* 내부 요소를 가운데 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
+    display: block;
+    /*justify-content: center; !* 가로 중앙 정렬 *!*/
+    font-family: sans-serif;
 }
 
 .seat:hover {
