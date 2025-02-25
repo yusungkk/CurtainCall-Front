@@ -190,7 +190,7 @@ const NavigationBar = () => {
                         ))
                 )}
             </Box>
-            <Divider sx={{ width: "100vw", bgcolor: "#e0e0e0", height: "1px", mb: 7, ml: -24 }} />
+            <Divider sx={{ position: "absolute",left: 0, right: 0, width: "100vw", bgcolor: "#e0e0e0", height: "1px", mb: 7}} />
         </>
     );
 };
