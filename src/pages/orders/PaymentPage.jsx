@@ -22,6 +22,13 @@ const PaymentPage = () => {
   const [isPaymentStarted, setIsPaymentStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
 
+  const [discountRate, setDiscountRate] = useState(0); // 할인율 저장
+  const [discountStartDate, setDiscountStartDate] = useState(null);
+  const [discountEndDate, setDiscountEndDate] = useState(null);
+  const [performanceDate, setPerformanceDate] = useState(null); // 공연 날짜 저장
+
+
+
   useEffect(() => {
     alert(
       "*** 주의: 결제하기 버튼을 누르신 후 5분 안에 결제가 완료되지 않으면 결제가 자동으로 취소되니 유의 바랍니다. ***\n(선택하신 좌석도 해제됩니다.)"
@@ -74,6 +81,26 @@ const PaymentPage = () => {
 
     if (productDetailId) loadProductData();
   }, [productDetailId]);
+
+  const getFinalPrice = () => {
+    if (!product) return 0;
+
+    // 할인 적용 여부 확인
+    if (performanceDate && discountStartDate && discountEndDate) {
+      const perfDate = new Date(performanceDate);
+      const startDate = new Date(discountStartDate);
+      const endDate = new Date(discountEndDate);
+
+      if (!isNaN(perfDate) && !isNaN(startDate) && !isNaN(endDate)) {
+        if (perfDate >= startDate && perfDate <= endDate) {
+          return Math.round(product.price * (1 - discountRate / 100)); // 할인 적용 가격 반환
+        }
+      }
+    }
+
+    return product.price; // 할인 적용 안됨 -> 원래 가격 반환
+  };
+
 
   const handlePayment = async () => {
     if (!product || !productDetail) {
