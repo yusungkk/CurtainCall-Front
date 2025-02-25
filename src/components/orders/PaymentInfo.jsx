@@ -1,4 +1,4 @@
-const PaymentInfo = ({ product, productDetail, selectedSeats }) => {
+const PaymentInfo = ({ product, productDetail, selectedSeats, discountRate, finalPrice }) => {
     return (
         <div className="payment-product-info">
             <img
@@ -13,7 +13,14 @@ const PaymentInfo = ({ product, productDetail, selectedSeats }) => {
                 <tr><td className="payment-info-title">날짜</td><td>{productDetail.performanceDate}</td></tr>
                 <tr><td className="payment-info-title">시간</td><td>{productDetail.time}</td></tr>
                 <tr><td className="payment-info-title">좌석</td><td>{selectedSeats.join(", ") || "선택된 좌석 없음"}</td></tr>
-                <tr><td className="payment-info-title">가격</td><td>{selectedSeats.length * product.price}원</td></tr>
+                <tr>
+                    <td className="payment-info-title">가격</td>
+                    <td>
+                        {discountRate > 0
+                            ? `${(finalPrice * selectedSeats.length).toLocaleString()}원 (${discountRate}% 할인 적용)`
+                            : `${(product.price * selectedSeats.length).toLocaleString()}원`}
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
