@@ -7,6 +7,7 @@ export default function CancelBtn({onClick, viewName}) {
             color={'error'}
             onClick={onClick}
             sx={{
+                fontFamily: "'Bareun_hipi', sans-serif",
                 fontSize: '15px',
                 borderRadius: '10px',
                 '&:focus': {

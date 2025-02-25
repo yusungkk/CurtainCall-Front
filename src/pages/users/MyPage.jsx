@@ -14,6 +14,7 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
+import InquiryList from "../inquiry/InquiryList.jsx";
 
 const MyPage = () => {
   const location = useLocation();
@@ -107,6 +108,7 @@ const MyPage = () => {
             {[
                 { key: "orders", label: "예매 내역" },
                 { key: "update", label: "회원 정보 수정" },
+                { key: "inquiry", label: "내가 문의한 내역" },
              ].map((item) => (
                 <ListItem key={item.key} disablePadding>
                   <ListItemButton
@@ -124,6 +126,7 @@ const MyPage = () => {
         <Container component="main" sx={{ flexGrow: 1, p: 3 }}>
           {selectedMenu === "update" && <Update user={user} />}
           {selectedMenu === "orders" && <OrderList user={user} orders={orders} updateOrders={updateOrders} />}
+          {selectedMenu === "inquiry" && <InquiryList />}
         </Container>
       </Box>
     </Box>

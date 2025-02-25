@@ -5,6 +5,7 @@ export default function LoadMoreBtn({ onClick, isDisabled, viewName }) {
         <Button
             variant="outlined"
             sx={{
+                fontFamily: "'Bareun_hipi', sans-serif",
                 fontSize: '20px',
                 fontWeight: 'bold',
                 borderColor: 'black',

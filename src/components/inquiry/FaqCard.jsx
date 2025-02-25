@@ -14,10 +14,10 @@ export default function FaqCard({icon: Icon, title, description, onClick = null}
             }}>
                 <Icon sx={{ mr: 2 }} />
                 <div>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1, fontFamily: "'Bareun_hipi', sans-serif", }}>
                         {title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'gray' }}>
+                    <Typography variant="body2" sx={{ color: 'gray', fontFamily: "'Bareun_hipi', sans-serif", }}>
                         {description}
                     </Typography>
                 </div>

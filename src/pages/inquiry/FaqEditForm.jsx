@@ -51,7 +51,7 @@ function FaqEditForm() {
 
     return (
         <>
-            <Typography variant="h3" gutterBottom sx={{color: 'black'}}>
+            <Typography variant="h3" gutterBottom sx={{color: 'black', fontFamily: "'Bareun_hipi', sans-serif",}}>
                 FAQ 수정
             </Typography>
             <CommonFaqForm
