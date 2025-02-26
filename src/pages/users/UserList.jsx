@@ -110,9 +110,10 @@ const UserList = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>이름</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>이메일</TableCell>
-              <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>이름</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>이메일</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>전화번호</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
                 상태 변경
               </TableCell>
             </TableRow>
@@ -120,9 +121,10 @@ const UserList = () => {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id} sx={{ borderBottom: "1px solid #e0e0e0" }}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell align="right">
+                <TableCell sx={{ textAlign: "center" }}>{user.name}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{user.email}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{user.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}</TableCell>
+                <TableCell  sx={{ textAlign: "center" }}>
                   <Button
                     variant="contained"
                     color={user.active ? "error" : "success"}
