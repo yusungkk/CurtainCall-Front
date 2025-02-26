@@ -11,9 +11,8 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import logo from "../../assets/img.png";
-import { getUserData, logout } from "../../api/userApi";
+import { getUserData, logout, getUserRole } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
-// CategoryManagement에서 사용하는 API 함수 import
 import { getActiveCategories } from "../../api/categoryApi.js";
 
 const NavigationBar = () => {
@@ -21,19 +20,21 @@ const NavigationBar = () => {
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
+    const [role, setRole] = useState(false);
     const [categories, setCategories] = useState([]);
     const [loadingCategories, setLoadingCategories] = useState(false);
 
-    // 컴포넌트 마운트 시 사용자 정보와 활성 카테고리 fetch
+    // 컴포넌트 마운트 시 카테고리 및 사용자 데이터 불러오기
     useEffect(() => {
-        // 사용자 데이터 fetch
         const fetchUserData = async () => {
             try {
-                const userData = await getUserData();
+                const userData = await getUserData(); // 로그인 여부 확인
                 if (userData === 403) {
                     setUser(null);
                 } else {
                     setUser(userData);
+                    const userRole = await getUserRole();
+                    setRole(userRole);
                 }
             } catch (error) {
                 setUser(null);
@@ -42,7 +43,6 @@ const NavigationBar = () => {
             }
         };
 
-        // 활성 카테고리 fetch (CategoryManagement와 동일한 API 사용)
         const fetchCategories = async () => {
             setLoadingCategories(true);
             try {
@@ -51,7 +51,7 @@ const NavigationBar = () => {
                     setCategories(data);
                 }
             } catch (error) {
-                console.error("카테고리 불러오기 오류:", error);
+                console.error("Error fetching categories:", error);
             } finally {
                 setLoadingCategories(false);
             }
@@ -61,6 +61,8 @@ const NavigationBar = () => {
         fetchCategories();
     }, []);
 
+
+    // 검색 기능
     const handleSearch = () => {
         alert(`검색어: ${searchText}`);
     };
@@ -69,6 +71,7 @@ const NavigationBar = () => {
         navigate(`/?genre=${categoryName}`);
     };
 
+    // 로그아웃 처리
     const handleLogout = async () => {
         const confirmed = window.confirm("로그아웃 하시겠습니까?");
         if (confirmed) {
@@ -90,6 +93,7 @@ const NavigationBar = () => {
             {/* 상단: 로고, 검색창, 로그인/회원가입/마이페이지 */}
             <AppBar position="static" color="inherit" sx={{ boxShadow: 0, mb: 3 }}>
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
+                    {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
                         <img
                             src={logo}
@@ -97,6 +101,7 @@ const NavigationBar = () => {
                             style={{ width: "200px", marginLeft: "-16px" }}
                             onClick={() => navigate("/")}
                         />
+                        {/* 검색창 */}
                         <TextField
                             variant="outlined"
                             size="medium"
@@ -105,7 +110,10 @@ const NavigationBar = () => {
                             onChange={(e) => setSearchText(e.target.value)}
                             sx={{ width: "400px" }}
                             InputProps={{
-                                sx: { height: "50px", padding: "5px" },
+                                sx: {
+                                    height: "50px",
+                                    padding: "5px",
+                                },
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleSearch}>
@@ -116,16 +124,18 @@ const NavigationBar = () => {
                             }}
                         />
                     </Box>
+
+                    {/* 오른쪽 영역 */}
                     <Box display="flex" gap={2}>
                         {loadingUser ? (
                             <CircularProgress size={20} />
                         ) : user ? (
                             <>
                                 <a
-                                    href="/myPage"
+                                    href={role ? "/admin" : "/myPage"}
                                     style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
                                 >
-                                    마이페이지
+                                    {role ? "관리자 페이지" : "마이페이지"}
                                 </a>
                                 <a
                                     onClick={(e) => {
@@ -209,17 +219,8 @@ const NavigationBar = () => {
                         ))
                 )}
             </Box>
-            <Divider
-                sx={{
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    width: "100vw",
-                    bgcolor: "#e0e0e0",
-                    height: "1px",
-                    mb: 7,
-                }}
-            />
+
+            <Divider sx={{ position: "absolute", left: 0, right: 0, bgcolor: "#e0e0e0", height: "1px", mb: 7 }} />
         </>
     );
 };
