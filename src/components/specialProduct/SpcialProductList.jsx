@@ -48,7 +48,7 @@ const SpecialProductList = () => {
 
     return (
         <div className="product-list-container">
-            <h1 className="discount-title">지금 할인중!</h1>
+            <h1 className="product-list-title">지금 할인중!</h1>
 
             <div className="product-grid">
                 {displayedProducts.map((specialProductDto) => (
@@ -64,10 +64,10 @@ const SpecialProductList = () => {
                             <p className="product-dates">
                                 {specialProductDto.discountStartDate} ~ {specialProductDto.discountEndDate}
                             </p>
-                            {/* Discount rate and discounted price */}
+
                             <p className="product-discount">
-                                <span className="discount-rate">{specialProductDto.discountRate}%</span>
-                                <span className="discount-price">
+                                <span className="specialProduct-rate">{specialProductDto.discountRate}%</span>
+                                <span className="specialProduct-price">
                                     {getDiscountedPrice(specialProductDto.price, specialProductDto.discountRate).toLocaleString()}원
                                 </span>
                             </p>
