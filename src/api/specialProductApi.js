@@ -1,5 +1,5 @@
 import { fetcher } from "/src/utils/fetcher";
-import { ACTIVE_SPECIAL_PRODUCT_URL, SPECIAL_PRODUCT_URL } from "/src/utils/endpoint";
+import {ACTIVE_SPECIAL_PRODUCT_URL, SEARCH_PRODUCTS_URL, SPECIAL_PRODUCT_URL} from "/src/utils/endpoint";
 
 
 //삭제되지 않은 특가상품 조회
@@ -49,4 +49,10 @@ export const cancelApproveSpecialProduct = async (id) => {
 // 특가상품 삭제 (soft delete)
 export const deleteSpecialProduct = async (id) => {
     return await fetcher(`${SPECIAL_PRODUCT_URL}/${id}`, { method: 'DELETE' });
+};
+
+// 특가상품 등록시 상품 검색 기능
+export const searchProducts = async (keyword) => {
+    const url = `${SEARCH_PRODUCTS_URL}?keyword=${encodeURIComponent(keyword)}`;
+    return await fetcher(url);  // Use the fetcher utility to send the request
 };

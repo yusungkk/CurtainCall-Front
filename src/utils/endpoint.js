@@ -68,6 +68,8 @@ export const PAYMENT_URL = `${API_VERSION_V1}/payment`;
 
 //special-product
 export const SPECIAL_PRODUCT_URL = `${API_VERSION_V1}/specialProduct`;
+export const SEARCH_PRODUCTS_URL = `${API_VERSION_V1}/products/special-products/search`;
+
 
 
 //홈화면

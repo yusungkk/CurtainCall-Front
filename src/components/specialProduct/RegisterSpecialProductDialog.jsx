@@ -14,6 +14,7 @@ import {
     Snackbar,
     Alert
 } from "@mui/material";
+import {searchProducts} from "../../api/specialProductApi.js";
 
 const BASE_URL = "http://localhost:8080/api/v1/specialProduct";
 
@@ -41,21 +42,22 @@ const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
     const handleSearch = async () => {
         if (!searchKeyword.trim()) return;
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/api/v1/products/search?keyword=${encodeURIComponent(searchKeyword)}`
-            );
-            if (response.ok) {
-                const data = await response.json();
-                setSearchResults(data.content); // 페이지네이션 대응
-            } else {
-                showAlert("상품 검색 실패", "error");
-            }
-        } catch (error) {
-            showAlert("상품 검색 중 오류 발생", "error");
-            console.error("상품 검색 중 오류 발생", error);
+        const response = await searchProducts(searchKeyword);
+
+        // 응답이 비어있거나 error가 있을 때 처리
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
+        }
+
+        // response가 배열인지 확인 후, 배열일 경우만 상태 업데이트
+        if (Array.isArray(response)) {
+            setSearchResults(response); // 페이지네이션 대응
+        } else {
+            showAlert("검색 결과가 없습니다.", "warning");
         }
     };
+
 
     // 🟢 상품 선택 시 정보 설정
     const handleProductSelect = (product) => {
