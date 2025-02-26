@@ -264,7 +264,7 @@ const CategoryManagement = () => {
 
                             {/* 생성 버튼 - 오른쪽으로 이동 및 검색 버튼 크기와 맞춤 */}
                             <Button
-                                variant="contained"
+                                variant="outlined"
                                 size="small"
                                 onClick={handleCreateCategory}
                                 sx={{
@@ -303,7 +303,7 @@ const CategoryManagement = () => {
                                                     수정
                                                 </Button>
                                                 <Button
-                                                    variant="contained"
+                                                    variant="outlined"
                                                     size="small"
                                                     color="error"
                                                     onClick={() => openDeleteDialog(parent.id)}
@@ -319,7 +319,7 @@ const CategoryManagement = () => {
                                                         <Chip
                                                             key={child.id}
                                                             label={child.name}
-                                                            color="primary"
+                                                            // color="primary"
                                                             sx={{ '& .MuiChip-deleteIcon': { color: 'red' } }}
                                                             onClick={() => openEditDialog(child)}
                                                             onDelete={() => openDeleteDialog(child.id)}
@@ -376,7 +376,7 @@ const CategoryManagement = () => {
                                         <TableCell>{cat.name}</TableCell>
                                         <TableCell>{cat.parentId || '-'}</TableCell>
                                         <TableCell align="center">
-                                            <Button variant="contained" size="small" onClick={() => handleRestoreCategory(cat.id)}>
+                                            <Button variant="outlined" size="small" onClick={() => handleRestoreCategory(cat.id)}>
                                                 복구
                                             </Button>
                                         </TableCell>
@@ -409,7 +409,7 @@ const CategoryManagement = () => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleUpdateCategory}>
+                    <Button variant="outlined" onClick={handleUpdateCategory}>
                         수정
                     </Button>
                     <Button onClick={closeEditDialog}>취소</Button>
