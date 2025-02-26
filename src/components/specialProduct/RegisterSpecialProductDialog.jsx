@@ -16,8 +16,6 @@ import {
 } from "@mui/material";
 import {registerSpecialProduct, searchProducts} from "../../api/specialProductApi.js";
 
-const BASE_URL = "http://localhost:8080/api/v1/specialProduct";
-
 const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const [searchResults, setSearchResults] = useState([]);

@@ -44,8 +44,8 @@ const statusLabels = {
 };
 
 const statusColors = {
-    UPCOMING: 'orange',
-    ACTIVE: 'green',
+    UPCOMING: 'black',
+    ACTIVE: 'red',
     DELETED: 'red',
 };
 
@@ -321,7 +321,13 @@ const SpecialProductManagement = () => {
                                             ) : (
                                                 <Button
                                                     variant="contained"
-                                                    color="warning"
+                                                    sx={{
+                                                        backgroundColor: "red", // 배경색을 #800000로 설정
+                                                        color: "#ffffff", // 글자 색상은 흰색으로 설정
+                                                        '&:hover': {
+                                                            backgroundColor: "#B30000", // hover 시 더 진한 빨간색으로 설정
+                                                        },
+                                                    }}
                                                     size="small"
                                                     onClick={() => handleCancelApproveProduct(specialProductDto.specialProductId)}
                                                 >
@@ -330,10 +336,10 @@ const SpecialProductManagement = () => {
                                             )}
                                         </TableCell>
                                         <TableCell align="center">
-                                            <IconButton color="secondary" size="small" onClick={() => openEditDialog(specialProductDto)}>
+                                            <IconButton size="small" onClick={() => openEditDialog(specialProductDto)}>
                                                 <EditIcon />
                                             </IconButton>
-                                            <IconButton color="error" size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
+                                            <IconButton size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
@@ -345,7 +351,28 @@ const SpecialProductManagement = () => {
 
                     {/* 페이지네이션 */}
                     <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center' }}>
-                        <Pagination count={totalPages} page={currentPage + 1} onChange={handlePageChange} color="secondary" size="small" />
+                        <Pagination
+                            count={totalPages}
+                            page={currentPage + 1}
+                            onChange={handlePageChange}
+                            sx={{
+                                "& .MuiPaginationItem-page.Mui-selected": {
+                                    backgroundColor: "#800000", // 선택된 페이지 배경색
+                                    color: "#ffffff", // 선택된 페이지 숫자 색상
+                                },
+
+                                "& .MuiPaginationItem-page": {
+                                    color: "#555555", // 기본 페이지 숫자 색상
+                                    "&:hover": {
+                                        backgroundColor: "#F5F5F5", // 기본 페이지 숫자 hover 시 배경색
+                                    },
+                                },
+
+                                "& .MuiPaginationItem-ellipsis": {
+                                    color: "#555555", // 생략 부호 색상
+                                },
+                            }}
+                        />
                     </Box>
                 </Box>
             )}
