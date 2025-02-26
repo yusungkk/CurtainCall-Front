@@ -7,9 +7,8 @@ import "/src/pages/products/ProductList.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
-    getProducts,
     recommendedProductsByCategory,
-    recommendedProductsBySequence
+    recommendedProductsBySequence,
 } from "../../api/productApi.js";
 
 const ProductList = ({ genre }) => {
@@ -27,11 +26,7 @@ const ProductList = ({ genre }) => {
     }, [genre]);
 
     const getProducts = async (page, size) => {
-        if (genre === "all") {
-            url = `${PRODUCT_URL}?page=${page}&size=${size}`;
-        } else {
-            url = `${PRODUCT_URL}/search?genre=${genre}&page=${page}&size=${size}`;
-        }
+        url = `${PRODUCT_URL}/search?genre=${genre}&page=${page}&size=${size}`;
 
         const response = await fetcher(url);
         setProducts(response.content);
@@ -42,38 +37,7 @@ const ProductList = ({ genre }) => {
         getProducts(currentPage, 10);
     }, [category, currentPage]);
 
-    // ✅ 사용자 추천 상품 가져오기
-    // const getProducts = async (page, size) => {
-    //     url = `${PRODUCT_URL}?page=${page}&size=${size}`;
-    //
-    //     const response = await fetcher(url);
-    //     setProducts(response.content);
-    //     setTotalPages(response.totalPages);
-    // };
-    //
-    // useEffect(() => {
-    //     getProducts(currentPage, 10);
-    // }, [currentPage]);
-
-    // // ✅ 사용자 추천 상품 가져오기
-    // useEffect(() => {
-    //     const fetchRecommendedProducts = async () => {
-    //         try {
-    //             const response = await fetch(`${RECOMMEND_URL}/click`, {
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 credentials: "include",
-    //             });
-    // const [recommendedProducts, setRecommendedProducts] = useState([]);
-    // const [chainRecommendedProducts, setChainRecommendedProducts] = useState([]);
-
     useEffect(() => {
-        const loadProducts = async () => {
-            const data = await getProducts();
-            if (data) setProducts(data.content);
-        };
-
         const loadRecommendedProductsByCategory = async () => {
             const data = await recommendedProductsByCategory();
             if (data) setRecommendedProducts(data);
@@ -84,7 +48,6 @@ const ProductList = ({ genre }) => {
             if (data) setChainRecommendedProducts(data);
         };
 
-        loadProducts();
         loadRecommendedProductsByCategory();
         loadRecommendedProductsBySequence();
     }, []);
@@ -132,59 +95,14 @@ const ProductList = ({ genre }) => {
                 )}
             </div>
 
-            {/* ✅ 사용자 추천 상품 */}
-            {recommendedProducts.length > 0 && (
-                <>
-                    <h2>🔥 자주 클릭하신 장르의 인기 작품이에요! </h2>
-                    <div className="product-grid">
-                        {recommendedProducts.map((product) => (
-                            <div key={product.productId} className="product-card">
-                                <Link to={`/products/${product.productId}`}>
-                                    <img
-                                        src={product.productImageUrl}
-                                        alt={product.productName}
-                                        className="product-image"
-                                    />
-                                    <h3 className="product-title">{product.productName}</h3>
-                                    <p className="product-place">{product.place}</p>
-                                    <p className="product-dates">
-                                        {product.startDate} ~ {product.endDate}
-                                    </p>
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                </>
-            )}
-
-            {/* ✅ 사용자 추천 상품 */}
-            {chainRecommendedProducts.length > 0 && (
-                <>
-                    <h2>🔥 다른 이용자들이 연속적으로 클릭한 상품을 추천해드려요! </h2>
-                    <div className="product-grid">
-                        {chainRecommendedProducts.map((product) => (
-                            <div key={product.productId} className="product-card">
-                                <Link to={`/products/${product.productId}`}>
-                                    <img
-                                        src={product.productImageUrl}
-                                        alt={product.productName}
-                                        className="product-image"
-                                    />
-                                    <h3 className="product-title">{product.productName}</h3>
-                                    <p className="product-place">{product.place}</p>
-                                    <p className="product-dates">
-                                        {product.startDate} ~ {product.endDate}
-                                    </p>
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                </>
-            )}
-            <h2>🎭 상품 조회 페이지</h2>
-            <ProductGrid title="전체 상품" products={products} />
-            <ProductGrid title="🔥 자주 클릭하신 장르의 인기 작품이에요!" products={recommendedProducts} />
-            <ProductGrid title="🔥 다른 이용자들이 연속적으로 클릭한 상품을 추천해드려요!" products={chainRecommendedProducts} />
+            <ProductGrid
+                title="🔥 자주 클릭하신 장르의 인기 작품이에요!"
+                products={recommendedProducts}
+            />
+            <ProductGrid
+                title="🔥 다른 이용자들이 연속적으로 클릭한 상품을 추천해드려요!"
+                products={chainRecommendedProducts}
+            />
         </div>
     );
 };
