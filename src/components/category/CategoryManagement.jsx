@@ -238,9 +238,9 @@ const CategoryManagement = () => {
 
     return (
         <Container sx={{ mt: 4 }}>
-            <Typography variant="h4" gutterBottom align="center">
-                카테고리 관리
-            </Typography>
+            {/*<Typography variant="h4" gutterBottom align="center">*/}
+            {/*    카테고리 관리*/}
+            {/*</Typography>*/}
 
             <Tabs value={tabIndex} onChange={handleTabChange}>
                 <Tab label="카테고리" />

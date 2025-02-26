@@ -38,7 +38,9 @@ export default function CommonFaqForm({onSubmit, onClose,  formData, onChange, s
                             onChange={onChange}
                         >
                             {questionTypes.map((faq, index) => (
-                                <MenuItem key={index} value={faq.name}>{faq.value}</MenuItem>
+                                <MenuItem key={index} value={faq.name}
+                                          sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
+                                    {faq.value}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>

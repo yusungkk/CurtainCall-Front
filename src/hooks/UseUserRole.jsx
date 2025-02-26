@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {getUserRole} from "/src/api/userApi.js";
 
-export default function UseUserRole() {
+export default function UseUserRole(setActive) {
     const [role, setRole] = useState("");
 
     useEffect(() => {
@@ -9,16 +9,18 @@ export default function UseUserRole() {
             const data = await getUserRole();
             if (data === 403) {
                 setRole("ANONYMOUS");
+
                 return;
             }
             if (data === true) {
                 setRole("ADMIN");
+                setActive(true);
+                window.sessionStorage.setItem("toggleActive", "true")
                 return;
             }
             setRole("USER");
         };
         fetchUserRole();
     }, [role]);
-
     return [role];
 };

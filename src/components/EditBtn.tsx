@@ -10,6 +10,7 @@ export default function EditBtn({onClick, viewName}) {
                 marginLeft: '10px',
                 fontSize: '15px',
                 borderRadius: '10px',
+                fontFamily: "'Bareun_hipi', sans-serif",
                 '&:focus': {
                     outline: 'none',
                 },

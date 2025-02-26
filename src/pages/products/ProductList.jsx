@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetcher } from "/src/utils/fetcher";
 import { PRODUCT_URL, RECOMMEND_URL } from "/src/utils/endpoint";
+import ProductGrid from "/src/components/products/ProductGrid";
 import "/src/pages/products/ProductList.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import {
+    getProducts,
+    recommendedProductsByCategory,
+    recommendedProductsBySequence
+} from "../../api/productApi.js";
 
 const ProductList = ({ genre }) => {
     let url;
@@ -37,53 +43,50 @@ const ProductList = ({ genre }) => {
     }, [category, currentPage]);
 
     // ✅ 사용자 추천 상품 가져오기
-    useEffect(() => {
-        const fetchRecommendedProducts = async () => {
-            try {
-                const response = await fetch(`${RECOMMEND_URL}/click`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                });
+    // const getProducts = async (page, size) => {
+    //     url = `${PRODUCT_URL}?page=${page}&size=${size}`;
+    //
+    //     const response = await fetcher(url);
+    //     setProducts(response.content);
+    //     setTotalPages(response.totalPages);
+    // };
+    //
+    // useEffect(() => {
+    //     getProducts(currentPage, 10);
+    // }, [currentPage]);
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setRecommendedProducts(data);
-                } else {
-                    throw new Error(await response.json());
-                }
-            } catch (e) {
-                console.log(e);
-            }
+    // // ✅ 사용자 추천 상품 가져오기
+    // useEffect(() => {
+    //     const fetchRecommendedProducts = async () => {
+    //         try {
+    //             const response = await fetch(`${RECOMMEND_URL}/click`, {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 credentials: "include",
+    //             });
+    // const [recommendedProducts, setRecommendedProducts] = useState([]);
+    // const [chainRecommendedProducts, setChainRecommendedProducts] = useState([]);
+
+    useEffect(() => {
+        const loadProducts = async () => {
+            const data = await getProducts();
+            if (data) setProducts(data.content);
         };
 
-        fetchRecommendedProducts();
-    }, []);
-
-    // ✅ 연쇄 상품
-    useEffect(() => {
-        const fetchChainRecommendedProducts = async () => {
-            try {
-                const response = await fetch(`${RECOMMEND_URL}/chain`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setChainRecommendedProducts(data);
-                } else {
-                    throw new Error(await response.json());
-                }
-            } catch (e) {
-                console.log(e);
-            }
+        const loadRecommendedProductsByCategory = async () => {
+            const data = await recommendedProductsByCategory();
+            if (data) setRecommendedProducts(data);
         };
 
-        fetchChainRecommendedProducts();
+        const loadRecommendedProductsBySequence = async () => {
+            const data = await recommendedProductsBySequence();
+            if (data) setChainRecommendedProducts(data);
+        };
+
+        loadProducts();
+        loadRecommendedProductsByCategory();
+        loadRecommendedProductsBySequence();
     }, []);
 
     return (
@@ -178,6 +181,10 @@ const ProductList = ({ genre }) => {
                     </div>
                 </>
             )}
+            <h2>🎭 상품 조회 페이지</h2>
+            <ProductGrid title="전체 상품" products={products} />
+            <ProductGrid title="🔥 자주 클릭하신 장르의 인기 작품이에요!" products={recommendedProducts} />
+            <ProductGrid title="🔥 다른 이용자들이 연속적으로 클릭한 상품을 추천해드려요!" products={chainRecommendedProducts} />
         </div>
     );
 };

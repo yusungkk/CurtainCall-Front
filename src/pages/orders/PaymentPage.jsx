@@ -1,8 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import "../../styles/orders/PaymentPage.css";
+import "./PaymentPage.css";
 import { getUserData } from "/src/api/userApi.js";
+import { getProductByDetailId, getProductDetail } from "/src/api/productApi.js";
+import { createOrder, cancelOrder } from "/src/api/orderApi.js";
+import { initiatePayment } from "/src/api/paymentApi.js";
+import PaymentInfo from "../../components/orders/PaymentInfo";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -11,10 +14,20 @@ const PaymentPage = () => {
     productDetailId: null,
     selectedSeats: [],
   };
-  const [timeLeft, setTimeLeft] = useState(null); // 타이머 시작 전까지는 null
-  const [isPaymentStarted, setIsPaymentStarted] = useState(false); // 결제 시작 여부
-  const [orderId, setOrderId] = useState(null);
+  const [product, setProduct] = useState(null);
+  const [productDetail, setProductDetail] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [orderId, setOrderId] = useState(null);
+  const [isPaymentStarted, setIsPaymentStarted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(null);
+
+  const [discountRate, setDiscountRate] = useState(0); // 할인율 저장
+  const [discountStartDate, setDiscountStartDate] = useState(null);
+  const [discountEndDate, setDiscountEndDate] = useState(null);
+  const [performanceDate, setPerformanceDate] = useState(null); // 공연 날짜 저장
+
+
 
   useEffect(() => {
     alert(
@@ -57,27 +70,42 @@ const PaymentPage = () => {
     }
   }, [timeLeft, isPaymentStarted]);
 
-  console.log("현재 productDetailId:", productDetailId);
-
-  const [product, setProduct] = useState(null);
-  const [productDetail, setProductDetail] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState("card"); // 기본 결제 방법 설정
-
   useEffect(() => {
-    // 상품 정보 가져오기
-    axios
-      .get(`http://localhost:8080/api/v1/products/detail/${productDetailId}`)
-      .then((response) => setProduct(response.data))
-      .catch((error) => console.error("상품 정보 로드 실패:", error));
+    const loadProductData = async () => {
+      const productData = await getProductByDetailId(productDetailId);
+      const detailData = await getProductDetail(productDetailId);
+
+      setProduct(productData);
+      setDiscountRate(productData.discountRate);
+      setDiscountStartDate(productData.discountStartDate);
+      setDiscountEndDate(productData.discountEndDate);
+
+      setProductDetail(detailData);
+      setPerformanceDate(detailData.performanceDate); // 공연 날짜 저장
+    };
+
+    if (productDetailId) loadProductData();
   }, [productDetailId]);
 
-  useEffect(() => {
-    // 상품 세부 정보 가져오기
-    axios
-      .get(`http://localhost:8080/api/v1/products/details/${productDetailId}`)
-      .then((response) => setProductDetail(response.data))
-      .catch((error) => console.error("상품 세부 정보 로드 실패:", error));
-  }, [productDetailId]);
+  const getFinalPrice = () => {
+    if (!product) return 0;
+
+    // 할인 적용 여부 확인
+    if (performanceDate && discountStartDate && discountEndDate) {
+      const perfDate = new Date(performanceDate);
+      const startDate = new Date(discountStartDate);
+      const endDate = new Date(discountEndDate);
+
+      if (!isNaN(perfDate) && !isNaN(startDate) && !isNaN(endDate)) {
+        if (perfDate >= startDate && perfDate <= endDate) {
+          return Math.round(product.price * (1 - discountRate / 100)); // 할인 적용 가격 반환
+        }
+      }
+    }
+
+    return product.price; // 할인 적용 안됨 -> 원래 가격 반환
+  };
+
 
   const handlePayment = async () => {
     if (!product || !productDetail) {
@@ -85,161 +113,49 @@ const PaymentPage = () => {
       return;
     }
 
-    // 초기 주문은 PENDING 상태로 생성
-    const orderData = {
-      userId: userId,
-      productDetailId: Number(productDetailId),
-      price: selectedSeats.length * product.price,
-      selectedSeats,
-    };
+    const orderData = { userId, productDetailId, price: selectedSeats.length * product.price, selectedSeats };
+    const orderResponse = await createOrder(orderData);
 
-    try {
-      const response = await axios.post("http://localhost:8080/api/orders/create", orderData);
-
-      console.log("주문 생성 완료 (PENDING 상태):", response.data.orderId);
-      setOrderId(response.data.orderId);
-      initiatePayment(response.data.orderId);
-    } catch (error) {
-      console.error("주문 생성 실패:", error);
-      if (error.response && error.response.status === 400) {
-        alert("해당 좌석은 이미 선택되었습니다. 다른 좌석으로 다시 시도해주세요."); // 예약된 좌석 알림
-      } else {
-        alert("주문 생성에 실패했습니다.");
-      }
-      navigate(`/seat-selection/${productDetailId}`, { state: { productDetailId } });
+    if (!orderResponse) {
+      alert("해당 좌석은 이미 선택되었습니다.");
+      navigate(`/seat-selection/${productDetailId}`);
       return;
     }
-  };
 
-  const initiatePayment = (orderId) => {
-    const { IMP } = window;
-    IMP.init("imp67361044"); // 포트원 가맹점 식별 코드 (고정)
+    setOrderId(orderResponse.orderId);
 
-    IMP.request_pay(
-      {
-        pg: "html5_inicis", // 고정
-        pay_method: paymentMethod,
-        merchant_uid: `order_${orderId}`,
-        name: product.productName,
-        amount: selectedSeats.length * product.price,
-        buyer_email: "test@example.com",
-        buyer_name: "홍길동",
-      },
-      async (rsp) => {
-        // 결제 성공시
-        if (rsp.success) {
-          const paymentData = {
-            paymentNo: rsp.imp_uid,
-            payStatus: rsp.status,
-            price: rsp.paid_amount,
-            cardName: rsp.card_name,
-            orderId: orderId,
-          };
-
-          // 결제 정보 저장
-          try {
-            const response = await fetch("http://localhost:8080/api/v1/payment", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(paymentData),
-            });
-
-            if (response.status === 201) {
-              try {
-                await axios.put(`http://localhost:8080/api/orders/${orderId}/complete`);
-                alert("결제 성공! 주문이 완료되었습니다.");
-                navigate("/confirmation", { state: { orderId } });
-              } catch (error) {
-                console.error("주문 상태 업데이트 실패:", error);
-                alert("결제는 성공했지만 주문 상태를 업데이트하는 중 오류가 발생했습니다.");
-              }
-            }
-          } catch (error) {
-            console.log("결제 중 오류가 발생했습니다", error);
-          }
-        } else {
-          console.error("결제 실패:", rsp);
-          try {
-            await axios.put(`http://localhost:8080/api/orders/${orderId}/fail`);
-            alert(`결제 실패: ${rsp.error_msg}`);
-          } catch (error) {
-            console.error("주문 실패 상태 업데이트 오류:", error);
-          }
-        }
-      }
-    );
+    // initiatePayment 함수 호출하여 결제 진행
+    initiatePayment(orderResponse.orderId, product, selectedSeats, paymentMethod, navigate, getFinalPrice());
 
     // 결제창이 열린 후 타이머 시작
     setIsPaymentStarted(true);
-    setTimeLeft(5 * 60); // n분
+    setTimeLeft(1 * 10);
   };
 
   const handleCancelPayment = async () => {
+    await cancelOrder(orderId);
     alert("5분이 지나 결제가 자동으로 취소되었습니다. 좌석을 다시 선택해주세요.");
 
     if (window.IMP) {
       window.IMP.close();
     }
 
-    try {
-      await axios.post(`http://localhost:8080/api/orders/${orderId}/cancel`);
-    } catch (error) {
-      console.error("주문 취소 실패:", error);
-    }
-    navigate(`/seat-selection/${productDetailId}`, { state: { productDetailId } });
+    navigate(`/seat-selection/${productDetailId}`);
   };
 
 
     return (
         <div className="payment-page">
             <h2>🎟 예매</h2>
-            <div className="payment-product-info">
-                {product ? (
-                    <>
-                        <img
-                            className="payment-product-image"
-                            src={product.productImageUrl}
-                            alt={product.productName}
-                        />
-                        <table className="payment-info-table">
-                            <tbody>
-                            <tr>
-                                <td className="payment-info-title">제목</td>
-                                <td>{product.productName}</td>
-                            </tr>
-                            <tr>
-                                <td className="payment-info-title">장소</td>
-                                <td>{product.place}</td>
-                            </tr>
-                            <tr>
-                                <td className="payment-info-title">날짜</td>
-                                <td>{productDetail.performanceDate}</td>
-                            </tr>
-                            <tr>
-                                <td className="payment-info-title">시간</td>
-                                <td>{productDetail.time}</td>
-                            </tr>
-                            <tr>
-                                <td className="payment-info-title">좌석</td>
-                                <td>
-                                    {selectedSeats.length > 0
-                                        ? selectedSeats.join(", ")
-                                        : "선택된 좌석 없음"}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="payment-info-title">가격</td>
-                                <td>{selectedSeats.length * product.price}원</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </>
-                ) : (
-                    <p>상품 정보를 불러오는 중...</p>
-                )}
-            </div>
+          {product && (
+              <PaymentInfo
+                  product={product}
+                  productDetail={productDetail}
+                  selectedSeats={selectedSeats}
+                  discountRate={discountRate}
+                  finalPrice={getFinalPrice()}
+              />
+          )}
 
             <label className="payment-label">결제 방법 선택</label>
             <select

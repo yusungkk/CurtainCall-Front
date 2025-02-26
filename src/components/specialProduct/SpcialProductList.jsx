@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ACTIVE_SPECIAL_PRODUCT_URL } from "../../utils/endpoint";
 // import "C:/Users/User/Desktop/curtainCall/backstage-front/src/pages/products/productList.css";
 import  "./SpecialProductList.css";
+import "/src/pages/products/productList.css";
+import  "./SpecialProductList.css";
 
 const SpecialProductList = () => {
     const [specialProducts, setSpecialProducts] = useState([]);

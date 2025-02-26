@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 
 const BookingSummary = ({ selectedSeats }) => {
     useEffect(() => {
-        console.log("🛠 선택한 좌석이 업데이트됨:", selectedSeats);
+        console.log("선택한 좌석이 업데이트됨:", selectedSeats);
     }, [selectedSeats]);
 
     return (
