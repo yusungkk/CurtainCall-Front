@@ -51,6 +51,7 @@ export const GET_SEARCH_USER_URL = (keyword, page, size) => `${API_VERSION_V1}/u
 
 //==카테고리 관련 API URL==//
 export const CATEGORY_URL = `${API_VERSION_V1}/categories`;
+export const DELETED_CATEGORY_URL = `${API_VERSION_V1}/categories/findAllDeleted`;
 
 
 //==주문 관련 API URL==//

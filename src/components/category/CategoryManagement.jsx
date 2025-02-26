@@ -29,8 +29,8 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CATEGORY_URL } from "/src/utils/endpoint";
 import {fetcher} from "../../utils/fetcher.js";
-import {getActiveCategories} from "../../api/categoryApi.js";
-// const BASE_URL = 'http://localhost:8080/api/v1/categories';
+import {getActiveCategories, getDeletedCategories} from "../../api/categoryApi.js";
+const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
 const CategoryManagement = () => {
     // 탭: 0 = 활성, 1 = 삭제된 카테고리
@@ -60,16 +60,11 @@ const CategoryManagement = () => {
 
     // 삭제된 카테고리 fetch
     const fetchDeletedCategories = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/findAllDeleted`);
-            if (res.ok) {
-                const data = await res.json();
-                setDeletedCategories(data);
-            } else {
-                throw new Error('삭제된 카테고리를 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const data = await getDeletedCategories();
+        if(data){
+            setDeletedCategories(data);
+        }else{
+            showAlert('삭제된 카테고리를 불러오지 못했습니다.', 'error');
         }
     };
 
