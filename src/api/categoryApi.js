@@ -21,10 +21,8 @@ export const createCategory = async (categoryData) => {
 
 // 카테고리 삭제 API 호출 함수
 export const deleteCategory = async (categoryId) => {
-    try {
-        const response = await fetcher(DELETE_CATEGORY_URL(categoryId), { method: 'DELETE' });
-        return response;
-    } catch (error) {
-        throw new Error("카테고리 삭제에 실패했습니다.");
-    }
+    if (!categoryId) return;
+    return await fetcher(DELETE_CATEGORY_URL(categoryId), {
+        method: 'DELETE',
+    });
 };

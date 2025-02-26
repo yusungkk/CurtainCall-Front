@@ -69,10 +69,14 @@ const CategoryManagement = () => {
     };
 
     useEffect(() => {
-        fetchActiveCategories();
-        if (tabIndex === 1) {
-            fetchDeletedCategories();
-        }
+        const fetchCategories = async () => {
+            await fetchActiveCategories();
+            if (tabIndex === 1) {
+                await fetchDeletedCategories();
+            }
+        };
+
+        fetchCategories();
     }, [tabIndex]);
 
     // Snackbar alert 처리
@@ -106,7 +110,7 @@ const CategoryManagement = () => {
             parentId: newCategory.parentId || null,
         });
 
-        // `fetcher`가 400 오류일 때 `{ error: "에러 메시지" }`를 반환하므로 처리
+        // `fetcher`가 400, 404 등의 오류일 때 `{ error: "에러 메시지" }`를 반환하므로 처리
         if (response?.error) {
             showAlert(response.error, "error");
             return;
@@ -133,22 +137,23 @@ const CategoryManagement = () => {
     const confirmDeleteCategory = async () => {
         if (!deleteCategoryId) return;
 
-        try {
-            const res = await deleteCategory(deleteCategoryId);
+        const res = await deleteCategory(deleteCategoryId);
 
-            if (res === 200) {
-                showAlert('카테고리가 삭제되었습니다.');
-                fetchActiveCategories();
-            } else {
-                throw new Error('카테고리 삭제에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
-        } finally {
-            setDeleteDialogOpen(false); // 다이얼로그 닫기
-            setDeleteCategoryId(null); // 삭제할 카테고리 ID 초기화
+        // `fetcher`가 400, 404 등의 오류일 때 `{ error: "에러 메시지" }`를 반환하므로 처리
+        if (res?.error) {
+            showAlert(res.error, 'error');
+            return;
         }
+
+        // 성공 시 처리
+        showAlert('카테고리가 삭제되었습니다.');
+        await fetchActiveCategories(); // 최신 카테고리 목록 다시 불러오기
+
+        // 상태 초기화
+        setDeleteDialogOpen(false);
+        setDeleteCategoryId(null);
     };
+
 
     // 카테고리 복구
     const handleRestoreCategory = async (id) => {
