@@ -29,7 +29,13 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CATEGORY_URL } from "/src/utils/endpoint";
 import {fetcher} from "../../utils/fetcher.js";
-import {createCategory, deleteCategory, getActiveCategories, getDeletedCategories} from "../../api/categoryApi.js";
+import {
+    createCategory,
+    deleteCategory,
+    getActiveCategories,
+    getDeletedCategories,
+    restoreCategory
+} from "../../api/categoryApi.js";
 const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
 const CategoryManagement = () => {
@@ -134,7 +140,7 @@ const CategoryManagement = () => {
     };
 
     // 삭제 확인 Dialog에서 삭제를 실행하는 함수
-    const confirmDeleteCategory = async () => {
+    const handleDeleteCategory = async () => {
         if (!deleteCategoryId) return;
 
         const res = await deleteCategory(deleteCategoryId);
@@ -157,23 +163,20 @@ const CategoryManagement = () => {
 
     // 카테고리 복구
     const handleRestoreCategory = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/restore/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (res.ok) {
-                showAlert('카테고리가 복구되었습니다.');
-                fetchDeletedCategories();
-                fetchActiveCategories();
-            } else {
-                throw new Error('카테고리 복구에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        if (!id) return;
+
+        const res = await restoreCategory(id);
+
+        if (res?.error) {
+            showAlert(res.error, 'error');
+            return;
         }
+
+        showAlert('카테고리가 복구되었습니다.');
+
+        // 최신 목록 불러오기
+        await getDeletedCategories();
+        await getActiveCategories();
     };
 
     // 수정 다이얼로그 열기
@@ -430,7 +433,7 @@ const CategoryManagement = () => {
                     <Typography>정말로 이 카테고리를 삭제하시겠습니까?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error" onClick={confirmDeleteCategory}>
+                    <Button variant="contained" color="error" onClick={handleDeleteCategory}>
                         삭제
                     </Button>
                     <Button onClick={cancelDeleteDialog}>취소</Button>

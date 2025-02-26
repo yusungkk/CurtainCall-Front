@@ -53,6 +53,8 @@ export const GET_SEARCH_USER_URL = (keyword, page, size) => `${API_VERSION_V1}/u
 export const CATEGORY_URL = `${API_VERSION_V1}/categories`;
 export const DELETED_CATEGORY_URL = `${API_VERSION_V1}/categories/findAllDeleted`;
 export const DELETE_CATEGORY_URL = (id) => `${API_VERSION_V1}/categories/${id}`;
+export const RESTORE_CATEGORY_URL = (id) => `${API_VERSION_V1}/categories/restore/${id}`;
+
 
 //==주문 관련 API URL==//
 export const RESERVED_SEATS_URL = `${API_VERSION_V1}/reserved-seats`;
