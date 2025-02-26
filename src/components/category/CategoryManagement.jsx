@@ -27,8 +27,10 @@ import {
     Chip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-const BASE_URL = 'http://localhost:8080/api/v1/categories';
+import { CATEGORY_URL } from "/src/utils/endpoint";
+import {fetcher} from "../../utils/fetcher.js";
+import {getActiveCategories} from "../../api/categoryApi.js";
+// const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
 const CategoryManagement = () => {
     // 탭: 0 = 활성, 1 = 삭제된 카테고리
@@ -48,16 +50,11 @@ const CategoryManagement = () => {
 
     // 활성 카테고리 fetch
     const fetchActiveCategories = async () => {
-        try {
-            const res = await fetch(BASE_URL);
-            if (res.ok) {
-                const data = await res.json();
-                setActiveCategories(data);
-            } else {
-                throw new Error('활성 카테고리를 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const data = await getActiveCategories();
+        if (data) {
+            setActiveCategories(data);
+        } else {
+            showAlert('활성 카테고리를 불러오지 못했습니다.', 'error');
         }
     };
 
