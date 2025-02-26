@@ -29,14 +29,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
 import RegisterSpecialProductDialog from "./RegisterSpecialProductDialog";
 import {
+    approveSpecialProduct, cancelApproveSpecialProduct,
     deleteSpecialProduct,
     getDeletedSpecialProducts,
     getSpecialProducts,
     updateSpecialProduct
 } from "../../api/specialProductApi.js";
-
-
-const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
 
 // 상태에 대한 한글 라벨 및 색상 매핑
 const statusLabels = {
@@ -173,7 +171,7 @@ const SpecialProductManagement = () => {
 
     // 특가상품 삭제 API 호출 (소프트 삭제)
     const handleDeleteProduct = async () => {
-        const response =await deleteSpecialProduct(deleteProductId);
+        const response = await deleteSpecialProduct(deleteProductId);
         if (response?.error) {
             showAlert(response.error, "error");
             return;
@@ -188,43 +186,26 @@ const SpecialProductManagement = () => {
 
     // 활성 특가상품 승인 API 호출
     const handleApproveProduct = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/approve/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (res.ok) {
-                showAlert('특가상품이 승인되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '승인에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await approveSpecialProduct(id);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 승인되었습니다.');
+        fetchActiveProducts();
     };
 
 
     // 활성 특가상품 승인 취소 API 호출
     const handleCancelApproveProduct = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/approveCancel/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (res.ok) {
-                showAlert('승인이 취소되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '승인 취소에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await cancelApproveSpecialProduct(id);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+        showAlert('승인 취소되었습니다.');
+        fetchActiveProducts();
     };
 
 

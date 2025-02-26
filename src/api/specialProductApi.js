@@ -30,7 +30,7 @@ export const updateSpecialProduct = async (productData) => {
     });
 };
 
-// Approve special product
+// 특가상품 승인
 export const approveSpecialProduct = async (id) => {
     return await fetcher(`${SPECIAL_PRODUCT_URL}/approve/${id}`, {
         method: 'PUT',
@@ -38,7 +38,7 @@ export const approveSpecialProduct = async (id) => {
     });
 };
 
-// Cancel approve for special product
+// 특가상품 승인취소
 export const cancelApproveSpecialProduct = async (id) => {
     return await fetcher(`${SPECIAL_PRODUCT_URL}/approveCancel/${id}`, {
         method: 'PUT',
@@ -46,7 +46,7 @@ export const cancelApproveSpecialProduct = async (id) => {
     });
 };
 
-// Delete special product (soft delete)
+// 특가상품 삭제 (soft delete)
 export const deleteSpecialProduct = async (id) => {
     return await fetcher(`${SPECIAL_PRODUCT_URL}/${id}`, { method: 'DELETE' });
 };
