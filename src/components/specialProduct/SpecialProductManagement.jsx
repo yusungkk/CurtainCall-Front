@@ -28,9 +28,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
 import RegisterSpecialProductDialog from "./RegisterSpecialProductDialog";
-
-
-const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
+import {
+    approveSpecialProduct, cancelApproveSpecialProduct,
+    deleteSpecialProduct,
+    getDeletedSpecialProducts,
+    getSpecialProducts,
+    updateSpecialProduct
+} from "../../api/specialProductApi.js";
 
 // 상태에 대한 한글 라벨 및 색상 매핑
 const statusLabels = {
@@ -40,8 +44,8 @@ const statusLabels = {
 };
 
 const statusColors = {
-    UPCOMING: 'orange',
-    ACTIVE: 'green',
+    UPCOMING: 'black',
+    ACTIVE: 'red',
     DELETED: 'red',
 };
 
@@ -90,39 +94,25 @@ const SpecialProductManagement = () => {
 
     // 활성 특가상품 조회 (페이지네이션 및 검색 적용)
     const fetchActiveProducts = async () => {
-        try {
-            let url = `${BASE_URL}/search?page=${currentPage}&size=10`;
-            if (searchKeyword.trim() !== '') {
-                url += `&keyword=${encodeURIComponent(searchKeyword)}`;
-            }
-            const res = await fetch(url);
-            if (res.ok) {
-                const data = await res.json();
-                setActiveProducts(data.content);
-                setTotalPages(data.totalPages);
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품을 불러오지 못했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await getSpecialProducts(currentPage, searchKeyword);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        setActiveProducts(response.content);
+        setTotalPages(response.totalPages);
     };
 
 
     // 삭제된 특가상품 조회 (전체 조회)
     const fetchDeletedProducts = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/findAllDeleted`);
-            if (res.ok) {
-                const data = await res.json();
-                setDeletedProducts(data);
-            } else {
-                throw new Error('삭제된 특가상품을 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const response = await getDeletedSpecialProducts();
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+        setDeletedProducts(response);
     };
 
     // 수정 다이얼로그 열기
@@ -160,24 +150,16 @@ const SpecialProductManagement = () => {
             showAlert('모든 필드를 입력하세요.', 'error');
             return;
         }
-        try {
-            const res = await fetch(BASE_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editProduct),
-            });
 
-            if (res.ok) {
-                showAlert('특가상품이 수정되었습니다.');
-                closeEditDialog();
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품 수정에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await updateSpecialProduct(editProduct);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 수정되었습니다.');
+        fetchActiveProducts();
+        closeEditDialog();
     };
 
 
@@ -188,64 +170,42 @@ const SpecialProductManagement = () => {
     };
 
     // 특가상품 삭제 API 호출 (소프트 삭제)
-    const confirmDeleteProduct = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/${deleteProductId}`, { method: 'DELETE' });
-
-            if (res.ok) {
-                showAlert('특가상품이 삭제되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품 삭제에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
-        } finally {
-            setDeleteDialogOpen(false);
-            setDeleteProductId(null);
+    const handleDeleteProduct = async () => {
+        const response = await deleteSpecialProduct(deleteProductId);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 삭제되었습니다.');
+        fetchActiveProducts();
+        setDeleteDialogOpen(false);
+        setDeleteProductId(null);
     };
+
 
     // 활성 특가상품 승인 API 호출
     const handleApproveProduct = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/approve/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (res.ok) {
-                showAlert('특가상품이 승인되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '승인에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await approveSpecialProduct(id);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 승인되었습니다.');
+        fetchActiveProducts();
     };
 
 
     // 활성 특가상품 승인 취소 API 호출
     const handleCancelApproveProduct = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/approveCancel/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (res.ok) {
-                showAlert('승인이 취소되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '승인 취소에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await cancelApproveSpecialProduct(id);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+        showAlert('승인 취소되었습니다.');
+        fetchActiveProducts();
     };
 
 
@@ -361,7 +321,13 @@ const SpecialProductManagement = () => {
                                             ) : (
                                                 <Button
                                                     variant="contained"
-                                                    color="warning"
+                                                    sx={{
+                                                        backgroundColor: "red", // 배경색을 #800000로 설정
+                                                        color: "#ffffff", // 글자 색상은 흰색으로 설정
+                                                        '&:hover': {
+                                                            backgroundColor: "#B30000", // hover 시 더 진한 빨간색으로 설정
+                                                        },
+                                                    }}
                                                     size="small"
                                                     onClick={() => handleCancelApproveProduct(specialProductDto.specialProductId)}
                                                 >
@@ -370,10 +336,10 @@ const SpecialProductManagement = () => {
                                             )}
                                         </TableCell>
                                         <TableCell align="center">
-                                            <IconButton color="secondary" size="small" onClick={() => openEditDialog(specialProductDto)}>
+                                            <IconButton size="small" onClick={() => openEditDialog(specialProductDto)}>
                                                 <EditIcon />
                                             </IconButton>
-                                            <IconButton color="error" size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
+                                            <IconButton size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
@@ -385,7 +351,28 @@ const SpecialProductManagement = () => {
 
                     {/* 페이지네이션 */}
                     <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center' }}>
-                        <Pagination count={totalPages} page={currentPage + 1} onChange={handlePageChange} color="secondary" size="small" />
+                        <Pagination
+                            count={totalPages}
+                            page={currentPage + 1}
+                            onChange={handlePageChange}
+                            sx={{
+                                "& .MuiPaginationItem-page.Mui-selected": {
+                                    backgroundColor: "#800000", // 선택된 페이지 배경색
+                                    color: "#ffffff", // 선택된 페이지 숫자 색상
+                                },
+
+                                "& .MuiPaginationItem-page": {
+                                    color: "#555555", // 기본 페이지 숫자 색상
+                                    "&:hover": {
+                                        backgroundColor: "#F5F5F5", // 기본 페이지 숫자 hover 시 배경색
+                                    },
+                                },
+
+                                "& .MuiPaginationItem-ellipsis": {
+                                    color: "#555555", // 생략 부호 색상
+                                },
+                            }}
+                        />
                     </Box>
                 </Box>
             )}
@@ -447,7 +434,7 @@ const SpecialProductManagement = () => {
                     <Typography>정말로 삭제하시겠습니까?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error" onClick={confirmDeleteProduct}>
+                    <Button variant="contained" color="error" onClick={handleDeleteProduct}>
                         삭제
                     </Button>
                     <Button onClick={() => setDeleteDialogOpen(false)}>취소</Button>

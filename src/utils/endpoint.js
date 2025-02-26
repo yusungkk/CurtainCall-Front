@@ -51,6 +51,9 @@ export const GET_SEARCH_USER_URL = (keyword, page, size) => `${API_VERSION_V1}/u
 
 //==카테고리 관련 API URL==//
 export const CATEGORY_URL = `${API_VERSION_V1}/categories`;
+export const DELETED_CATEGORY_URL = `${API_VERSION_V1}/categories/findAllDeleted`;
+export const DELETE_CATEGORY_URL = (id) => `${API_VERSION_V1}/categories/${id}`;
+export const RESTORE_CATEGORY_URL = (id) => `${API_VERSION_V1}/categories/restore/${id}`;
 
 
 //==주문 관련 API URL==//
@@ -64,7 +67,9 @@ export const FAIL_ORDER_URL = `${API_VERSION_V1}/{orderId}/fail`;
 export const PAYMENT_URL = `${API_VERSION_V1}/payment`;
 
 //special-product
-export const SPECIAL_PRODUCT_URL = `${API_VERSION_V1}/special-product`;
+export const SPECIAL_PRODUCT_URL = `${API_VERSION_V1}/specialProduct`;
+export const SEARCH_PRODUCTS_URL = `${API_VERSION_V1}/products/special-products/search`;
+
 
 
 //홈화면

@@ -27,8 +27,13 @@ import {
     Chip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-const BASE_URL = 'http://localhost:8080/api/v1/categories';
+import {
+    createCategory,
+    deleteCategory,
+    getActiveCategories,
+    getDeletedCategories,
+    restoreCategory, updateCategory
+} from "../../api/categoryApi.js";
 
 const CategoryManagement = () => {
     // 탭: 0 = 활성, 1 = 삭제된 카테고리
@@ -48,39 +53,33 @@ const CategoryManagement = () => {
 
     // 활성 카테고리 fetch
     const fetchActiveCategories = async () => {
-        try {
-            const res = await fetch(BASE_URL);
-            if (res.ok) {
-                const data = await res.json();
-                setActiveCategories(data);
-            } else {
-                throw new Error('활성 카테고리를 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const data = await getActiveCategories();
+        if (data) {
+            setActiveCategories(data);
+        } else {
+            showAlert('활성 카테고리를 불러오지 못했습니다.', 'error');
         }
     };
 
     // 삭제된 카테고리 fetch
     const fetchDeletedCategories = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/findAllDeleted`);
-            if (res.ok) {
-                const data = await res.json();
-                setDeletedCategories(data);
-            } else {
-                throw new Error('삭제된 카테고리를 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const data = await getDeletedCategories();
+        if(data){
+            setDeletedCategories(data);
+        }else{
+            showAlert('삭제된 카테고리를 불러오지 못했습니다.', 'error');
         }
     };
 
     useEffect(() => {
-        fetchActiveCategories();
-        if (tabIndex === 1) {
-            fetchDeletedCategories();
-        }
+        const fetchCategories = async () => {
+            await fetchActiveCategories();
+            if (tabIndex === 1) {
+                await fetchDeletedCategories();
+            }
+        };
+
+        fetchCategories();
     }, [tabIndex]);
 
     // Snackbar alert 처리
@@ -109,28 +108,21 @@ const CategoryManagement = () => {
             return;
         }
 
-        try {
-            const res = await fetch(BASE_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newCategory.name.trim(),
-                    parentId: newCategory.parentId || null,
-                }),
-            });
-            if (res.ok) {
-                showAlert('카테고리가 생성되었습니다.');
-                setNewCategory({ name: '', parentId: '' });
-                fetchActiveCategories();
-            } else {
-                const errData = await res.json();
-                throw new Error(errData.message || '카테고리 생성에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const response = await createCategory({
+            name: newCategory.name.trim(),
+            parentId: newCategory.parentId || null,
+        });
+
+        // `fetcher`가 400, 404 등의 오류일 때 `{ error: "에러 메시지" }`를 반환하므로 처리
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        // 성공 시 처리
+        showAlert("카테고리가 생성되었습니다.");
+        setNewCategory({ name: "", parentId: "" });
+        fetchActiveCategories();
     };
 
     // 삭제 Dialog를 열기 위한 함수
@@ -145,45 +137,43 @@ const CategoryManagement = () => {
     };
 
     // 삭제 확인 Dialog에서 삭제를 실행하는 함수
-    const confirmDeleteCategory = async () => {
+    const handleDeleteCategory = async () => {
         if (!deleteCategoryId) return;
-        try {
-            const res = await fetch(`${BASE_URL}/${deleteCategoryId}`, {
-                method: 'DELETE',
-            });
-            if (res.ok) {
-                showAlert('카테고리가 삭제되었습니다.');
-                fetchActiveCategories();
-            } else {
-                throw new Error('카테고리 삭제에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
-        } finally {
-            setDeleteDialogOpen(false);
-            setDeleteCategoryId(null);
+
+        const res = await deleteCategory(deleteCategoryId);
+
+        // `fetcher`가 400, 404 등의 오류일 때 `{ error: "에러 메시지" }`를 반환하므로 처리
+        if (res?.error) {
+            showAlert(res.error, 'error');
+            return;
         }
+
+        // 성공 시 처리
+        showAlert('카테고리가 삭제되었습니다.');
+        await fetchActiveCategories(); // 최신 카테고리 목록 다시 불러오기
+
+        // 상태 초기화
+        setDeleteDialogOpen(false);
+        setDeleteCategoryId(null);
     };
+
 
     // 카테고리 복구
     const handleRestoreCategory = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/restore/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (res.ok) {
-                showAlert('카테고리가 복구되었습니다.');
-                fetchDeletedCategories();
-                fetchActiveCategories();
-            } else {
-                throw new Error('카테고리 복구에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        if (!id) return;
+
+        const res = await restoreCategory(id);
+
+        if (res?.error) {
+            showAlert(res.error, 'error');
+            return;
         }
+
+        showAlert('카테고리가 복구되었습니다.');
+
+        // 최신 목록 불러오기
+        await getDeletedCategories();
+        await getActiveCategories();
     };
 
     // 수정 다이얼로그 열기
@@ -203,29 +193,22 @@ const CategoryManagement = () => {
             showAlert('카테고리 이름은 공백일 수 없습니다.', 'error');
             return;
         }
-        try {
-            const res = await fetch(BASE_URL, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: editCategory.id,
-                    name: editCategory.name.trim(),
-                }),
-            });
-            if (res.ok) {
-                showAlert('카테고리가 수정되었습니다.');
-                closeEditDialog();
-                fetchActiveCategories();
-            } else {
-                const errData = await res.json();
-                throw new Error(errData.errorMessage || '카테고리 수정에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+
+        const res = await updateCategory({
+            id: editCategory.id,  // ✅ ID 포함해서 보냄
+            name: editCategory.name.trim(),
+        });
+
+        if (res?.error) {
+            showAlert(res.error, 'error'); // fetcher에서 받은 오류 메시지 표시
+            return;
         }
+
+        showAlert('카테고리가 수정되었습니다.');
+        closeEditDialog();
+        await fetchActiveCategories(); // ✅ 최신 목록 불러오기
     };
+
 
     // 루트 카테고리만 필터링 (부모 선택에 사용)
     const rootCategories = activeCategories.filter((cat) => cat.parentId === null);
@@ -440,7 +423,7 @@ const CategoryManagement = () => {
                     <Typography>정말로 이 카테고리를 삭제하시겠습니까?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error" onClick={confirmDeleteCategory}>
+                    <Button variant="contained" color="error" onClick={handleDeleteCategory}>
                         삭제
                     </Button>
                     <Button onClick={cancelDeleteDialog}>취소</Button>
