@@ -28,7 +28,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
 import RegisterSpecialProductDialog from "./RegisterSpecialProductDialog";
-import {getDeletedSpecialProducts, getSpecialProducts, updateSpecialProduct} from "../../api/specialProductApi.js";
+import {
+    deleteSpecialProduct,
+    getDeletedSpecialProducts,
+    getSpecialProducts,
+    updateSpecialProduct
+} from "../../api/specialProductApi.js";
 
 
 const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
@@ -149,7 +154,6 @@ const SpecialProductManagement = () => {
         }
 
         const response = await updateSpecialProduct(editProduct);
-        console.log(response);
         if (response?.error) {
             showAlert(response.error, "error");
             return;
@@ -168,24 +172,19 @@ const SpecialProductManagement = () => {
     };
 
     // 특가상품 삭제 API 호출 (소프트 삭제)
-    const confirmDeleteProduct = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/${deleteProductId}`, { method: 'DELETE' });
-
-            if (res.ok) {
-                showAlert('특가상품이 삭제되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품 삭제에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
-        } finally {
-            setDeleteDialogOpen(false);
-            setDeleteProductId(null);
+    const handleDeleteProduct = async () => {
+        const response =await deleteSpecialProduct(deleteProductId);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 삭제되었습니다.');
+        fetchActiveProducts();
+        setDeleteDialogOpen(false);
+        setDeleteProductId(null);
     };
+
 
     // 활성 특가상품 승인 API 호출
     const handleApproveProduct = async (id) => {
@@ -427,7 +426,7 @@ const SpecialProductManagement = () => {
                     <Typography>정말로 삭제하시겠습니까?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error" onClick={confirmDeleteProduct}>
+                    <Button variant="contained" color="error" onClick={handleDeleteProduct}>
                         삭제
                     </Button>
                     <Button onClick={() => setDeleteDialogOpen(false)}>취소</Button>

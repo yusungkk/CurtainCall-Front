@@ -21,7 +21,7 @@ export const getDeletedSpecialProducts = async () => {
     return await fetcher(`${SPECIAL_PRODUCT_URL}/findAllDeleted`);
 };
 
-// Update special product
+// 특가상품 수정
 export const updateSpecialProduct = async (productData) => {
     return await fetcher(SPECIAL_PRODUCT_URL, {
         method: 'PUT',
@@ -48,5 +48,5 @@ export const cancelApproveSpecialProduct = async (id) => {
 
 // Delete special product (soft delete)
 export const deleteSpecialProduct = async (id) => {
-    return await fetcher(`${BASE_URL}/${id}`, { method: 'DELETE' });
+    return await fetcher(`${SPECIAL_PRODUCT_URL}/${id}`, { method: 'DELETE' });
 };
