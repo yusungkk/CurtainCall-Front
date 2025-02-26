@@ -12,7 +12,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import useCategoryStore from "./useCategoryStore";
 import logo from "../../assets/img.png";
-import { getUserData, logout } from "../../api/userApi";
+import { getUserData, logout, getUserRole } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
@@ -21,6 +21,7 @@ const NavigationBar = () => {
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
+    const [role, setRole] = useState(false);
 
     // 컴포넌트 마운트 시 카테고리 불러오기
     useEffect(() => {
@@ -32,6 +33,8 @@ const NavigationBar = () => {
                     setUser(null);
                 } else {
                     setUser(userData);
+                    const userRole = await getUserRole();
+                    setRole(userRole);
                 }
             } catch (error) {
                 setUser(null);
@@ -73,7 +76,7 @@ const NavigationBar = () => {
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
                     {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
-                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px", marginLeft: "-16px" }}
+                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px" }}
                              onClick={() => navigate("/")} // 클릭 시 홈으로 이동
                         />
                         {/* 검색창 */}
@@ -107,10 +110,10 @@ const NavigationBar = () => {
                         ) : user ? (
                             <>
                                 <a
-                                    href="/myPage"
+                                    href={role ? "/admin" : "/myPage"}
                                     style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
                                 >
-                                    마이페이지
+                                    {role ? "관리자 페이지" : "마이페이지"}
                                 </a>
                                 <a
                                     onClick={(e) => {
@@ -149,7 +152,7 @@ const NavigationBar = () => {
                 alignItems="center"
                 justifyContent="flex-start"
                 gap={4}
-                sx={{ p: 1, mb: 3, ml: 0.5 }}
+                sx={{ p: 1, mb: 3, ml: 2 }}
             >
                 {loading ? (
                     <CircularProgress size={20} />
@@ -190,7 +193,7 @@ const NavigationBar = () => {
                         ))
                 )}
             </Box>
-            <Divider sx={{ position: "absolute",left: 0, right: 0, width: "100vw", bgcolor: "#e0e0e0", height: "1px", mb: 7}} />
+            <Divider sx={{ position: "absolute",left: 0, right: 0, bgcolor: "#e0e0e0", height: "1px", mb: 7}} />
         </>
     );
 };
