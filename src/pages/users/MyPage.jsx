@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getUserData } from "../../api/userApi.js";
+import { getUserData, deactivate, logout } from "../../api/userApi.js";
 import Update from "./Update";
 import OrderList from "/src/pages/users/OrderList";
 import {
@@ -79,6 +79,27 @@ const MyPage = () => {
     setSelectedMenu(menu);
   };
 
+  const handleDeactivate = async () => {
+    const confirmDeactivate = window.confirm("정말로 탈퇴하시겠습니까?");
+    if (confirmDeactivate) {
+      try {
+        const response = await deactivate(user.id);
+        const response2 = await logout();
+        if (response === 403) {
+          alert("회원 탈퇴에 실패했습니다.");
+          window.location.reload();
+
+        } else {
+          alert("회원 탈퇴가 완료되었습니다.");
+          navigate("/");
+          window.location.reload();
+        }
+      } catch (error) {
+        alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   return (
     <Box sx={{ display: "flex", height: "100vh", flexDirection: "column", mt: 9 }}>
       {/* 상단 내비게이션 바 */}
@@ -107,19 +128,26 @@ const MyPage = () => {
         >
           <List>
             {[
-                { key: "orders", label: "예매 내역" },
-                { key: "update", label: "회원 정보 수정" },
-                { key: "inquiry", label: "내가 문의한 내역" },
-             ].map((item) => (
-                <ListItem key={item.key} disablePadding>
-                  <ListItemButton
-                    selected={selectedMenu === item.key}
-                    onClick={() => handleMenuClick(item.key)}
-                  >
-                    <ListItemText primary={item.label} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
+              { key: "orders", label: "예매 내역" },
+              { key: "update", label: "개인정보 수정" },
+              { key: "inquiry", label: "내가 문의한 내역" },
+              { key: "delete", label: "회원 탈퇴", onClick: handleDeactivate },
+            ].map((item) => (
+              <ListItem key={item.key} disablePadding>
+                <ListItemButton
+                  selected={selectedMenu === item.key}
+                  onClick={() => {
+                    if (item.onClick) {
+                      item.onClick();
+                    } else {
+                      handleMenuClick(item.key);
+                    }
+                  }}
+                >
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
         </Box>
 
