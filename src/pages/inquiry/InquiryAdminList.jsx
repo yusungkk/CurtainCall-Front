@@ -72,14 +72,15 @@ export default function InquiryAdminList() {
     };
 
     return (
-        <Box sx={{ width: '100vw', maxWidth: "80%", margin: '0 auto', mt: 5 }}>
-        <Typography variant="h4" gutterBottom color={"black"} align={"left"} mb={4}>
-            작성된 문의 내역
+        <Box sx={{maxWidth: "70%", margin: '0 auto', mt: 5}}>
+            <Typography variant="h4" gutterBottom color={"black"} align={"left"} mb={4}
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
+                작성된 문의 내역
             </Typography>
             <form onKeyUp={handleKeyUp}>
                 <Box sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
-                    <FormControl fullWidth margin={"normal"} sx={{ flex: 1 }}>
-                    <InputLabel id="status-select-label">답변상태</InputLabel>
+                    <FormControl fullWidth margin={"normal"} sx={{flex: 1}}>
+                        <InputLabel id="status-select-label">답변상태</InputLabel>
                         <Select
                             labelId="status-select-label"
                             id="status-select"
@@ -95,8 +96,8 @@ export default function InquiryAdminList() {
                             ))}
                         </Select>
                     </FormControl>
-                    <FormControl fullWidth margin={"normal"} sx={{ flex: 1 }}>
-                    <InputLabel id="type-select-label">질문유형</InputLabel>
+                    <FormControl fullWidth margin={"normal"} sx={{flex: 1}}>
+                        <InputLabel id="type-select-label">질문유형</InputLabel>
                         <Select
                             labelId="type-select-label"
                             id="type-select"
@@ -144,7 +145,8 @@ export default function InquiryAdminList() {
                     ))}
                 </List>
             ) : (
-                <Typography variant="h6" gutterBottom color={"gray"} align={"left"} mt={4} mb={4}>
+                <Typography variant="h6" gutterBottom color={"gray"} align={"left"} mt={4} mb={4}
+                            sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
                     작성된 문의내역이 없습니다.
                 </Typography>
             )}

@@ -149,13 +149,12 @@ function FaqList({setActive, role}) {
 
     const handleChatBtn = () => {
         if (role === "ANONYMOUS" || role !== "") {
-            window.sessionStorage.setItem("toggleActive", "true");
             setActive(true);
             setIsToggled(true);
         }
     };
     return (
-        <div style={{width: '100vw', maxWidth: '70%'}}>
+        <div style={{ maxWidth: '70%'}}>
             <Box sx={{
                 mb: 2
             }}>

@@ -15,7 +15,7 @@ import logo from "../../assets/img.png";
 import { getUserData, logout } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 
-const NavigationBar = () => {
+const NavigationBar = ({setActive, setRole}) => {
     const navigate = useNavigate();
     const { categories, getCategories, loading } = useCategoryStore();
     const [searchText, setSearchText] = useState("");
@@ -56,6 +56,11 @@ const NavigationBar = () => {
             try {
                 const response = await logout();
                 setUser(null);
+                setActive(false);
+                setRole("ANONYMOUS");
+                window.sessionStorage.removeItem("toggleActive");
+                window.sessionStorage.removeItem("wsConnected");
+                window.sessionStorage.removeItem("roomId");
                 alert("로그아웃 되었습니다.");
                 navigate("/");
             } catch (error) {

@@ -26,11 +26,12 @@ import SpecialProductManagement from "./components/specialProduct/SpecialProduct
 
 import { ToggleProvider } from "./components/chat/ToggleContext.jsx";
 import GlobalToggleIcon from "./components/chat/GlobalToggleBtn.jsx";
-import ChatWindow from "./components/chat/ChatWindow.jsx";
+import UserChatWindow from "./components/chat/UserChatWindow.jsx";
 import { useToggleActive } from "./hooks/UseToggleActive.jsx";
 import AdminChatWindow from "./components/chat/AdminChatWindow.jsx";
 import UseUserRole from "./hooks/UseUserRole.jsx";
 import Home from "./pages/Home.jsx";
+import {useEffect} from "react";
 
 function App() {
     return (
@@ -47,17 +48,23 @@ function AppContent() {
     const hiddenNavPaths = ["/login", "/join", "/payment"];
 
     const [active, setActive] = useToggleActive();
-    const [role] = UseUserRole();
+    const [role, setRole] = UseUserRole();
+
+
+    useEffect(() => {
+        console.log(active);
+        console.log(role);
+    }, [active])
 
     return (
         <>
-            {!hiddenNavPaths.includes(location.pathname) && <NavigationBar />}
+            {!hiddenNavPaths.includes(location.pathname) && <NavigationBar setActive={setActive} setRole={setRole}/>}
 
-            {active && (
+            {(active || role === "ADMIN") && (
                 <>
                     <GlobalToggleIcon />
                     {role === "ADMIN" && <AdminChatWindow />}
-                    {role === "USER" && <ChatWindow />}
+                    {role === "USER" && <UserChatWindow setActive={setActive}/>}
                 </>
             )}
 
