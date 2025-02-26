@@ -20,7 +20,7 @@ const PaymentInfo = ({ product, productDetail, selectedSeats, discountRate, fina
                     <tr>
                         <td className="payment-info-title">가격</td>
                         <td>
-                            {discountRate > 0
+                            {finalPrice !== product.price
                                 ? `${(finalPrice * selectedSeats.length).toLocaleString()}원 (${discountRate}% 할인 적용)`
                                 : `${(product.price * selectedSeats.length).toLocaleString()}원`}
                         </td>
