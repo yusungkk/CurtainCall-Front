@@ -34,7 +34,7 @@ import {
     deleteCategory,
     getActiveCategories,
     getDeletedCategories,
-    restoreCategory
+    restoreCategory, updateCategory
 } from "../../api/categoryApi.js";
 const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
@@ -196,29 +196,22 @@ const CategoryManagement = () => {
             showAlert('카테고리 이름은 공백일 수 없습니다.', 'error');
             return;
         }
-        try {
-            const res = await fetch(BASE_URL, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: editCategory.id,
-                    name: editCategory.name.trim(),
-                }),
-            });
-            if (res.ok) {
-                showAlert('카테고리가 수정되었습니다.');
-                closeEditDialog();
-                fetchActiveCategories();
-            } else {
-                const errData = await res.json();
-                throw new Error(errData.errorMessage || '카테고리 수정에 실패했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+
+        const res = await updateCategory({
+            id: editCategory.id,  // ✅ ID 포함해서 보냄
+            name: editCategory.name.trim(),
+        });
+
+        if (res?.error) {
+            showAlert(res.error, 'error'); // fetcher에서 받은 오류 메시지 표시
+            return;
         }
+
+        showAlert('카테고리가 수정되었습니다.');
+        closeEditDialog();
+        await fetchActiveCategories(); // ✅ 최신 목록 불러오기
     };
+
 
     // 루트 카테고리만 필터링 (부모 선택에 사용)
     const rootCategories = activeCategories.filter((cat) => cat.parentId === null);
