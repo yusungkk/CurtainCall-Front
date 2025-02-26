@@ -46,8 +46,8 @@ const NavigationBar = () => {
         alert(`검색어: ${searchText}`);
     };
 
-    const handleCategoryClick = (categoryId) => {
-        alert(`카테고리 #${categoryId} 클릭!`);
+    const handleCategoryClick = (categoryName) => {
+        navigate(`/?genre=${categoryName}`);
     };
 
     const handleLogout = async () => {
@@ -163,7 +163,7 @@ const NavigationBar = () => {
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    handleCategoryClick(cat.id);
+                                    handleCategoryClick(cat.name);
                                 }}
                                 sx={{
                                     textDecoration: "none",
