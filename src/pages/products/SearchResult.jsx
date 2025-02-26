@@ -22,7 +22,9 @@ const SearchResult = () => {
             setProducts(response.content);
             setTotalPages(response.totalPages);
             setTotalElements(response.totalElements);
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
