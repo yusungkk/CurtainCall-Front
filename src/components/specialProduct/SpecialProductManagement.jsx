@@ -28,6 +28,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
 import RegisterSpecialProductDialog from "./RegisterSpecialProductDialog";
+import {getDeletedSpecialProducts, getSpecialProducts, updateSpecialProduct} from "../../api/specialProductApi.js";
 
 
 const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
@@ -90,39 +91,25 @@ const SpecialProductManagement = () => {
 
     // 활성 특가상품 조회 (페이지네이션 및 검색 적용)
     const fetchActiveProducts = async () => {
-        try {
-            let url = `${BASE_URL}/search?page=${currentPage}&size=10`;
-            if (searchKeyword.trim() !== '') {
-                url += `&keyword=${encodeURIComponent(searchKeyword)}`;
-            }
-            const res = await fetch(url);
-            if (res.ok) {
-                const data = await res.json();
-                setActiveProducts(data.content);
-                setTotalPages(data.totalPages);
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품을 불러오지 못했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await getSpecialProducts(currentPage, searchKeyword);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        setActiveProducts(response.content);
+        setTotalPages(response.totalPages);
     };
 
 
     // 삭제된 특가상품 조회 (전체 조회)
     const fetchDeletedProducts = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/findAllDeleted`);
-            if (res.ok) {
-                const data = await res.json();
-                setDeletedProducts(data);
-            } else {
-                throw new Error('삭제된 특가상품을 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const response = await getDeletedSpecialProducts();
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+        setDeletedProducts(response);
     };
 
     // 수정 다이얼로그 열기
@@ -160,24 +147,17 @@ const SpecialProductManagement = () => {
             showAlert('모든 필드를 입력하세요.', 'error');
             return;
         }
-        try {
-            const res = await fetch(BASE_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editProduct),
-            });
 
-            if (res.ok) {
-                showAlert('특가상품이 수정되었습니다.');
-                closeEditDialog();
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품 수정에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await updateSpecialProduct(editProduct);
+        console.log(response);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 수정되었습니다.');
+        fetchActiveProducts();
+        closeEditDialog();
     };
 
 

@@ -20,6 +20,7 @@ export const fetcher = async (endPoint, options = {}) => {
         const errorData = await response.json();
 
         if (response.status === 400 || response.status === 404) {
+            console.log("여기요!");
             return { error: errorData.message || "잘못된 요청입니다." };
         }
 

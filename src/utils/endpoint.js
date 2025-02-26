@@ -67,7 +67,7 @@ export const FAIL_ORDER_URL = `${API_VERSION_V1}/{orderId}/fail`;
 export const PAYMENT_URL = `${API_VERSION_V1}/payment`;
 
 //special-product
-// export const SPECIAL_PRODUCT_URL = `${API_VERSION_V1}/specialProduct`;
+export const SPECIAL_PRODUCT_URL = `${API_VERSION_V1}/specialProduct`;
 
 
 //홈화면
