@@ -5,14 +5,19 @@ const ProductGrid = ({ title, products }) => {
     return (
         <>
             {products.length > 0 && (
-                <>
-                    <h2>{title}</h2>
-                    <div className="product-grid">
-                        {products.map((product) => (
-                            <ProductCard key={product.productId} product={product} />
-                        ))}
+                <div className="product-list-container">
+                    <h1 className="product-list-title">
+                        <img src="/src/assets/hot.png"></img>
+                        {title}
+                    </h1>
+                    <div className="product-list-body">
+                        <div className="product-grid">
+                            {products.map((product) => (
+                                <ProductCard key={product.productId} product={product} />
+                            ))}
+                        </div>
                     </div>
-                </>
+                </div>
             )}
         </>
     );

@@ -22,7 +22,7 @@ const Login = () => {
         alert("잘못된 이메일이나 비밀번호입니다.");
       } else {
         const { role } = response;
-        const { from } = location.state || { from: "/myPage" };
+        const { from } = location.state || { from: "/" };
 
         if (role === "ADMIN") {
           alert("관리자로 로그인 성공.");
@@ -42,7 +42,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <img src={logo} alt="Curtaincall Logo" onClick={() => navigate("/")} className="login-logo"  />
+        <img src={logo} alt="Curtaincall Logo" onClick={() => navigate("/")} className="login-logo" />
         <input
           type="text"
           id="email"
