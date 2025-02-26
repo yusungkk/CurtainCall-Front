@@ -29,7 +29,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CATEGORY_URL } from "/src/utils/endpoint";
 import {fetcher} from "../../utils/fetcher.js";
-import {createCategory, getActiveCategories, getDeletedCategories} from "../../api/categoryApi.js";
+import {createCategory, deleteCategory, getActiveCategories, getDeletedCategories} from "../../api/categoryApi.js";
 const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
 const CategoryManagement = () => {
@@ -101,27 +101,21 @@ const CategoryManagement = () => {
             return;
         }
 
-        try {
-            const response = await createCategory({
-                name: newCategory.name.trim(),
-                parentId: newCategory.parentId || null,
-            });
+        const response = await createCategory({
+            name: newCategory.name.trim(),
+            parentId: newCategory.parentId || null,
+        });
 
-            // response가 error 객체인지를 체크
-            if (response && response.error) {
-                // 400 오류일 때 error를 반환했으면
-                showAlert(response.error, "error");
-            } else if (response) {
-                showAlert("카테고리가 생성되었습니다.");
-                setNewCategory({ name: "", parentId: "" });
-                fetchActiveCategories(); // 최신 카테고리 목록 다시 불러오기
-            } else {
-                throw new Error("카테고리 생성에 실패했습니다.");
-            }
-        } catch (error) {
-            showAlert(error.message, "error");
+        // `fetcher`가 400 오류일 때 `{ error: "에러 메시지" }`를 반환하므로 처리
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
 
+        // 성공 시 처리
+        showAlert("카테고리가 생성되었습니다.");
+        setNewCategory({ name: "", parentId: "" });
+        fetchActiveCategories();
     };
 
     // 삭제 Dialog를 열기 위한 함수
@@ -138,11 +132,11 @@ const CategoryManagement = () => {
     // 삭제 확인 Dialog에서 삭제를 실행하는 함수
     const confirmDeleteCategory = async () => {
         if (!deleteCategoryId) return;
+
         try {
-            const res = await fetch(`${BASE_URL}/${deleteCategoryId}`, {
-                method: 'DELETE',
-            });
-            if (res.ok) {
+            const res = await deleteCategory(deleteCategoryId);
+
+            if (res === 200) {
                 showAlert('카테고리가 삭제되었습니다.');
                 fetchActiveCategories();
             } else {
@@ -151,8 +145,8 @@ const CategoryManagement = () => {
         } catch (error) {
             showAlert(error.message, 'error');
         } finally {
-            setDeleteDialogOpen(false);
-            setDeleteCategoryId(null);
+            setDeleteDialogOpen(false); // 다이얼로그 닫기
+            setDeleteCategoryId(null); // 삭제할 카테고리 ID 초기화
         }
     };
 
