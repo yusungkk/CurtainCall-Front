@@ -10,24 +10,26 @@ import {
     Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import useCategoryStore from "./useCategoryStore";
 import logo from "../../assets/img.png";
 import { getUserData, logout } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
+// CategoryManagement에서 사용하는 API 함수 import
+import { getActiveCategories } from "../../api/categoryApi.js";
 
 const NavigationBar = () => {
     const navigate = useNavigate();
-    const { categories, getCategories, loading } = useCategoryStore();
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
+    const [categories, setCategories] = useState([]);
+    const [loadingCategories, setLoadingCategories] = useState(false);
 
-    // 컴포넌트 마운트 시 카테고리 불러오기
+    // 컴포넌트 마운트 시 사용자 정보와 활성 카테고리 fetch
     useEffect(() => {
-        getCategories();
+        // 사용자 데이터 fetch
         const fetchUserData = async () => {
             try {
-                const userData = await getUserData(); // 로그인 여부 확인 로직 수정
+                const userData = await getUserData();
                 if (userData === 403) {
                     setUser(null);
                 } else {
@@ -39,8 +41,25 @@ const NavigationBar = () => {
                 setLoadingUser(false);
             }
         };
+
+        // 활성 카테고리 fetch (CategoryManagement와 동일한 API 사용)
+        const fetchCategories = async () => {
+            setLoadingCategories(true);
+            try {
+                const data = await getActiveCategories();
+                if (data) {
+                    setCategories(data);
+                }
+            } catch (error) {
+                console.error("카테고리 불러오기 오류:", error);
+            } finally {
+                setLoadingCategories(false);
+            }
+        };
+
         fetchUserData();
-    }, [getCategories]);
+        fetchCategories();
+    }, []);
 
     const handleSearch = () => {
         alert(`검색어: ${searchText}`);
@@ -54,7 +73,7 @@ const NavigationBar = () => {
         const confirmed = window.confirm("로그아웃 하시겠습니까?");
         if (confirmed) {
             try {
-                const response = await logout();
+                await logout();
                 setUser(null);
                 alert("로그아웃 되었습니다.");
                 navigate("/");
@@ -68,15 +87,16 @@ const NavigationBar = () => {
 
     return (
         <>
-            {/* 상단: 로고, 사이트명 + 검색창, 로그인/회원가입/마이페이지 */}
+            {/* 상단: 로고, 검색창, 로그인/회원가입/마이페이지 */}
             <AppBar position="static" color="inherit" sx={{ boxShadow: 0, mb: 3 }}>
                 <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
-                    {/* 왼쪽 영역 */}
                     <Box display="flex" alignItems="center" gap={4} sx={{ flex: 1 }}>
-                        <img src={logo} alt="Curtaincall Logo" style={{ width: "200px", marginLeft: "-16px" }}
-                             onClick={() => navigate("/")} // 클릭 시 홈으로 이동
+                        <img
+                            src={logo}
+                            alt="Curtaincall Logo"
+                            style={{ width: "200px", marginLeft: "-16px" }}
+                            onClick={() => navigate("/")}
                         />
-                        {/* 검색창 */}
                         <TextField
                             variant="outlined"
                             size="medium"
@@ -85,10 +105,7 @@ const NavigationBar = () => {
                             onChange={(e) => setSearchText(e.target.value)}
                             sx={{ width: "400px" }}
                             InputProps={{
-                                sx: {
-                                    height: "50px",
-                                    padding: "5px",
-                                },
+                                sx: { height: "50px", padding: "5px" },
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleSearch}>
@@ -99,8 +116,6 @@ const NavigationBar = () => {
                             }}
                         />
                     </Box>
-
-                    {/* 오른쪽 영역 */}
                     <Box display="flex" gap={2}>
                         {loadingUser ? (
                             <CircularProgress size={20} />
@@ -117,7 +132,12 @@ const NavigationBar = () => {
                                         e.preventDefault();
                                         handleLogout();
                                     }}
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px", cursor: "pointer" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "20px",
+                                        cursor: "pointer",
+                                    }}
                                 >
                                     로그아웃
                                 </a>
@@ -151,7 +171,7 @@ const NavigationBar = () => {
                 gap={4}
                 sx={{ p: 1, mb: 3, ml: 0.5 }}
             >
-                {loading ? (
+                {loadingCategories ? (
                     <CircularProgress size={20} />
                 ) : (
                     categories
@@ -172,7 +192,6 @@ const NavigationBar = () => {
                                     fontWeight: "bold",
                                     cursor: "pointer",
                                     position: "relative",
-                                    // Hover 시 밑줄 효과: pseudo-element 사용
                                     "&:hover::after": {
                                         content: '""',
                                         position: "absolute",
@@ -190,7 +209,17 @@ const NavigationBar = () => {
                         ))
                 )}
             </Box>
-            <Divider sx={{ position: "absolute",left: 0, right: 0, width: "100vw", bgcolor: "#e0e0e0", height: "1px", mb: 7}} />
+            <Divider
+                sx={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    width: "100vw",
+                    bgcolor: "#e0e0e0",
+                    height: "1px",
+                    mb: 7,
+                }}
+            />
         </>
     );
 };

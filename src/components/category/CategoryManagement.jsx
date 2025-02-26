@@ -27,8 +27,6 @@ import {
     Chip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CATEGORY_URL } from "/src/utils/endpoint";
-import {fetcher} from "../../utils/fetcher.js";
 import {
     createCategory,
     deleteCategory,
@@ -36,7 +34,6 @@ import {
     getDeletedCategories,
     restoreCategory, updateCategory
 } from "../../api/categoryApi.js";
-const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
 const CategoryManagement = () => {
     // 탭: 0 = 활성, 1 = 삭제된 카테고리
