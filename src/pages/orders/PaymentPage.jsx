@@ -31,7 +31,7 @@ const PaymentPage = () => {
 
   useEffect(() => {
     alert(
-      "*** 주의: 결제하기 버튼을 누르신 후 5분 안에 결제가 완료되지 않으면 결제가 자동으로 취소되니 유의 바랍니다. ***\n(선택하신 좌석도 해제됩니다.)"
+      "⚠️ 주의: 결제하기 버튼을 누르신 후 30분 안에 결제가 완료되지 않으면 결제가 자동으로 취소되니 유의 바랍니다.\n(선택하신 좌석도 해제됩니다.)"
     );
 
     const fetchUserData = async () => {
@@ -129,12 +129,12 @@ const PaymentPage = () => {
 
     // 결제창이 열린 후 타이머 시작
     setIsPaymentStarted(true);
-    setTimeLeft(1 * 10);
+    setTimeLeft(30 * 60); // 타이머 조정
   };
 
   const handleCancelPayment = async () => {
     await cancelOrder(orderId);
-    alert("5분이 지나 결제가 자동으로 취소되었습니다. 좌석을 다시 선택해주세요.");
+    alert("30분이 지나 결제가 자동으로 취소되었습니다. 좌석을 다시 선택해주세요.");
 
     if (window.IMP) {
       window.IMP.close();
@@ -146,7 +146,7 @@ const PaymentPage = () => {
 
     return (
         <div className="payment-page">
-            <h2>🎟 예매</h2>
+            <h2 className="payment-title">🎟 예매</h2>
           {product && (
               <PaymentInfo
                   product={product}
@@ -157,26 +157,35 @@ const PaymentPage = () => {
               />
           )}
 
+          <div className="payment-actions-container">
             <label className="payment-label">결제 방법 선택</label>
             <select
                 className="payment-method-select"
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
             >
-                <option value="card">신용카드</option>
-                <option value="kakaopay">카카오페이</option>
-                <option value="naverpay">네이버페이</option>
+              <option value="card">신용카드</option>
+              <option value="kakaopay">카카오페이</option>
+              <option value="naverpay">네이버페이</option>
             </select>
 
             {isPaymentStarted && (
                 <p className="payment-timer">
-                    남은 결제 시간: {Math.floor(timeLeft / 60)}분 {timeLeft % 60}초
+                  남은 결제 시간: {Math.floor(timeLeft / 60)}분 {timeLeft % 60}초
                 </p>
             )}
 
-            <button className="payment-submit-button" onClick={handlePayment}>
+            <div className="payment-buttons-container">
+              <button className="payment-cancel-button" onClick={() => navigate(`/seat-selection/${productDetailId}`)}>
+                좌석 다시 선택
+              </button>
+              <button className="payment-submit-button" onClick={handlePayment}>
                 결제하기
-            </button>
+              </button>
+            </div>
+          </div>
+
+
         </div>
     );
 

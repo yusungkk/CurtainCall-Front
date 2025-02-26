@@ -49,7 +49,7 @@ const MyPage = () => {
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/orders/history`, {
+        const response = await fetch(`http://localhost:8080/api/v1/history`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
