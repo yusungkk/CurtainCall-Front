@@ -87,7 +87,7 @@ const UserList = () => {
   }
 
   return (
-    <Container sx={{ mt: 2, pb: 6, display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <Container sx={{ mt: 2, pb: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* 검색 창 */}
       <TextField
         placeholder="이름 또는 이메일로 검색"
@@ -95,7 +95,7 @@ const UserList = () => {
         fullWidth
         value={searchKeyword}
         onChange={handleSearchChange}
-        sx={{ mb: 2, maxWidth: 800, margin: "0 auto" }}
+        sx={{ mb: 2, margin: 0 }}
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
@@ -106,7 +106,7 @@ const UserList = () => {
       />
 
       {/* 유저 리스트 */}
-      <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "0 auto", mt: 4 }}>
+      <TableContainer component={Paper} sx={{ mt: 4 }}>
         <Table>
           <TableHead>
             <TableRow>
