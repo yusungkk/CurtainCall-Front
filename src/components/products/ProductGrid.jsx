@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import "/src/pages/products/ProductList.css";
+import "/src/components/products/ProductList.css";
 
 const ProductGrid = ({ title, products }) => {
     return (

@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ProductRegistration from "./pages/products/ProductRegistration";
-import ProductList from "/src/pages/products/productList";
+import ProductList from "/src/components/products/productList";
 import SearchResult from "/src/pages/products/SearchResult";
 import ProductDetail from "./pages/products/ProductDetail";
 import ProductEditForm from "./pages/products/ProductEditForm.jsx";

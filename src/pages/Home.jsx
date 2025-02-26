@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import SpecialProductList from "/src/components/specialProduct/SpcialProductList.jsx";
-import ProductList from "/src/pages/products/ProductList.jsx";
+import ProductList from "/src/components/products/ProductList.jsx";
 import ProductGrid from "/src/components/products/ProductGrid.jsx";
 
 import {

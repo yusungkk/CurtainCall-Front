@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetcher } from "/src/utils/fetcher";
 import { PRODUCT_URL } from "/src/utils/endpoint";
-import "/src/pages/products/ProductList.css";
+import "/src/components/products/ProductList.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 

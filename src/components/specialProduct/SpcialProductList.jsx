@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ACTIVE_SPECIAL_PRODUCT_URL } from "../../utils/endpoint";
 // import "C:/Users/User/Desktop/curtainCall/backstage-front/src/pages/products/productList.css";
-import  "./SpecialProductList.css";
-import "/src/pages/products/productList.css";
-import  "./SpecialProductList.css";
+import "./SpecialProductList.css";
+import "/src/components/products/productList.css";
+import "./SpecialProductList.css";
 
 const SpecialProductList = () => {
     const [specialProducts, setSpecialProducts] = useState([]);
@@ -75,16 +75,22 @@ const SpecialProductList = () => {
                             <h3 className="product-title">{specialProductDto.productName}</h3>
                             <p className="product-place">{specialProductDto.place}</p>
                             <p className="product-dates">
-                                {specialProductDto.discountStartDate} ~ {specialProductDto.discountEndDate}
+                                {specialProductDto.discountStartDate} ~{" "}
+                                {specialProductDto.discountEndDate}
                             </p>
                             {/* 할인율, 할인가 표시 부분 */}
                             <p className="product-discount">
-                                <span className="discount-rate">{specialProductDto.discountRate}%</span>
+                                <span className="discount-rate">
+                                    {specialProductDto.discountRate}%
+                                </span>
                                 <span className="discount-price">
-                                    {getDiscountedPrice(specialProductDto.price, specialProductDto.discountRate).toLocaleString()}원
+                                    {getDiscountedPrice(
+                                        specialProductDto.price,
+                                        specialProductDto.discountRate
+                                    ).toLocaleString()}
+                                    원
                                 </span>
                             </p>
-
                         </Link>
                     </div>
                 ))}
