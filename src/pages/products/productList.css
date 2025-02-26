@@ -3,17 +3,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 20px 0;
+    max-width: 1280px;
 }
 
 .product-list-container .product-list-body {
+    width: 100%;
     position: relative;
 }
 
 .product-list-title {
     font-size: 32px;
+    margin-bottom: 0;
 }
 
 .product-list-body button {
@@ -21,7 +22,7 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 47%;
+    top: 50%;
     transform: translateY(-50%);
     z-index: 1;
     cursor: pointer;
@@ -35,11 +36,11 @@
 }
 
 .product-list-body button:first-child {
-    left: -5px;
+    left: -28px;
 }
 
 .product-list-body button:last-child {
-    right: -5px;
+    right: -28px;
 }
 
 /* 상품 그리드 (격자 형태) */
@@ -51,7 +52,7 @@
     /* 카드 간 간격 */
     justify-content: center;
     /* 중앙 정렬 */
-    padding: 20px;
+    padding: 20px 0;
 }
 
 /* 상품 카드 */
