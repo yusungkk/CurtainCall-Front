@@ -14,7 +14,7 @@ import {
     Snackbar,
     Alert
 } from "@mui/material";
-import {searchProducts} from "../../api/specialProductApi.js";
+import {registerSpecialProduct, searchProducts} from "../../api/specialProductApi.js";
 
 const BASE_URL = "http://localhost:8080/api/v1/specialProduct";
 
@@ -64,7 +64,7 @@ const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
         setSelectedProduct(product);
     };
 
-    // ✅ 특가상품 등록 API 호출
+    // 특가상품 등록 API 호출
     const handleRegister = async () => {
         if (!selectedProduct || !discountStartDate || !discountEndDate || !discountRate) {
             showAlert("모든 필드를 입력하세요.", "warning");
@@ -85,25 +85,16 @@ const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
             status: "UPCOMING", // 기본값 설정
         };
 
-        try {
-            const response = await fetch(BASE_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newSpecialProduct),
-            });
+        const response = await registerSpecialProduct(newSpecialProduct);
 
-            if (response.ok) {
-                showAlert("특가상품이 등록되었습니다.", "success");
-                onRegister(); // 등록 후 목록 갱신
-                onClose();
-            } else {
-                const errorData = await response.json();
-                showAlert(errorData.message || "특가상품 등록에 실패했습니다.", "error");
-            }
-        } catch (error) {
-            showAlert("특가상품 등록 중 오류 발생", "error");
-            console.error("특가상품 등록 중 오류 발생", error);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert("특가상품이 등록되었습니다.", "success");
+        onRegister(); // 등록 후 목록 갱신
+        onClose();
     };
 
     return (

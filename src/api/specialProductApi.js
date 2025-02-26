@@ -54,5 +54,14 @@ export const deleteSpecialProduct = async (id) => {
 // 특가상품 등록시 상품 검색 기능
 export const searchProducts = async (keyword) => {
     const url = `${SEARCH_PRODUCTS_URL}?keyword=${encodeURIComponent(keyword)}`;
-    return await fetcher(url);  // Use the fetcher utility to send the request
+    return await fetcher(url);
+};
+
+// 특가상품 등록 API 호출
+export const registerSpecialProduct = async (productData) => {
+    return await fetcher(SPECIAL_PRODUCT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData),
+    });
 };
