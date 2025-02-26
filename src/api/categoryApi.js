@@ -8,3 +8,10 @@ export const getActiveCategories = async () => {
 export const getDeletedCategories = async () => {
     return await fetcher(DELETED_CATEGORY_URL);
 };
+
+export const createCategory = async (categoryData) => {
+    return await fetcher(CATEGORY_URL, {
+        method: "POST",
+        body: JSON.stringify(categoryData),
+    });
+};

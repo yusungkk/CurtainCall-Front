@@ -29,7 +29,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CATEGORY_URL } from "/src/utils/endpoint";
 import {fetcher} from "../../utils/fetcher.js";
-import {getActiveCategories, getDeletedCategories} from "../../api/categoryApi.js";
+import {createCategory, getActiveCategories, getDeletedCategories} from "../../api/categoryApi.js";
 const BASE_URL = 'http://localhost:8080/api/v1/categories';
 
 const CategoryManagement = () => {
@@ -102,27 +102,26 @@ const CategoryManagement = () => {
         }
 
         try {
-            const res = await fetch(BASE_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newCategory.name.trim(),
-                    parentId: newCategory.parentId || null,
-                }),
+            const response = await createCategory({
+                name: newCategory.name.trim(),
+                parentId: newCategory.parentId || null,
             });
-            if (res.ok) {
-                showAlert('카테고리가 생성되었습니다.');
-                setNewCategory({ name: '', parentId: '' });
-                fetchActiveCategories();
+
+            // response가 error 객체인지를 체크
+            if (response && response.error) {
+                // 400 오류일 때 error를 반환했으면
+                showAlert(response.error, "error");
+            } else if (response) {
+                showAlert("카테고리가 생성되었습니다.");
+                setNewCategory({ name: "", parentId: "" });
+                fetchActiveCategories(); // 최신 카테고리 목록 다시 불러오기
             } else {
-                const errData = await res.json();
-                throw new Error(errData.message || '카테고리 생성에 실패했습니다.');
+                throw new Error("카테고리 생성에 실패했습니다.");
             }
         } catch (error) {
-            showAlert(error.message, 'error');
+            showAlert(error.message, "error");
         }
+
     };
 
     // 삭제 Dialog를 열기 위한 함수
