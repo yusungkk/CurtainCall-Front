@@ -61,6 +61,7 @@ export const COMPLETE_ORDER_URL = `${API_VERSION_V1}/orders/{orderId}/complete`;
 export const FAIL_ORDER_URL = `${API_VERSION_V1}/orders/{orderId}/fail`;
 export const ORDER_HISTORY_URL = `${API_VERSION_V1}/orders/history`;
 export const SUCCESS_ORDER_URL = (id) => `${API_VERSION_V1}/orders/${id}/success`;
+export const CANCEL_COMPLETE_ORDER_URL = `${API_VERSION_V1}/orders/cancel`;
 
 //==결제 관련 API URL==//
 export const PAYMENT_URL = `${API_VERSION_V1}/payment`;

@@ -7,6 +7,7 @@ import {
     FAIL_ORDER_URL,
     ORDER_HISTORY_URL,
     SUCCESS_ORDER_URL,
+    CANCEL_COMPLETE_ORDER_URL,
 } from "/src/utils/endpoint";
 
 // 예약된 좌석 목록 가져오기
@@ -36,7 +37,15 @@ export const createOrder = async (orderData) => {
     });
 };
 
-// 주문 취소
+// 완료된 주문 취소
+export const cancelCompletedOrder = async (orderNo) => {
+    return await fetcher(CANCEL_COMPLETE_ORDER_URL, {
+        method: "PATCH",
+        body: JSON.stringify({ orderNo: orderNo }),
+    });
+};
+
+// 결제 기한 초과 시 주문 취소
 export const cancelOrder = async (orderId) => {
     return await fetcher(CANCEL_ORDER_URL(orderId), {
         method: "POST",
