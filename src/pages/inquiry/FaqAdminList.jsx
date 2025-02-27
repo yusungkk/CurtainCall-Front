@@ -14,16 +14,10 @@ import CancelBtn from "../../components/CancelBtn.jsx";
 import LoadMoreBtn from "../../components/LoadMoreBtn.jsx";
 import {useNavigate} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
-import QuizIcon from '@mui/icons-material/Quiz';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import ChatIcon from '@mui/icons-material/Chat';
-import FaqCard from "../../components/inquiry/FaqCard.jsx";
-import {useToggle} from "../../components/chat/ToggleContext.jsx";
 
 
-function FaqList({setActive, role}) {
+function FaqAdminList() {
 
-    const {setIsToggled} = useToggle();
     const defaultOffset = 0;
     const limit = 10;
     const faqTypes = [
@@ -139,22 +133,8 @@ function FaqList({setActive, role}) {
         }
     };
 
-    const handleInquiryBtn = () => {
-        navigate("/inquiries/new")
-    }
-
-    const handleInquiriesBtn = () => {
-        navigate("/inquiries")
-    }
-
-    const handleChatBtn = () => {
-        if (role === "ANONYMOUS" || role !== "") {
-            setActive(true);
-            setIsToggled(true);
-        }
-    };
     return (
-        <div style={{ maxWidth: '70%'}}>
+        <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
             <Box sx={{
                 mb: 2
             }}>
@@ -210,17 +190,14 @@ function FaqList({setActive, role}) {
 
                             />
                             {openFaqs[faq.id] ? <ExpandLess/> : <ExpandMore/>}
-
-                            {role === "ADMIN" &&
-                                <Grid container spacing={1}>
-                                    <Grid size={7}>
-                                        <EditBtn onClick={e => handleEditBtn(e, faq.id)} viewName={"수정"}/>
-                                    </Grid>
-                                    <Grid size={5}>
-                                        <CancelBtn onClick={e => handleCancelBtn(e, faq.id)} viewName={"삭제"}/>
-                                    </Grid>
+                            <Grid container spacing={1}>
+                                <Grid size={7}>
+                                    <EditBtn onClick={e => handleEditBtn(e, faq.id)} viewName={"수정"}/>
                                 </Grid>
-                            }
+                                <Grid size={5}>
+                                    <CancelBtn onClick={e => handleCancelBtn(e, faq.id)} viewName={"삭제"}/>
+                                </Grid>
+                            </Grid>
                         </ListItemButton>
                         <Collapse in={openFaqs[faq.id]} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding sx={{pl: 4}}>
@@ -242,40 +219,9 @@ function FaqList({setActive, role}) {
                 viewName={`더 보기(${pageInfo.size}/${pageInfo.totalElements})`}
                 isDisabled={pageInfo.totalElements === 0 || pageInfo.size >= pageInfo.totalElements}
             />
-            <Box sx={{
-                mt: 5,
-                textAlign: 'left',
-            }}>
-                <Typography variant="h4" sx={{
-                    color: 'black',
-                    mb: 2,
-                    fontFamily: "'Bareun_hipi', sans-serif",
-                }}>다른 도움이 필요하신가요?</Typography>
-
-                <div>
-                    <FaqCard
-                        icon={QuizIcon}
-                        title="1:1 문의하기"
-                        description="상담 내역을 남길 수 있습니다."
-                        onClick={handleInquiryBtn}
-                    />
-                    <FaqCard
-                        icon={EditNoteIcon}
-                        title="내 문의 내역 확인하기"
-                        description="문의한 내용을 확인해 보세요."
-                        onClick={handleInquiriesBtn}
-                    />
-                    <FaqCard
-                        icon={ChatIcon}
-                        onClick={handleChatBtn}
-                        title="채팅상담하기"
-                        description="실시간으로 채팅으로 문의하여 보세요."
-                    />
-                </div>
-            </Box>
-        </div>
+        </Box>
     );
 
 }
 
-export default FaqList;
+export default FaqAdminList;

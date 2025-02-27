@@ -18,7 +18,8 @@ import CategoryManagement from "../../components/category/CategoryManagement.jsx
 import SpecialProductManagement from "../../components/specialProduct/SpecialProductManagement.jsx";
 import FaqList from "../inquiry/FaqList.jsx";
 import InquiryAdminList from "../inquiry/InquiryAdminList.jsx";
-import ProductManagement from "/src/components/products/ProductManagement.jsx";
+import ProductManagement from "/src/pages/products/ProductManagement.jsx";
+import FaqAdminList from "../inquiry/FaqAdminList.jsx";
 
 const MyPage = () => {
   const location = useLocation();
@@ -111,8 +112,8 @@ const MyPage = () => {
           {selectedMenu === "category" && <CategoryManagement />}
           {selectedMenu === "product" && <ProductManagement />}
           {selectedMenu === "specialProduct" && <SpecialProductManagement />}
-          {selectedMenu === "faq" && <FaqList />}
-          {selectedMenu === "inquiry" && <InquiryAdminList />}
+          {selectedMenu === "faq" && <FaqAdminList />}
+          {selectedMenu === "inquiry" && <InquiryAdminList/>}
         </Container>
       </Box>
     </Box>

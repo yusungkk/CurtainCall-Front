@@ -27,7 +27,7 @@ import SpecialProductManagement from "./components/specialProduct/SpecialProduct
 
 import { ToggleProvider } from "./components/chat/ToggleContext.jsx";
 import GlobalToggleIcon from "./components/chat/GlobalToggleBtn.jsx";
-import ChatWindow from "./components/chat/ChatWindow.jsx";
+import UserChatWindow from "./components/chat/UserChatWindow.jsx";
 import { useToggleActive } from "./hooks/UseToggleActive.jsx";
 import AdminChatWindow from "./components/chat/AdminChatWindow.jsx";
 import UseUserRole from "./hooks/UseUserRole.jsx";
@@ -56,11 +56,11 @@ function AppContent() {
         <>
             {!hiddenNavPaths.includes(location.pathname) && <NavigationBar />}
 
-            {active && (
+            {(active || role === "ADMIN") && (
                 <>
                     <GlobalToggleIcon />
                     {role === "ADMIN" && <AdminChatWindow />}
-                    {role === "USER" && <ChatWindow />}
+                    {role === "USER" && <UserChatWindow setActive={setActive}/>}
                 </>
             )}
 

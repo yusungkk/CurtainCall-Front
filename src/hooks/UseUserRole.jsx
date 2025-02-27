@@ -2,14 +2,12 @@ import {useEffect, useState} from "react";
 import {getUserRole} from "/src/api/userApi.js";
 
 export default function UseUserRole(setActive) {
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState("ANONYMOUS");
 
     useEffect(() => {
         const fetchUserRole = async () => {
             const data = await getUserRole();
             if (data === 403) {
-                setRole("ANONYMOUS");
-
                 return;
             }
             if (data === true) {
@@ -22,5 +20,5 @@ export default function UseUserRole(setActive) {
         };
         fetchUserRole();
     }, [role]);
-    return [role];
+    return [role, setRole];
 };

@@ -55,7 +55,7 @@ export default function InquiryAdminDetail() {
         console.log(reply);
         const data = await createReplyByAdmin(navigate, id, reply);
         if (data === 201) {
-            navigate("/admin/inquiries");
+            navigate("/admin");
         }
     }
 
@@ -69,6 +69,7 @@ export default function InquiryAdminDetail() {
                 variant="h4"
                 gutterBottom
                 color={"black"}
+                sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
             >
                 문의내역
             </Typography>
@@ -84,7 +85,7 @@ export default function InquiryAdminDetail() {
             >
                 {inquiryData.title}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" color="text.secondary" sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
                 {getTypeLabel(inquiryData.type)} · {inquiryData.createAt?.split("T")[0] || ""}
             </Typography>
             <Divider sx={{
@@ -101,7 +102,7 @@ export default function InquiryAdminDetail() {
                     variant="h6"
                     fontWeight="bold"
                     color="primary"
-                    sx={{mr: 2}}>
+                    sx={{mr: 2, fontFamily: "'Bareun_hipi', sans-serif",}}>
                     Q
                 </Typography>
 
@@ -115,6 +116,7 @@ export default function InquiryAdminDetail() {
                     <Typography
                         variant="body1"
                         color="black"
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
                     >
                         {inquiryData.content}
                     </Typography>
@@ -122,6 +124,7 @@ export default function InquiryAdminDetail() {
                         mt={2}
                         variant="body2"
                         color="gray"
+                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
                         whiteSpace={"pre-line"}
                     >
                         {inquiryData.createAt?.replace("T", " ").slice(0, 16) || ""}
@@ -136,7 +139,10 @@ export default function InquiryAdminDetail() {
                     width: "100%",
                     marginTop: "16px"
                 }}>
-                    <Typography variant="h6" fontWeight="bold" color="success" sx={{mr: 2}}>A</Typography>
+                    <Typography variant="h6" fontWeight="bold" color="success"
+                                sx={{mr: 2, fontFamily: "'Bareun_hipi', sans-serif",}}>
+                        A
+                    </Typography>
                     <Box sx={{
                         border: "1px",
                         borderRadius: "10px",
@@ -193,7 +199,7 @@ export default function InquiryAdminDetail() {
                     }}>
                         <CancelBtn
                             viewName={"이전"}
-                            onClick={() => navigate("/admin/inquiries")}
+                            onClick={() => navigate("/admin")}
                         />
                     </Box>
                 )

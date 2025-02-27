@@ -15,7 +15,7 @@ import { getUserData, logout, getUserRole } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { getActiveCategories } from "../../api/categoryApi.js";
 
-const NavigationBar = () => {
+const NavigationBar = ({setActive, setRole}) => {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);

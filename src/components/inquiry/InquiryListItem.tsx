@@ -4,7 +4,7 @@ import {CheckCircleOutline} from "@mui/icons-material";
 export default function InquiryListItem({inquiry, onClick}) {
 
     const getStatusLabel = (status) => {
-        return status === "READY" ? "답변 전" : "답변 완료";
+        return status === "READY" ? "답변 대기" : "답변 완료";
     };
 
     const getTypeLabel = (type) => {
