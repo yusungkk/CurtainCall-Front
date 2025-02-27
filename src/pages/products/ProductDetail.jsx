@@ -32,6 +32,8 @@ function ProductDetail() {
     const [selectedProductDetailId, setSelectedProductDetailId] = useState(null);
 
     useEffect(() => {
+
+        window.scrollTo(0, 0); // 페이지 로드 시 화면을 맨 위로 스크롤
         const fetchProduct = async () => {
             const data = await getProduct(id);
 
@@ -137,25 +139,25 @@ function ProductDetail() {
                             <div className="poster-box">
                                 <img src={product.imageUrl} />
                             </div>
-                            <ul className="info">
-                                <li className="info-item">
-                                    <strong className="info-label">장소</strong>
-                                    <p className="info-text">{product.place}</p>
+                            <ul className="detail-info">
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">장소</strong>
+                                    <p className="detail-info-text">{product.place}</p>
                                 </li>
-                                <li className="info-item">
-                                    <strong className="info-label">공연기간</strong>
-                                    <p className="info-text">
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">공연기간</strong>
+                                    <p className="detail-info-text">
                                         {product.startDate} ~ {product.endDate}
                                     </p>
                                 </li>
-                                <li className="info-item">
-                                    <strong className="info-label">공연시간</strong>
-                                    <p className="info-text">{product.runningTime}분</p>
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">공연시간</strong>
+                                    <p className="detail-info-text">{product.runningTime}분</p>
                                 </li>
-                                <li className="info-item">
-                                    <strong className="info-label">가격</strong>
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">가격</strong>
                                     {product.discountRate > 0 ? (
-                                        <div className="info-text">
+                                        <div className="detail-info-text">
                                             <span className="original-price">
                                                 {product.price.toLocaleString("ko-KR")}원
                                             </span>
@@ -170,17 +172,17 @@ function ProductDetail() {
                                             </span>
                                         </div>
                                     ) : (
-                                        <p className="info-text">
+                                        <p className="detail-info-text">
                                             {product.price.toLocaleString("ko-KR")}원
                                         </p>
                                     )}
                                 </li>
                                 {product.discountRate > 0 && (
-                                    <li className="info-item">
-                                        <strong className="info-label discount-label">
+                                    <li className="detail-info-item">
+                                        <strong className="detail-info-label discount-label">
                                             할인기간
                                         </strong>
-                                        <p className="info-text discount-period">
+                                        <p className="detail-info-text discount-period">
                                             {format(
                                                 new Date(product.discountStartDate),
                                                 "yyyy-MM-dd"

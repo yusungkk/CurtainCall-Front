@@ -56,7 +56,12 @@ const SpecialProductList = () => {
                                     alt={specialProductDto.productName}
                                     className="product-image"
                                 />
-                                <h3 className="product-title">{specialProductDto.productName}</h3>
+                                <h3
+                                    className="product-title"
+                                    title={specialProductDto.productName}  // Show full name on hover
+                                >
+                                    {specialProductDto.productName}
+                                </h3>
                                 <p className="product-place">{specialProductDto.place}</p>
                                 <p className="product-dates">
                                     {specialProductDto.discountStartDate} ~ {specialProductDto.discountEndDate}

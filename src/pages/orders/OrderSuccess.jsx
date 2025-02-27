@@ -36,6 +36,7 @@ function OrderSuccess() {
                         orderNo: data.orderNo,
                         orderPrice: data.orderPrice,
                         productName: data.productName,
+                        place: data.place,
                         performanceDate: data.performanceDate.replace(/-/g, "."),
                         performanceTime: data.performanceTime,
                         seats: data.seats,

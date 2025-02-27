@@ -11,6 +11,8 @@ const SeatSelection = ({ productDetailId, onSeatSelect }) => {
 
     // 예약된 좌석 불러오기
     useEffect(() => {
+        window.scrollTo(0, 0); // 페이지 로드 시 화면을 맨 위로 스크롤
+
         const loadReservedSeats = async () => {
             const data = await getReservedSeats(productDetailId);
             if (data) setReservedSeats(data);
