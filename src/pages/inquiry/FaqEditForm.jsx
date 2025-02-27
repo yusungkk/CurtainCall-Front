@@ -41,12 +41,12 @@ function FaqEditForm() {
 
         const response = await updateFaq(formData, formData.id);
         if (response === 204) {
-            navigate('/faqs');
+            navigate("/admin");
         }
     };
 
     const handleCancelBtn = () => {
-        navigate("/faqs");
+        navigate("/admin");
     };
 
     return (

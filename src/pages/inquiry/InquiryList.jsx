@@ -27,7 +27,7 @@ export default function InquiryList() {
     }
 
     return (
-        <Box sx={{width: '100vw', maxWidth: 800, margin: '0 auto', mt: 5}}>
+        <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
             <Typography variant="h4"
                         gutterBottom
                         color={"black"}

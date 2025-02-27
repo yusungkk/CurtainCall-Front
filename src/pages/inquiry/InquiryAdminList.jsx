@@ -72,7 +72,7 @@ export default function InquiryAdminList() {
     };
 
     return (
-        <Box sx={{maxWidth: "70%", margin: '0 auto', mt: 5}}>
+        <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
             <Typography variant="h4" gutterBottom color={"black"} align={"left"} mb={4}
                         sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
                 작성된 문의 내역

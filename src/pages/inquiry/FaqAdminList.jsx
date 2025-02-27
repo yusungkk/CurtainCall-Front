@@ -134,7 +134,7 @@ function FaqAdminList() {
     };
 
     return (
-        <div style={{maxWidth: '70%'}}>
+        <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
             <Box sx={{
                 mb: 2
             }}>
@@ -219,7 +219,7 @@ function FaqAdminList() {
                 viewName={`더 보기(${pageInfo.size}/${pageInfo.totalElements})`}
                 isDisabled={pageInfo.totalElements === 0 || pageInfo.size >= pageInfo.totalElements}
             />
-        </div>
+        </Box>
     );
 
 }

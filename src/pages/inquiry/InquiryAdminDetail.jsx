@@ -55,7 +55,7 @@ export default function InquiryAdminDetail() {
         console.log(reply);
         const data = await createReplyByAdmin(navigate, id, reply);
         if (data === 201) {
-            navigate("/admin/inquiries");
+            navigate("/admin");
         }
     }
 
@@ -199,7 +199,7 @@ export default function InquiryAdminDetail() {
                     }}>
                         <CancelBtn
                             viewName={"이전"}
-                            onClick={() => navigate("/admin/inquiries")}
+                            onClick={() => navigate("/admin")}
                         />
                     </Box>
                 )
