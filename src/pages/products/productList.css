@@ -81,8 +81,16 @@
     font-size: 18px;
     font-weight: bold;
     margin-top: 10px;
+
+    width: 240px;
+    overflow: hidden; /* 넘치는 텍스트는 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트는 '...'으로 표시 */
+    white-space: nowrap; /* 텍스트가 한 줄로 표시되도록 설정 */
+    cursor: pointer; /* 마우스를 올렸을 때 커서가 포인터로 변경되도록 설정 */
 }
 
+.product-title:hover {
+}
 /* 상품 장소 */
 .product-place {
     font-size: 14px;

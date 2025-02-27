@@ -76,8 +76,12 @@ const ProductList = ({ genre }) => {
                                     alt={product.productName}
                                     className="product-image"
                                 />
-
-                                <h3 className="product-title">{product.productName}</h3>
+                                <h3
+                                    className="product-title"
+                                    title={product.productName}
+                                >
+                                    {product.productName}
+                                </h3>
 
                                 <p className="product-place">{product.place}</p>
 
