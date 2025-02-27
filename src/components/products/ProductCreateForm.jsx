@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchCategories } from "/src/api/categoryApi";
+import { getActiveCategories } from "/src/api/categoryApi";
 import { createProduct } from "/src/api/productApi";
 import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
@@ -30,7 +30,7 @@ const ProductForm = () => {
 
     useEffect(() => {
         const loadCategories = async () => {
-            const data = await fetchCategories();
+            const data = await getActiveCategories();
             if (data) {
                 setCategories(data);
                 setParentCategories(data.filter((category) => category.parentId === null));

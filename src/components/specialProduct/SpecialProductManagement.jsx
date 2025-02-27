@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
     Container,
     Tabs,
@@ -7,6 +6,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    Tooltip,
     TableContainer,
     TableHead,
     TableRow,
@@ -28,20 +28,24 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditSpecialProductDialog from "./EditSpecialProductDialog.jsx";
 import RegisterSpecialProductDialog from "./RegisterSpecialProductDialog";
-
-
-const BASE_URL = 'http://localhost:8080/api/v1/specialProduct';
+import {
+    approveSpecialProduct, cancelApproveSpecialProduct,
+    deleteSpecialProduct,
+    getDeletedSpecialProducts,
+    getSpecialProducts,
+    updateSpecialProduct
+} from "../../api/specialProductApi.js";
 
 // 상태에 대한 한글 라벨 및 색상 매핑
 const statusLabels = {
-    UPCOMING: '할인 예정',
-    ACTIVE: '할인 중',
-    DELETED: '할인 종료',
+    UPCOMING: '할인예정',
+    ACTIVE: '할인중',
+    DELETED: '할인종료',
 };
 
 const statusColors = {
-    UPCOMING: 'orange',
-    ACTIVE: 'green',
+    UPCOMING: 'black',
+    ACTIVE: 'red',
     DELETED: 'red',
 };
 
@@ -90,39 +94,25 @@ const SpecialProductManagement = () => {
 
     // 활성 특가상품 조회 (페이지네이션 및 검색 적용)
     const fetchActiveProducts = async () => {
-        try {
-            let url = `${BASE_URL}/search?page=${currentPage}&size=10`;
-            if (searchKeyword.trim() !== '') {
-                url += `&keyword=${encodeURIComponent(searchKeyword)}`;
-            }
-            const res = await fetch(url);
-            if (res.ok) {
-                const data = await res.json();
-                setActiveProducts(data.content);
-                setTotalPages(data.totalPages);
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품을 불러오지 못했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await getSpecialProducts(currentPage, searchKeyword);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        setActiveProducts(response.content);
+        setTotalPages(response.totalPages);
     };
 
 
     // 삭제된 특가상품 조회 (전체 조회)
     const fetchDeletedProducts = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/findAllDeleted`);
-            if (res.ok) {
-                const data = await res.json();
-                setDeletedProducts(data);
-            } else {
-                throw new Error('삭제된 특가상품을 불러오지 못했습니다.');
-            }
-        } catch (error) {
-            showAlert(error.message, 'error');
+        const response = await getDeletedSpecialProducts();
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+        setDeletedProducts(response);
     };
 
     // 수정 다이얼로그 열기
@@ -160,24 +150,16 @@ const SpecialProductManagement = () => {
             showAlert('모든 필드를 입력하세요.', 'error');
             return;
         }
-        try {
-            const res = await fetch(BASE_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editProduct),
-            });
 
-            if (res.ok) {
-                showAlert('특가상품이 수정되었습니다.');
-                closeEditDialog();
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품 수정에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await updateSpecialProduct(editProduct);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 수정되었습니다.');
+        fetchActiveProducts();
+        closeEditDialog();
     };
 
 
@@ -188,64 +170,42 @@ const SpecialProductManagement = () => {
     };
 
     // 특가상품 삭제 API 호출 (소프트 삭제)
-    const confirmDeleteProduct = async () => {
-        try {
-            const res = await fetch(`${BASE_URL}/${deleteProductId}`, { method: 'DELETE' });
-
-            if (res.ok) {
-                showAlert('특가상품이 삭제되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '특가상품 삭제에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
-        } finally {
-            setDeleteDialogOpen(false);
-            setDeleteProductId(null);
+    const handleDeleteProduct = async () => {
+        const response = await deleteSpecialProduct(deleteProductId);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 삭제되었습니다.');
+        fetchActiveProducts();
+        setDeleteDialogOpen(false);
+        setDeleteProductId(null);
     };
+
 
     // 활성 특가상품 승인 API 호출
     const handleApproveProduct = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/approve/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (res.ok) {
-                showAlert('특가상품이 승인되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '승인에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await approveSpecialProduct(id);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+
+        showAlert('특가상품이 승인되었습니다.');
+        fetchActiveProducts();
     };
 
 
     // 활성 특가상품 승인 취소 API 호출
     const handleCancelApproveProduct = async (id) => {
-        try {
-            const res = await fetch(`${BASE_URL}/approveCancel/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (res.ok) {
-                showAlert('승인이 취소되었습니다.');
-                fetchActiveProducts();
-            } else {
-                const errData = await res.json();
-                showAlert(errData.message || '승인 취소에 실패했습니다.', 'error');
-            }
-        } catch (error) {
-            showAlert(error.message || '요청 처리 중 오류가 발생했습니다.', 'error');
+        const response = await cancelApproveSpecialProduct(id);
+        if (response?.error) {
+            showAlert(response.error, "error");
+            return;
         }
+        showAlert('승인 취소되었습니다.');
+        fetchActiveProducts();
     };
 
 
@@ -300,11 +260,11 @@ const SpecialProductManagement = () => {
                         }}
                         onKeyDown={handleKeyDown}
                     />
-                    <Button variant="contained" color="primary" size="small" onClick={fetchActiveProducts}>
+                    <Button variant="outlined" color="primary" size="small" onClick={fetchActiveProducts}>
                         검색
                     </Button>
                 </Box>
-                <Button variant="contained" color="primary" size="small" onClick={() => setRegisterDialogOpen(true)}>
+                <Button variant="outlined" color="primary" size="small" onClick={() => setRegisterDialogOpen(true)}>
                     특가상품 등록
                 </Button>
             </Box>
@@ -338,7 +298,30 @@ const SpecialProductManagement = () => {
                                 {activeProducts.map((specialProductDto) => (
                                     <TableRow key={specialProductDto.specialProductId}>
                                         <TableCell>{specialProductDto.specialProductId}</TableCell>
-                                        <TableCell>{specialProductDto.productName}</TableCell>
+                                        <TableCell>
+                                            <Tooltip
+                                                title={specialProductDto.productName}
+                                                enterDelay={500}
+                                                leaveDelay={200}
+                                                sx={{
+                                                    fontSize: '1.2rem', // 툴팁 텍스트 크기
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{
+                                                        width: '130px', // 11자 정도에 맞게 너비 설정
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                    }}
+                                                >
+                                                    {specialProductDto.productName}
+                                                </Typography>
+                                            </Tooltip>
+
+                                        </TableCell>
+
                                         <TableCell>{specialProductDto.price?.toLocaleString() + '원'}</TableCell>
                                         <TableCell>{specialProductDto.discountRate}%</TableCell>
                                         {/*<TableCell>{calcDiscountedPrice(specialProductDto.price, specialProductDto.discountRate)}</TableCell>*/}
@@ -351,7 +334,7 @@ const SpecialProductManagement = () => {
                                         <TableCell>
                                             {specialProductDto.status === 'UPCOMING' ? (
                                                 <Button
-                                                    variant="contained"
+                                                    variant="outlined"
                                                     color="primary"
                                                     size="small"
                                                     onClick={() => handleApproveProduct(specialProductDto.specialProductId)}
@@ -360,20 +343,20 @@ const SpecialProductManagement = () => {
                                                 </Button>
                                             ) : (
                                                 <Button
-                                                    variant="contained"
-                                                    color="warning"
+                                                    variant="outlined"
+                                                    color="error"
                                                     size="small"
                                                     onClick={() => handleCancelApproveProduct(specialProductDto.specialProductId)}
                                                 >
-                                                    승인 취소
+                                                    취소
                                                 </Button>
                                             )}
                                         </TableCell>
                                         <TableCell align="center">
-                                            <IconButton color="secondary" size="small" onClick={() => openEditDialog(specialProductDto)}>
+                                            <IconButton size="small" onClick={() => openEditDialog(specialProductDto)}>
                                                 <EditIcon />
                                             </IconButton>
-                                            <IconButton color="error" size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
+                                            <IconButton size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
@@ -385,7 +368,28 @@ const SpecialProductManagement = () => {
 
                     {/* 페이지네이션 */}
                     <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center' }}>
-                        <Pagination count={totalPages} page={currentPage + 1} onChange={handlePageChange} color="secondary" size="small" />
+                        <Pagination
+                            count={totalPages}
+                            page={currentPage + 1}
+                            onChange={handlePageChange}
+                            sx={{
+                                "& .MuiPaginationItem-page.Mui-selected": {
+                                    backgroundColor: "#800000", // 선택된 페이지 배경색
+                                    color: "#ffffff", // 선택된 페이지 숫자 색상
+                                },
+
+                                "& .MuiPaginationItem-page": {
+                                    color: "#555555", // 기본 페이지 숫자 색상
+                                    "&:hover": {
+                                        backgroundColor: "#F5F5F5", // 기본 페이지 숫자 hover 시 배경색
+                                    },
+                                },
+
+                                "& .MuiPaginationItem-ellipsis": {
+                                    color: "#555555", // 생략 부호 색상
+                                },
+                            }}
+                        />
                     </Box>
                 </Box>
             )}
@@ -447,10 +451,10 @@ const SpecialProductManagement = () => {
                     <Typography>정말로 삭제하시겠습니까?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error" onClick={confirmDeleteProduct}>
+                    <Button variant="outlined" onClick={handleDeleteProduct}>
                         삭제
                     </Button>
-                    <Button onClick={() => setDeleteDialogOpen(false)}>취소</Button>
+                    <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>취소</Button>
                 </DialogActions>
             </Dialog>
 

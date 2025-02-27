@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { login } from "../../api/userApi.js";
-import "../../styles/users/Login.css";
 import logo from "../../assets/img.png";
 
 const Login = () => {
@@ -40,13 +39,18 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <img src={logo} alt="Curtaincall Logo" onClick={() => navigate("/")} className="login-logo" />
+    <div style={styles.loginContainer}>
+      <div style={styles.loginBox}>
+        <img
+          src={logo}
+          alt="Curtaincall Logo"
+          onClick={() => navigate("/")}
+          style={styles.loginLogo}
+        />
         <input
           type="text"
           id="email"
-          className="login-input"
+          style={styles.loginInput}
           placeholder="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -54,23 +58,82 @@ const Login = () => {
         <input
           type="password"
           id="password"
-          className="login-input"
+          style={styles.loginInput}
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className="login-button" onClick={handleLogin}>
+        <button style={styles.loginButton} onClick={handleLogin}>
           로그인
         </button>
-        <p className="signup-prompt">
+        <p style={styles.signupPrompt}>
           회원이 아니신가요?{" "}
-          <span className="signup-link" onClick={() => navigate("/join")}>
+          <span style={styles.signupLink} onClick={() => navigate("/join")}>
             회원가입
           </span>
         </p>
       </div>
     </div>
   );
+};
+
+const styles = {
+  loginContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "calc(100vh - 4rem)"
+  },
+  loginBox: {
+    backgroundColor: "white",
+    padding: "2.2rem 3rem",
+    borderRadius: "1rem",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    width: "370px",
+    textAlign: "center"
+  },
+  loginInput: {
+    width: "95%",
+    padding: "0.8rem",
+    margin: "0.5rem 0",
+    border: "1px solid #ccc",
+    borderRadius: "0.5rem",
+    fontSize: "1rem",
+    boxSizing: "border-box",
+    outline: "none"
+  },
+  loginButton: {
+    width: "95%",
+    padding: "0.8rem",
+    marginTop: "1rem",
+    backgroundColor: "#800000",
+    color: "white",
+    border: "none",
+    borderRadius: "0.5rem",
+    fontFamily: '"BMJUA", sans-serif',
+    fontSize: "1.3rem",
+    cursor: "pointer",
+    transition: "background 0.3s"
+  },
+  loginButtonHover: {
+    backgroundColor: "#660000"
+  },
+  loginLogo: {
+    width: "260px",
+    marginBottom: "1rem",
+    cursor: "pointer"
+  },
+  signupPrompt: {
+    marginTop: "14px",
+    fontSize: "14px",
+    color: "#888",
+    textAlign: "center"
+  },
+  signupLink: {
+    color: "#800000",
+    textDecoration: "underline",
+    cursor: "pointer"
+  }
 };
 
 export default Login;
