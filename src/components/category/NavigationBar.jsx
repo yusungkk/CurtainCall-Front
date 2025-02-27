@@ -15,7 +15,7 @@ import { getUserData, logout, getUserRole } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { getActiveCategories } from "../../api/categoryApi.js";
 
-const NavigationBar = ({setActive, setRole}) => {
+const NavigationBar = ({setActive, setRoleToggle}) => {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
@@ -79,6 +79,8 @@ const NavigationBar = ({setActive, setRole}) => {
                 try {
                     await logout();
                     setUser(null);
+                    setActive(false);
+                    setRoleToggle("ANONYMOUS");
                     alert("로그아웃 되었습니다.");
                     navigate("/");
                 } catch (error) {

@@ -32,9 +32,8 @@ export default function InquiryAdminList() {
 
     const fetchInquiries = async () => {
         const data = await getInquiriesByAdmin(navigate, inquirySearchCond, offset - 1);
-        console.log(data);
         setInquiryData([...data.content]);
-        setOffset(data.page.number + 1);
+        setOffset(data.number + 1);
         setTotalPages(data.totalPages);
     };
 

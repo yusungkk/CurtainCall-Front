@@ -50,11 +50,11 @@ function AppContent() {
     const hiddenFooterPaths = ["/login", "/join"];
 
     const [active, setActive] = useToggleActive();
-    const [role] = UseUserRole();
+    const [role, setRole] = UseUserRole(setActive);
 
     return (
         <>
-            {!hiddenNavPaths.includes(location.pathname) && <NavigationBar />}
+            {!hiddenNavPaths.includes(location.pathname) && <NavigationBar setActive={setActive} setRoleToggle={setRole}/>}
 
             {(active || role === "ADMIN") && (
                 <>
