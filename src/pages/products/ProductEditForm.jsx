@@ -13,14 +13,14 @@ function ProductEditForm() {
     const { id } = useParams();
 
     const [formData, setFormData] = useState({
-        productName: "",
+        productName: null,
         categoryId: null,
-        place: "",
-        runningTime: "",
-        price: "",
-        casting: "",
-        notice: "",
-        imageUrl: "",
+        place: null,
+        runningTime: 0,
+        price: 0,
+        casting: null,
+        notice: null,
+        imageUrl: null,
         image: null,
         errors: {},
     });
@@ -159,7 +159,7 @@ function ProductEditForm() {
 
             if (response.status === 204) {
                 alert("✅ 상품이 수정되었습니다!");
-                navigate("/admin/products");
+                navigate("/admin?menu=product");
             } else {
                 throw new Error(await response.json());
             }

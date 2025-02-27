@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getActiveSpecialProducts } from '../../api/specialProductApi';
 import "./SpecialProductList.css";
-import "/src/pages/products/productList.css";
+import "/src/components/products/productList.css";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+
 
 const SpecialProductList = () => {
     const [specialProducts, setSpecialProducts] = useState([]);
@@ -72,17 +73,6 @@ const SpecialProductList = () => {
                     ))}
                 </div>
 
-                {/*<div className="pagination">*/}
-                {/*    <button onClick={handlePrevPage} disabled={currentPage === 0}>*/}
-                {/*        &#8592; 이전*/}
-                {/*    </button>*/}
-                {/*    <span>*/}
-                {/*        {currentPage + 1} / {totalPages}*/}
-                {/*    </span>*/}
-                {/*    <button onClick={handleNextPage} disabled={currentPage >= totalPages - 1}>*/}
-                {/*        다음 &#8594;*/}
-                {/*    </button>*/}
-                {/*</div>*/}
                 {currentPage < totalPages - 1 && (
                     <button onClick={() => setCurrentPage(currentPage + 1)}>
                         <ArrowForwardIosIcon />

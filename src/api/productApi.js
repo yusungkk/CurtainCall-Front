@@ -1,11 +1,17 @@
 import { fetcher } from "/src/utils/fetcher";
-import { PRODUCT_URL, DELETE_PRODUCT_URL, CREATE_PRODUCT_URL
-, RECOMMEND_URL, PRODUCT_BY_DETAILID_URL, PRODUCT_DETAILS_URL} from "/src/utils/endpoint";
+import {
+    PRODUCT_URL,
+    DELETE_PRODUCT_URL,
+    CREATE_PRODUCT_URL,
+    RECOMMEND_URL,
+    PRODUCT_BY_DETAILID_URL,
+    PRODUCT_DETAILS_URL,
+} from "/src/utils/endpoint";
 
 export const getProduct = async (id) => {
     const URL = `${PRODUCT_URL}/${id}`;
     return await fetcher(URL, {
-        credentials: 'include',
+        credentials: "include",
     });
 };
 
@@ -20,7 +26,7 @@ export const createProduct = async (productData, image) => {
     formData.append(
         "product",
         new Blob([JSON.stringify(productData)], {
-            type: "application/json"
+            type: "application/json",
         })
     );
     formData.append("image", image);
@@ -54,4 +60,8 @@ export const getProductByDetailId = async (productDetailId) => {
 // 상품 상세 ID로 상품 상세 조회
 export const getProductDetail = async (productDetailId) => {
     return await fetcher(`${PRODUCT_DETAILS_URL}/${productDetailId}`);
+};
+
+export const getSearchProduct = async (keyword, page, size) => {
+    return await fetcher(`${PRODUCT_URL}/search?keyword=${keyword}&page=${page}&size=${size}`);
 };

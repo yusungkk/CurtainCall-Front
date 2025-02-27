@@ -4,15 +4,15 @@ import { getUserData, getUserRole } from "../../api/userApi.js";
 import Update from "./Update";
 import UserList from "./UserList";
 import {
-    Box,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Typography,
-    Container,
-    AppBar,
-    Toolbar,
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+  Container,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
 import CategoryManagement from "../../components/category/CategoryManagement.jsx";
 import SpecialProductManagement from "../../components/specialProduct/SpecialProductManagement.jsx";
@@ -22,26 +22,26 @@ import ProductManagement from "/src/pages/products/ProductManagement.jsx";
 import FaqAdminList from "../inquiry/FaqAdminList.jsx";
 
 const MyPage = () => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const initMenu = queryParams.get("menu") || "update"; // 예매 성공 후 접근 시
-    const [selectedMenu, setSelectedMenu] = useState(initMenu);
-    const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initMenu = queryParams.get("menu") || "update"; // 예매 성공 후 접근 시
+  const [selectedMenu, setSelectedMenu] = useState(initMenu);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await getUserRole();
         if (data === 403) {
-            alert("접근 권한이 없습니다.");
-            navigate("/");
+          alert("접근 권한이 없습니다.");
+          navigate("/");
         } else if (data == false) {
-            alert("접근 권한이 없습니다.");
-            navigate("/");
+          alert("접근 권한이 없습니다.");
+          navigate("/");
         } else {
-            const response = await getUserData();
-            setUser(response);
+          const response = await getUserData();
+          setUser(response);
         }
       } catch (error) {
         console.error("사용자 정보 요청 중 오류 발생:", error);
