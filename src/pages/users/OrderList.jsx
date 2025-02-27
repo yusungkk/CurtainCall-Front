@@ -47,19 +47,19 @@ const OrderList = ({ user, orders, updateOrders }) => {
                             <ul className="info">
                                 <li className="info-item">
                                     <strong className="info-label">상품명</strong>
-                                    <p className="info-text">{order.productName}</p>
+                                    <div className="info-text">{order.productName}</div>
                                 </li>
                                 <li className="info-item">
                                     <strong className="info-label">공연일</strong>
-                                    <p className="info-text">
+                                    <div className="info-text">
                                         {order.performanceDate.replace(/-/g, ".")} {order.performanceTime}
-                                    </p>
+                                    </div>
                                 </li>
                                 <li className="info-item">
                                     <strong className="info-label">좌석</strong>
-                                    <p className="info-text">
+                                    <div className="info-text">
                                         {order.seats.length > 1 ? order.seats.join(", ") : order.seats}
-                                    </p>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

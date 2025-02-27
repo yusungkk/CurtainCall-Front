@@ -34,25 +34,6 @@ function OrderSuccess() {
                 seats: data.seats,
                 imageUrl: data.imageUrl,
             }));
-            // try {
-            //     const response = await fetch(
-            //         `http://localhost:8080/api/v1/${orderId}/success`,
-            //         {
-            //             headers: {
-            //                 "Content-Type": "application/json",
-            //             },
-            //         }
-            //     );
-
-            //     if (response.ok) {
-            //         const data = await response.json();
-
-            //     } else {
-            //         throw new Error(await response.json());
-            //     }
-            // } catch (e) {
-            //     console.log(e);
-            // }
         };
 
         fetchOrderSuccess();

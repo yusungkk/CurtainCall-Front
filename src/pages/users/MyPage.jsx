@@ -4,7 +4,17 @@ import { getUserData, deactivate, logout } from "../../api/userApi.js";
 import { getOrderHistory } from "/src/api/orderApi.js";
 import Update from "./Update";
 import OrderList from "/src/pages/users/OrderList";
-import { Box, List, ListItem, ListItemButton, ListItemText, Typography, Container, AppBar, Toolbar } from "@mui/material";
+import {
+    Box,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography,
+    Container,
+    AppBar,
+    Toolbar,
+} from "@mui/material";
 import InquiryList from "../inquiry/InquiryList.jsx";
 
 const MyPage = () => {
@@ -41,22 +51,6 @@ const MyPage = () => {
             const response = await getOrderHistory(user.email);
 
             updateOrders(response);
-            // try {
-            //   const response = await fetch(`http://localhost:8080/api/v1/history`, {
-            //     method: "POST",
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({ email: user.email }),
-            //   });
-
-            //   if (response.ok) {
-            //     const data = await response.json();
-            //     updateOrders(data);
-            //   } else {
-            //     throw new Error(await response.json());
-            //   }
-            // } catch (error) {}
         };
 
         if (selectedMenu === "orders" && user !== null) {

@@ -3,6 +3,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 24px;
+    margin: 32px 0 0 16px;
 }
 
 .order-container {
@@ -26,15 +28,32 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 24px;
 }
 
-.order-body-left {
-    display: flex;
-}
-
-.order-body-right {
+.order-body .order-body-left {
     display: flex;
     align-items: center;
+}
+
+.order-body .order-body-right {
+    display: flex;
+    align-items: center;
+}
+
+.order-body .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-body .info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.order-body .info-label {
+    min-width: 50px;
 }
 
 .order-body-right .order-price-text {
