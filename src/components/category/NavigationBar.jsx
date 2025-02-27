@@ -67,7 +67,7 @@ const NavigationBar = ({setActive, setRoleToggle}) => {
 
     const handleSearch = async () => {
         navigate(`/search?keyword=${searchText}`);
-
+    }
         const handleCategoryClick = (categoryName) => {
             navigate(`/?genre=${categoryName}`);
         };
@@ -247,7 +247,6 @@ const NavigationBar = ({setActive, setRoleToggle}) => {
                 />
             </>
         );
-    };
 };
 
 export default NavigationBar;
