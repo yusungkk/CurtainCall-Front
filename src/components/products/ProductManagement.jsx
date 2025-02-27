@@ -4,20 +4,7 @@ import { fetcher } from "/src/utils/fetcher";
 import { PRODUCT_URL } from "/src/utils/endpoint";
 import { deleteProduct } from "/src/api/productApi";
 
-import {
-    Box,
-    TableContainer,
-    Table,
-    TableHead,
-    TableBody,
-    Tooltip,
-    Typography,
-    TableRow,
-    TableCell,
-    Button,
-    Pagination,
-    IconButton,
-} from "@mui/material";
+import { Box, TableContainer, Table, TableHead, TableBody, Tooltip, Typography, TableRow, TableCell, Button, Pagination, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -89,11 +76,9 @@ function ProductManagement() {
     };
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", padding: "32px 24px" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", marginTop: "32px", padding: "0 24px" }}>
             <Box>
-                <Box
-                    sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
-                >
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <ProductSearch onSearch={handleSearch} />
                     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                         <Link to="/admin/products/new">
@@ -113,16 +98,10 @@ function ProductManagement() {
                                     <TableCell>포스터</TableCell>
                                     <TableCell>상품명</TableCell>
                                     <TableCell>장소</TableCell>
-                                    <TableCell
-                                        onClick={() => handleSort("startDate")}
-                                        style={{ cursor: "pointer" }}
-                                    >
+                                    <TableCell onClick={() => handleSort("startDate")} style={{ cursor: "pointer" }}>
                                         시작일 {startDateDirection === "asc" ? "▼" : "▲"}
                                     </TableCell>
-                                    <TableCell
-                                        onClick={() => handleSort("endDate")}
-                                        style={{ cursor: "pointer" }}
-                                    >
+                                    <TableCell onClick={() => handleSort("endDate")} style={{ cursor: "pointer" }}>
                                         종료일 {endDateDirection === "asc" ? "▼" : "▲"}
                                     </TableCell>
                                     <TableCell></TableCell>
@@ -133,11 +112,7 @@ function ProductManagement() {
                                     <TableRow key={product.productId}>
                                         <TableCell>{product.productId}</TableCell>
                                         <TableCell>
-                                            <img
-                                                src={product.productImageUrl}
-                                                alt={product.productName}
-                                                style={{ width: "50px" }}
-                                            />
+                                            <img src={product.productImageUrl} alt={product.productName} style={{ width: "50px" }} />
                                         </TableCell>
                                         <TableCell>
                                             <Tooltip
@@ -173,11 +148,7 @@ function ProductManagement() {
                                             <IconButton
                                                 color="action"
                                                 onClick={() => {
-                                                    if (
-                                                        window.confirm(
-                                                            `"${product.productName}"을(를) 삭제하시겠습니까?`
-                                                        )
-                                                    ) {
+                                                    if (window.confirm(`"${product.productName}"을(를) 삭제하시겠습니까?`)) {
                                                         handleProductDelete(product.productId);
                                                     }
                                                 }}

@@ -4,7 +4,7 @@ export const fetcher = async (endPoint, options = {}) => {
 
         const response = await fetch(endPoint, {
             headers: headers,
-            credentials: 'include',
+            credentials: "include",
             ...options,
         });
 
@@ -24,7 +24,6 @@ export const fetcher = async (endPoint, options = {}) => {
         }
 
         throw new Error(errorData);
-
     } catch (e) {
         console.log(e);
     }

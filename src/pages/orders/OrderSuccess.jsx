@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "/src/pages/orders/OrderSuccess.css";
 
+import { getOrderSuccess } from "/src/api/orderApi.js";
+
 function OrderSuccess() {
     const location = useLocation();
     const { orderId } = location.state || { orderId: null };
@@ -19,35 +21,19 @@ function OrderSuccess() {
     // 주문 성공 응답 받아오기
     useEffect(() => {
         const fetchOrderSuccess = async () => {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/v1/${orderId}/success`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
+            const data = await getOrderSuccess(orderId);
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setOrderSuccess((prev) => ({
-                        ...prev,
-                        orderNo: data.orderNo,
-                        orderPrice: data.orderPrice,
-                        productName: data.productName,
-                        place: data.place,
-                        performanceDate: data.performanceDate.replace(/-/g, "."),
-                        performanceTime: data.performanceTime,
-                        seats: data.seats,
-                        imageUrl: data.imageUrl,
-                    }));
-                } else {
-                    throw new Error(await response.json());
-                }
-            } catch (e) {
-                console.log(e);
-            }
+            setOrderSuccess((prev) => ({
+                ...prev,
+                orderNo: data.orderNo,
+                orderPrice: data.orderPrice,
+                productName: data.productName,
+                place: data.place,
+                performanceDate: data.performanceDate.replace(/-/g, "."),
+                performanceTime: data.performanceTime,
+                seats: data.seats,
+                imageUrl: data.imageUrl,
+            }));
         };
 
         fetchOrderSuccess();
@@ -62,7 +48,9 @@ function OrderSuccess() {
             <h2 className="success-title">예매가 완료되었습니다!</h2>
 
             <div className="success-main">
-                <h5 className="order-label">주문번호 <span>{orderSuccess.orderNo}</span></h5>
+                <h5 className="order-label">
+                    주문번호 <span>{orderSuccess.orderNo}</span>
+                </h5>
 
                 <div className="success-content">
                     <div className="poster-box">
@@ -87,9 +75,7 @@ function OrderSuccess() {
                         <li className="info-item">
                             <strong className="info-label">좌석</strong>
                             <p className="info-text">
-                                {orderSuccess.seats.length > 1
-                                    ? orderSuccess.seats.join(", ")
-                                    : orderSuccess.seats}
+                                {orderSuccess.seats.length > 1 ? orderSuccess.seats.join(", ") : orderSuccess.seats}
                             </p>
                         </li>
                         <li className="info-item">
@@ -110,8 +96,6 @@ function OrderSuccess() {
             </div>
         </div>
     );
-
-
 }
 
 export default OrderSuccess;

@@ -29,7 +29,7 @@ const SearchResult = () => {
 
     useEffect(() => {
         fetchSearchResult(currentPage, 5);
-    }, [searchKeyword]);
+    }, [searchKeyword, currentPage]);
 
     useEffect(() => {
         setSearchKeyword(keyword);
