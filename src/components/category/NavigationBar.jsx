@@ -10,21 +10,24 @@ import {
     Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import useCategoryStore from "./useCategoryStore";
 import logo from "../../assets/img.png";
-import { getUserData, logout } from "../../api/userApi";
+import { getUserData, logout, getUserRole } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
+import { getActiveCategories } from "../../api/categoryApi.js";
 
 const NavigationBar = () => {
     const navigate = useNavigate();
-    const { categories, getCategories, loading } = useCategoryStore();
     const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
+    const [role, setRole] = useState(false);
+
+    const [categories, setCategories] = useState([]);
+
+    const [loadingCategories, setLoadingCategories] = useState(false);
 
     // 컴포넌트 마운트 시 카테고리 불러오기
     useEffect(() => {
-        getCategories();
         const fetchUserData = async () => {
             try {
                 const userData = await getUserData(); // 로그인 여부 확인 로직 수정
@@ -32,6 +35,9 @@ const NavigationBar = () => {
                     setUser(null);
                 } else {
                     setUser(userData);
+                    const userRole = await getUserRole();
+
+                    setRole(userRole);
                 }
             } catch (error) {
                 setUser(null);
@@ -39,8 +45,25 @@ const NavigationBar = () => {
                 setLoadingUser(false);
             }
         };
+        const fetchCategories = async () => {
+            setLoadingCategories(true);
+
+            try {
+                const data = await getActiveCategories();
+
+                if (data) {
+                    setCategories(data);
+                }
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            } finally {
+                setLoadingCategories(false);
+            }
+        };
         fetchUserData();
-    }, [getCategories]);
+
+        fetchCategories();
+    }, []);
 
     const handleSearch = async () => {
         navigate(`/search?keyword=${searchText}`);
@@ -54,7 +77,7 @@ const NavigationBar = () => {
         const confirmed = window.confirm("로그아웃 하시겠습니까?");
         if (confirmed) {
             try {
-                const response = await logout();
+                await logout();
                 setUser(null);
                 alert("로그아웃 되었습니다.");
                 navigate("/");
@@ -110,14 +133,14 @@ const NavigationBar = () => {
                         ) : user ? (
                             <>
                                 <a
-                                    href="/myPage"
+                                    href={role ? "/admin" : "/myPage"}
                                     style={{
                                         textDecoration: "none",
                                         color: "inherit",
                                         fontSize: "20px",
                                     }}
                                 >
-                                    마이페이지
+                                    {role ? "관리자 페이지" : "마이페이지"}
                                 </a>
                                 <a
                                     onClick={(e) => {
@@ -171,7 +194,7 @@ const NavigationBar = () => {
                 gap={4}
                 sx={{ p: 1, mb: 3, ml: 0.5 }}
             >
-                {loading ? (
+                {loadingCategories ? (
                     <CircularProgress size={20} />
                 ) : (
                     categories
@@ -192,7 +215,7 @@ const NavigationBar = () => {
                                     fontWeight: "bold",
                                     cursor: "pointer",
                                     position: "relative",
-                                    // Hover 시 밑줄 효과: pseudo-element 사용
+
                                     "&:hover::after": {
                                         content: '""',
                                         position: "absolute",
