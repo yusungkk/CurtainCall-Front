@@ -175,7 +175,9 @@ export default function InquiryAdminDetail() {
                                     color={"black"}
                                     variant="body1"
                                     whiteSpace={"pre-line"}
-                                    sx={{fontFamily: "'Bareun_hipi', sans-serif"}}
+                                    sx={{
+                                        whiteSpace: "pre-line",
+                                        fontFamily: "'Bareun_hipi', sans-serif"}}
                                 >
                                     {inquiryData.reply}
                                 </Typography>
@@ -206,7 +208,7 @@ export default function InquiryAdminDetail() {
                             />
                             <CancelBtn
                                 viewName={"취소"}
-                                onClick={() => navigate("/admin/inquiries")}
+                                onClick={() => navigate("/admin?menu=inquiry")}
                             />
                         </Box>
                     ) : (
