@@ -298,7 +298,7 @@ const SpecialProductManagement = () => {
                         <Table>
                             <TableHead>
                                 <TableRow sx={{backgroundColor: '#eeeeee'}}>
-                                    <TableCell>ID</TableCell>
+                                    <TableCell>#</TableCell>
                                     <TableCell>상품 이름</TableCell>
                                     <TableCell>가격</TableCell>
                                     <TableCell>할인율</TableCell>
