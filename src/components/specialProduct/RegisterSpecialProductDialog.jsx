@@ -116,7 +116,7 @@ const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
                             fullWidth
                         />
 
-                        <Button variant="contained" onClick={handleSearch}>
+                        <Button variant="outlined" onClick={handleSearch}>
                             검색
                         </Button>
                     </Box>
@@ -189,7 +189,7 @@ const RegisterSpecialProductDialog = ({ open, onClose, onRegister }) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleRegister} disabled={!selectedProduct}>
+                    <Button variant="outlined" onClick={handleRegister} disabled={!selectedProduct}>
                         등록
                     </Button>
                     <Button onClick={onClose}>취소</Button>
