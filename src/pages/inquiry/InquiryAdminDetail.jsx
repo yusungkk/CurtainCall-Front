@@ -72,7 +72,8 @@ export default function InquiryAdminDetail() {
                 color={"black"}
                 sx={{
                     fontFamily: "'Bareun_hipi', sans-serif",
-                    textAlign: "center",}}
+                    textAlign: "center",
+                }}
             >
                 문의내역
             </Typography>
@@ -143,7 +144,10 @@ export default function InquiryAdminDetail() {
                     marginTop: "16px"
                 }}>
                     <Typography variant="h6" fontWeight="bold" color="success"
-                                sx={{mr: 2, fontFamily: "'Bareun_hipi', sans-serif",}}>
+                                sx={{
+                                    mr: 2,
+                                    fontFamily: "'Bareun_hipi', sans-serif",
+                                }}>
                         A
                     </Typography>
                     <Box sx={{
@@ -166,48 +170,61 @@ export default function InquiryAdminDetail() {
                                 isError={touched.content && reply.content === ""}
                                 errorText={touched.content && reply.content === "" ? "답변을 입력해주세요" : ""}
                             /> :
-                            <Typography
-                                color={"black"}
-                                variant="body1"
-                                whiteSpace={"pre-line"}
-                            >
-                                {inquiryData.reply}
-                            </Typography>
+                            <>
+                                <Typography
+                                    color={"black"}
+                                    variant="body1"
+                                    whiteSpace={"pre-line"}
+                                    sx={{fontFamily: "'Bareun_hipi', sans-serif"}}
+                                >
+                                    {inquiryData.reply}
+                                </Typography>
+                                <Typography mt={2}
+                                            variant="body2"
+                                            color="gray"
+                                            sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
+                                            whiteSpace={"pre-line"}
+                                >
+                                    {inquiryData.replyAt?.replace("T", " ").slice(0, 16) || ""}
+                                </Typography>
+                            </>
                         }
                     </Box>
                 </Box>
-                {inquiryData.reply === null ? (
-                    <Box sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: 1,
-                        mt: 2
-                    }}>
-                        <SaveBtn
-                            btnType="submit"
-                            viewName="저장"
-                            isDisabled={reply.content === ""}
-                        />
-                        <CancelBtn
-                            viewName={"취소"}
-                            onClick={() => navigate("/admin/inquiries")}
-                        />
-                    </Box>
-                ) : (
-                    <Box sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: 1,
-                        mt: 2
-                    }}>
-                        <CancelBtn
-                            viewName={"이전"}
-                            onClick={() => navigate("/admin?menu=inquiry")}
-                        />
-                    </Box>
-                )
+                {
+                    inquiryData.reply === null ? (
+                        <Box sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            gap: 1,
+                            mt: 2
+                        }}>
+                            <SaveBtn
+                                btnType="submit"
+                                viewName="저장"
+                                isDisabled={reply.content === ""}
+                            />
+                            <CancelBtn
+                                viewName={"취소"}
+                                onClick={() => navigate("/admin/inquiries")}
+                            />
+                        </Box>
+                    ) : (
+                        <Box sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            gap: 1,
+                            mt: 2
+                        }}>
+                            <CancelBtn
+                                viewName={"이전"}
+                                onClick={() => navigate("/admin?menu=inquiry")}
+                            />
+                        </Box>
+                    )
                 }
             </form>
         </Box>
-    );
+    )
+        ;
 };
