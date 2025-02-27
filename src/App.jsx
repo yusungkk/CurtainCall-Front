@@ -31,7 +31,7 @@ import { useToggleActive } from "./hooks/UseToggleActive.jsx";
 import AdminChatWindow from "./components/chat/AdminChatWindow.jsx";
 import UseUserRole from "./hooks/UseUserRole.jsx";
 import Home from "./pages/Home.jsx";
-import {useEffect} from "react";
+import Footer from "./components/Footer.jsx";
 
 function App() {
     return (
@@ -45,20 +45,15 @@ function App() {
 
 function AppContent() {
     const location = useLocation();
-    const hiddenNavPaths = ["/login", "/join", "/payment"];
+    const hiddenNavPaths = ["/login", "/join"];
+    const hiddenFooterPaths = ["/login", "/join"];
 
     const [active, setActive] = useToggleActive();
-    const [role, setRole] = UseUserRole();
-
-
-    useEffect(() => {
-        console.log(active);
-        console.log(role);
-    }, [active])
+    const [role] = UseUserRole();
 
     return (
         <>
-            {!hiddenNavPaths.includes(location.pathname) && <NavigationBar setActive={setActive} setRole={setRole}/>}
+            {!hiddenNavPaths.includes(location.pathname) && <NavigationBar />}
 
             {(active || role === "ADMIN") && (
                 <>
@@ -93,6 +88,8 @@ function AppContent() {
                 <Route path="/admin/category" element={<CategoryManagement />} />
                 <Route path="/admin/specialProduct" element={<SpecialProductManagement />} />
             </Routes>
+
+            {!hiddenFooterPaths.includes(location.pathname) && <Footer />}
         </>
     );
 }

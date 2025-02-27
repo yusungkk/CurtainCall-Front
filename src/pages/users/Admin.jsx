@@ -58,7 +58,7 @@ const MyPage = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", height: "100vh", flexDirection: "column", mt: 9 }}>
       {/* 상단 내비게이션 바 */}
       <AppBar position="sticky" sx={{ backgroundColor: "#800000", borderRadius: 2 }}>
         <Toolbar>
@@ -74,6 +74,7 @@ const MyPage = () => {
           sx={{
             width: 240,
             height: "50vh",
+            minHeight: "340px",
             top: 64,
             position: "sticky",
             borderRadius: 2,

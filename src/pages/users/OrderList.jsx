@@ -4,7 +4,7 @@ import CancelBtn from "/src/components/CancelBtn.jsx";
 const OrderList = ({ user, orders, updateOrders }) => {
     const fetchOrderCancel = async (orderNo) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/orders/cancel`, {
+            const response = await fetch(`http://localhost:8080/api/v1/cancel`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
