@@ -91,7 +91,7 @@ export default function CreateInquiryForm() {
                         name={"title"}
                         value={formData.title}
                         event={handleChange}
-                        label={"질문"}
+                        label={"제목"}
                         onBlur={() => handleBlur("title")}
                         isError={touched.title && formData.title === ""}
                         errorText={touched.title && formData.title === "" ? "제목을 입력해주세요" : ""}
@@ -100,7 +100,7 @@ export default function CreateInquiryForm() {
                         id={"content"}
                         name={"content"}
                         value={formData.content}
-                        label={"답변"}
+                        label={"내용"}
                         event={handleChange}
                         onBlur={() => handleBlur("content")}
                         isError={touched.content && formData.content === ""}
