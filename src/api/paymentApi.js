@@ -2,6 +2,12 @@ import { fetcher } from "/src/utils/fetcher";
 import { PAYMENT_URL } from "/src/utils/endpoint";
 import {completeOrder, failOrder} from "./orderApi.js";
 
+// 결제 수단에 따른 카드 이름 설정
+const PAYMENT_PROVIDERS = {
+    kakaopay: "카카오페이",
+    naverpay: "네이버페이",
+};
+
 // 결제 저장
 export const savePayment = async (paymentData) => {
     return await fetcher(PAYMENT_URL, {
@@ -28,11 +34,13 @@ export const initiatePayment = (orderId, product, selectedSeats, paymentMethod, 
         },
         async (rsp) => {
             if (rsp.success) {
+                const cardName = rsp.card_name || PAYMENT_PROVIDERS[paymentMethod] || "Unknown";
+
                 const paymentData = {
                     paymentNo: rsp.imp_uid,
                     payStatus: rsp.status,
                     price: rsp.paid_amount,
-                    cardName: rsp.card_name,
+                    cardName: cardName,
                     orderId: orderId,
                 };
 

@@ -87,7 +87,7 @@ const UserList = () => {
   }
 
   return (
-    <Container sx={{ mt: 2, pb: 6, display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <Container sx={{ mt: 2, pb: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* 검색 창 */}
       <TextField
         placeholder="이름 또는 이메일로 검색"
@@ -95,7 +95,7 @@ const UserList = () => {
         fullWidth
         value={searchKeyword}
         onChange={handleSearchChange}
-        sx={{ mb: 2, maxWidth: 800, margin: "0 auto" }}
+        sx={{ mb: 2, margin: 0 }}
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
@@ -106,13 +106,14 @@ const UserList = () => {
       />
 
       {/* 유저 리스트 */}
-      <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "0 auto", mt: 4 }}>
+      <TableContainer component={Paper} sx={{ mt: 4 }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>이름</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>이메일</TableCell>
-              <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>이름</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>이메일</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>전화번호</TableCell>
+              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
                 상태 변경
               </TableCell>
             </TableRow>
@@ -120,9 +121,10 @@ const UserList = () => {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id} sx={{ borderBottom: "1px solid #e0e0e0" }}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell align="right">
+                <TableCell sx={{ textAlign: "center" }}>{user.name}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{user.email}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{user.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}</TableCell>
+                <TableCell  sx={{ textAlign: "center" }}>
                   <Button
                     variant="contained"
                     color={user.active ? "error" : "success"}

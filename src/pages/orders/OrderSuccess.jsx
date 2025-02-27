@@ -21,7 +21,7 @@ function OrderSuccess() {
         const fetchOrderSuccess = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/orders/${orderId}/success`,
+                    `http://localhost:8080/api/v1/${orderId}/success`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -58,17 +58,12 @@ function OrderSuccess() {
 
     return (
         <div className="success-container">
-            <div className="success-context">
-                <h2>예매가 완료되었습니다!</h2>
-            </div>
+            <h2 className="success-title">예매가 완료되었습니다!</h2>
 
             <div className="success-main">
-                <div className="success-main-top">
-                    <h5 className="order-label">주문번호</h5>
-                    <p>{orderSuccess.orderNo}</p>
-                </div>
+                <h5 className="order-label">주문번호 <span>{orderSuccess.orderNo}</span></h5>
 
-                <div className="success-main-body">
+                <div className="success-content">
                     <div className="poster-box">
                         <img src={orderSuccess.imageUrl} alt={orderSuccess.productName} />
                     </div>
@@ -80,12 +75,12 @@ function OrderSuccess() {
                         </li>
                         <li className="info-item">
                             <strong className="info-label">장소</strong>
-                            <p className="info-text">{orderSuccess.productName}</p>
+                            <p className="info-text">{orderSuccess.place}</p>
                         </li>
                         <li className="info-item">
                             <strong className="info-label">공연시작</strong>
                             <p className="info-text">
-                                {orderSuccess.performanceDate} {orderSuccess.performanceTime}
+                                {orderSuccess.performanceDate} / {orderSuccess.performanceTime}
                             </p>
                         </li>
                         <li className="info-item">
@@ -98,19 +93,24 @@ function OrderSuccess() {
                         </li>
                         <li className="info-item">
                             <strong className="info-label">주문가격</strong>
-                            <p className="info-text">{orderSuccess.orderPrice}</p>
+                            <p className="info-text">{orderSuccess.orderPrice} 원</p>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div>
+            <div className="confirm-button">
+                <button className="home-btn" onClick={() => navigate(`/`)}>
+                    메인 화면
+                </button>
                 <button className="order-list-btn" onClick={handleOrderHistoryClick}>
                     예매 목록
                 </button>
             </div>
         </div>
     );
+
+
 }
 
 export default OrderSuccess;
