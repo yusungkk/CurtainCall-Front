@@ -1,26 +1,16 @@
 import "/src/pages/users/OrderList.css";
 import CancelBtn from "/src/components/CancelBtn.jsx";
 
+import { cancelCompletedOrder } from "/src/api/orderApi.js";
+
 const OrderList = ({ user, orders, updateOrders }) => {
     const fetchOrderCancel = async (orderNo) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/v1/cancel`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ orderNo }),
-            });
+        const response = await cancelCompletedOrder(orderNo);
 
-            if (response.status === 204) {
-                alert("예매가 정상적으로 취소되었습니다.");
-                const updatedOrders = orders.filter((order) => order.orderNo !== orderNo);
-                updateOrders(updatedOrders);
-            } else {
-                throw new Error(await response.json());
-            }
-        } catch (e) {
-            console.log(e);
+        if (response === 204) {
+            alert("예매가 정상적으로 취소되었습니다.");
+            const updatedOrders = orders.filter((order) => order.orderNo !== orderNo);
+            updateOrders(updatedOrders);
         }
     };
 
@@ -57,22 +47,19 @@ const OrderList = ({ user, orders, updateOrders }) => {
                             <ul className="info">
                                 <li className="info-item">
                                     <strong className="info-label">상품명</strong>
-                                    <p className="info-text">{order.productName}</p>
+                                    <div className="info-text">{order.productName}</div>
                                 </li>
                                 <li className="info-item">
                                     <strong className="info-label">공연일</strong>
-                                    <p className="info-text">
-                                        {order.performanceDate.replace(/-/g, ".")}{" "}
-                                        {order.performanceTime}
-                                    </p>
+                                    <div className="info-text">
+                                        {order.performanceDate.replace(/-/g, ".")} {order.performanceTime}
+                                    </div>
                                 </li>
                                 <li className="info-item">
                                     <strong className="info-label">좌석</strong>
-                                    <p className="info-text">
-                                        {order.seats.length > 1
-                                            ? order.seats.join(", ")
-                                            : order.seats}
-                                    </p>
+                                    <div className="info-text">
+                                        {order.seats.length > 1 ? order.seats.join(", ") : order.seats}
+                                    </div>
                                 </li>
                             </ul>
                         </div>

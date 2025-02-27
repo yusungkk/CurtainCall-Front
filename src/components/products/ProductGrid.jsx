@@ -1,5 +1,6 @@
 import ProductCard from "./ProductCard";
 import "/src/components/products/ProductList.css";
+import hot from "/src/assets/hot.png";
 
 const ProductGrid = ({ title, products }) => {
     return (
@@ -7,7 +8,7 @@ const ProductGrid = ({ title, products }) => {
             {products.length > 0 && (
                 <div className="product-list-container">
                     <h1 className="product-list-title">
-                        <img src="/src/assets/hot.png"></img>
+                        <img src={hot}></img>
                         {title}
                     </h1>
                     <div className="product-list-body">
