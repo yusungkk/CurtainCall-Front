@@ -31,12 +31,12 @@ function FaqAddForm() {
 
         const response = await createFaq(formData);
         if (response === 201) {
-            navigate('/faqs');
+            navigate("/admin?menu=faq");
         }
     };
 
     const handleCancelBtn = () => {
-        navigate("/faqs");
+        navigate("/admin?menu=faq");
     };
 
     return (

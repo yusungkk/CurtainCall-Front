@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Container,
     Tabs,
@@ -80,7 +80,7 @@ const SpecialProductManagement = () => {
     const [deleteProductId, setDeleteProductId] = useState(null);
 
     //오류표시
-    const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+    const [alert, setAlert] = useState({open: false, message: '', severity: 'success'});
 
     // 탭 전환 및 페이지 전환 시 데이터 조회
     useEffect(() => {
@@ -210,7 +210,7 @@ const SpecialProductManagement = () => {
 
 
     const showAlert = (message, severity = 'success') => {
-        setAlert({ open: true, message, severity });
+        setAlert({open: true, message, severity});
     };
     const formatDateRange = (start, end) => `${start} ~ ${end}`;
 
@@ -232,7 +232,7 @@ const SpecialProductManagement = () => {
     };
 
     return (
-        <Container sx={{ mt: 4 }}>
+        <Container sx={{mt: 4}}>
             {/*<Typography variant="h4" gutterBottom align="center">*/}
             {/*    특가상품 관리*/}
             {/*</Typography>*/}
@@ -240,19 +240,34 @@ const SpecialProductManagement = () => {
             <Tabs
                 value={tabIndex}
                 onChange={(e, newValue) => setTabIndex(newValue)}
-                sx={{ mb: 2 }} // 탭과 검색창 사이의 간격 조정
+                textColor="secondary"
+                indicatorColor="secondary"
+                sx={{mb: 2}} // 탭과 검색창 사이의 간격 조정
             >
-                <Tab label="특가상품" />
-                <Tab label="삭제된 특가상품" />
+                <Tab
+                    label="특가상품"
+                    sx={{
+                        fontFamily: "'Bareun_hipi', sans-serif",
+                        '&.MuiTab-root:focus': {
+                            outline: 'none'
+                        }
+                    }}/>
+                <Tab label="삭제된 특가상품"
+                     sx={{
+                         fontFamily: "'Bareun_hipi', sans-serif",
+                         '&.MuiTab-root:focus': {
+                             outline: 'none'
+                         }
+                     }}/>
             </Tabs>
             {/* 검색 영역 */}
-            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
                     <TextField
                         label="특가상품 검색"
                         variant="outlined"
                         size="small"
-                        sx={{ width: 250 }}
+                        sx={{width: 250}}
                         value={searchKeyword}
                         onChange={(e) => {
                             setSearchKeyword(e.target.value);
@@ -278,11 +293,11 @@ const SpecialProductManagement = () => {
 
             {/* 활성 특가상품 목록 */}
             {tabIndex === 0 && (
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{mt: 2}}>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                                <TableRow sx={{backgroundColor: '#eeeeee'}}>
                                     <TableCell>ID</TableCell>
                                     <TableCell>상품 이름</TableCell>
                                     <TableCell>가격</TableCell>
@@ -327,7 +342,7 @@ const SpecialProductManagement = () => {
                                         {/*<TableCell>{calcDiscountedPrice(specialProductDto.price, specialProductDto.discountRate)}</TableCell>*/}
                                         <TableCell>{formatDateRange(specialProductDto.discountStartDate, specialProductDto.discountEndDate)}</TableCell>
                                         <TableCell>
-                                            <Typography style={{ color: statusColors[specialProductDto.status] }}>
+                                            <Typography style={{color: statusColors[specialProductDto.status]}}>
                                                 {statusLabels[specialProductDto.status]}
                                             </Typography>
                                         </TableCell>
@@ -354,10 +369,11 @@ const SpecialProductManagement = () => {
                                         </TableCell>
                                         <TableCell align="center">
                                             <IconButton size="small" onClick={() => openEditDialog(specialProductDto)}>
-                                                <EditIcon />
+                                                <EditIcon/>
                                             </IconButton>
-                                            <IconButton size="small" onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
-                                                <DeleteIcon />
+                                            <IconButton size="small"
+                                                        onClick={() => openDeleteDialog(specialProductDto.specialProductId)}>
+                                                <DeleteIcon/>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -367,7 +383,7 @@ const SpecialProductManagement = () => {
                     </TableContainer>
 
                     {/* 페이지네이션 */}
-                    <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center' }}>
+                    <Box sx={{padding: 2, display: 'flex', justifyContent: 'center'}}>
                         <Pagination
                             count={totalPages}
                             page={currentPage + 1}
@@ -396,11 +412,11 @@ const SpecialProductManagement = () => {
 
             {/* 삭제된 특가상품 목록 */}
             {tabIndex === 1 && (
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{mt: 2}}>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                                <TableRow sx={{backgroundColor: '#eeeeee'}}>
                                     <TableCell>ID</TableCell>
                                     <TableCell>상품 이름</TableCell>
                                     <TableCell>가격</TableCell>
@@ -420,7 +436,7 @@ const SpecialProductManagement = () => {
                                         <TableCell>{calcDiscountedPrice(product.price, product.discountRate)}</TableCell>
                                         <TableCell>{formatDateRange(product.discountStartDate, product.discountEndDate)}</TableCell>
                                         <TableCell>
-                                            <Typography style={{ color: statusColors.DELETED }}>
+                                            <Typography style={{color: statusColors.DELETED}}>
                                                 {statusLabels.DELETED}
                                             </Typography>
                                         </TableCell>
@@ -442,8 +458,6 @@ const SpecialProductManagement = () => {
             />
 
 
-
-
             {/* 삭제 확인 다이얼로그 */}
             <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
                 <DialogTitle>특가상품 삭제 확인</DialogTitle>
@@ -461,10 +475,10 @@ const SpecialProductManagement = () => {
             <Snackbar
                 open={alert.open}
                 autoHideDuration={3000}
-                onClose={() => setAlert({ ...alert, open: false })}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                onClose={() => setAlert({...alert, open: false})}
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             >
-                <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, open: false })}>
+                <Alert severity={alert.severity} onClose={() => setAlert({...alert, open: false})}>
                     {alert.message}
                 </Alert>
             </Snackbar>

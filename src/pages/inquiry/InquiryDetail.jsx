@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {getInquiryByUser} from "/src/api/faqApi.js";
 import {Box, Chip, Divider, Typography} from "@mui/material";
 import {CheckCircleOutline} from "@mui/icons-material";
+import CancelBtn from "../../components/CancelBtn.jsx";
 
 export default function InquiryDetail() {
 
@@ -38,27 +39,22 @@ export default function InquiryDetail() {
         return <Typography variant="h6" align="center" color={"black"}>로딩 중...</Typography>;
     }
 
+    const handleCancelBtn = () => {
+        navigate("/myPage?menu=inquiry");
+    }
+
     return (
         <Box sx={{
             width: "100vw",
             maxWidth: "80%",
             textAlign: "left",
         }}>
-            <Typography
-                variant="h4"
-                gutterBottom
-                color={"black"}
-                sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
-            >
-                내 문의내역
-            </Typography>
-
             <Chip
                 label={getStatusLabel(inquiryData.status)}
                 icon={<CheckCircleOutline/>}
                 color={inquiryData.status === "READY" ? "error" : "success"}
                 size={"small"}
-                sx={{mb: 2}}/>
+                sx={{mt: 2, mb: 2}}/>
 
             <Typography
                 variant="h4"
@@ -159,8 +155,12 @@ export default function InquiryDetail() {
                     </Typography>
                 </Box>
             </Box>
-
-
+            <div style={{display: "flex", justifyContent: "end", marginTop: "2rem"}}>
+                <CancelBtn
+                    viewName={"이전"}
+                    onClick={handleCancelBtn}
+                />
+            </div>
         </Box>
     );
 };

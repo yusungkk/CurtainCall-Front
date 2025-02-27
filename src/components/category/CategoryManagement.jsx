@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Container,
     Tabs,
@@ -41,15 +41,15 @@ const CategoryManagement = () => {
     const [activeCategories, setActiveCategories] = useState([]);
     const [deletedCategories, setDeletedCategories] = useState([]);
     // 신규 카테고리 생성폼 상태
-    const [newCategory, setNewCategory] = useState({ name: '', parentId: '' });
+    const [newCategory, setNewCategory] = useState({name: '', parentId: ''});
     // 수정 다이얼로그 상태
     const [editDialogOpen, setEditDialogOpen] = useState(false);
-    const [editCategory, setEditCategory] = useState({ id: null, name: '' });
+    const [editCategory, setEditCategory] = useState({id: null, name: ''});
     // 삭제 확인 다이얼로그 상태
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [deleteCategoryId, setDeleteCategoryId] = useState(null);
     // Snackbar 알림 상태
-    const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+    const [alert, setAlert] = useState({open: false, message: '', severity: 'success'});
 
     // 활성 카테고리 fetch
     const fetchActiveCategories = async () => {
@@ -64,9 +64,9 @@ const CategoryManagement = () => {
     // 삭제된 카테고리 fetch
     const fetchDeletedCategories = async () => {
         const data = await getDeletedCategories();
-        if(data){
+        if (data) {
             setDeletedCategories(data);
-        }else{
+        } else {
             showAlert('삭제된 카테고리를 불러오지 못했습니다.', 'error');
         }
     };
@@ -84,11 +84,11 @@ const CategoryManagement = () => {
 
     // Snackbar alert 처리
     const showAlert = (message, severity = 'success') => {
-        setAlert({ open: true, message, severity });
+        setAlert({open: true, message, severity});
     };
 
     const handleCloseAlert = () => {
-        setAlert({ ...alert, open: false });
+        setAlert({...alert, open: false});
     };
 
     // 탭 변경 핸들러
@@ -121,7 +121,7 @@ const CategoryManagement = () => {
 
         // 성공 시 처리
         showAlert("카테고리가 생성되었습니다.");
-        setNewCategory({ name: "", parentId: "" });
+        setNewCategory({name: "", parentId: ""});
         fetchActiveCategories();
     };
 
@@ -178,13 +178,13 @@ const CategoryManagement = () => {
 
     // 수정 다이얼로그 열기
     const openEditDialog = (category) => {
-        setEditCategory({ id: category.id, name: category.name });
+        setEditCategory({id: category.id, name: category.name});
         setEditDialogOpen(true);
     };
 
     const closeEditDialog = () => {
         setEditDialogOpen(false);
-        setEditCategory({ id: null, name: '' });
+        setEditCategory({id: null, name: ''});
     };
 
     // 카테고리 수정 (PUT)
@@ -216,40 +216,61 @@ const CategoryManagement = () => {
     // 부모-자식 관계 그룹화
     const groupedCategories = rootCategories.map((parent) => {
         const children = activeCategories.filter((cat) => cat.parentId === parent.id);
-        return { parent, children };
+        return {parent, children};
     });
 
     return (
-        <Container sx={{ mt: 4 }}>
+        <Container sx={{mt: 4}}>
             {/*<Typography variant="h4" gutterBottom align="center">*/}
             {/*    카테고리 관리*/}
             {/*</Typography>*/}
 
-            <Tabs value={tabIndex} onChange={handleTabChange}>
-                <Tab label="카테고리" />
-                <Tab label="삭제된 카테고리" />
+            <Tabs
+                value={tabIndex}
+                onChange={handleTabChange}
+                textColor="secondary"
+                indicatorColor="secondary"
+            >
+                <Tab
+                    label="카테고리"
+                    sx={{
+                        fontFamily: "'Bareun_hipi', sans-serif",
+                        '&.MuiTab-root:focus': {
+                            outline: 'none'
+                        }
+                    }}
+                />
+                <Tab
+                    label="삭제된 카테고리"
+                    sx={{
+                        fontFamily: "'Bareun_hipi', sans-serif",
+                        '&.MuiTab-root:focus': {
+                            outline: 'none'
+                        }
+                    }}
+                />
             </Tabs>
 
             {tabIndex === 0 && (
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{mt: 2}}>
                     {/* 신규 카테고리 생성 폼 */}
-                    <Paper sx={{ p: 2, mb: 2 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Paper sx={{p: 2, mb: 2}}>
+                        <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
                             {/* 카테고리 이름 입력 */}
                             <TextField
                                 label="카테고리 이름"
                                 value={newCategory.name}
-                                onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
+                                onChange={(e) => setNewCategory({...newCategory, name: e.target.value})}
                                 size="small"
-                                sx={{ minWidth: 200 }}
+                                sx={{minWidth: 200}}
                             />
 
                             {/* 부모 카테고리 선택 */}
-                            <FormControl size="small" sx={{ minWidth: 200, flexShrink: 0 }}>
+                            <FormControl size="small" sx={{minWidth: 200, flexShrink: 0}}>
                                 <InputLabel>부모 카테고리 (선택)</InputLabel>
                                 <Select
                                     value={newCategory.parentId}
-                                    onChange={(e) => setNewCategory({ ...newCategory, parentId: e.target.value })}
+                                    onChange={(e) => setNewCategory({...newCategory, parentId: e.target.value})}
                                 >
                                     <MenuItem value="">
                                         <em>없음</em>
@@ -279,13 +300,11 @@ const CategoryManagement = () => {
                     </Paper>
 
 
-
-
                     {/* 활성 카테고리 목록 - 부모와 오른쪽에 자식 카테고리 보여주기 */}
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                                <TableRow sx={{backgroundColor: '#eeeeee'}}>
                                     <TableCell>ID</TableCell>
                                     <TableCell>카테고리 이름</TableCell>
                                     <TableCell></TableCell>
@@ -293,13 +312,14 @@ const CategoryManagement = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {groupedCategories.map(({ parent, children }) => (
+                                {groupedCategories.map(({parent, children}) => (
                                     <TableRow key={parent.id}>
                                         <TableCell>{parent.id}</TableCell>
                                         <TableCell>{parent.name}</TableCell>
                                         <TableCell align="center">
-                                            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                                                <Button variant="outlined" size="small" onClick={() => openEditDialog(parent)}>
+                                            <Box sx={{display: 'flex', justifyContent: 'center', gap: 1}}>
+                                                <Button variant="outlined" size="small"
+                                                        onClick={() => openEditDialog(parent)}>
                                                     수정
                                                 </Button>
                                                 <Button
@@ -314,13 +334,13 @@ const CategoryManagement = () => {
                                         </TableCell>
                                         <TableCell>
                                             {children.length > 0 ? (
-                                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                                <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
                                                     {children.map((child) => (
                                                         <Chip
                                                             key={child.id}
                                                             label={child.name}
                                                             // color="primary"
-                                                            sx={{ '& .MuiChip-deleteIcon': { color: 'red' } }}
+                                                            sx={{'& .MuiChip-deleteIcon': {color: 'red'}}}
                                                             onClick={() => openEditDialog(child)}
                                                             onDelete={() => openDeleteDialog(child.id)}
                                                             deleteIcon={
@@ -357,12 +377,12 @@ const CategoryManagement = () => {
             )}
 
             {tabIndex === 1 && (
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{mt: 2}}>
                     {/* 삭제된 카테고리 목록 */}
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                                <TableRow sx={{backgroundColor: '#eeeeee'}}>
                                     <TableCell>ID</TableCell>
                                     <TableCell>카테고리 이름</TableCell>
                                     <TableCell>부모 ID</TableCell>
@@ -376,7 +396,8 @@ const CategoryManagement = () => {
                                         <TableCell>{cat.name}</TableCell>
                                         <TableCell>{cat.parentId || '-'}</TableCell>
                                         <TableCell align="center">
-                                            <Button variant="outlined" size="small" onClick={() => handleRestoreCategory(cat.id)}>
+                                            <Button variant="outlined" size="small"
+                                                    onClick={() => handleRestoreCategory(cat.id)}>
                                                 복구
                                             </Button>
                                         </TableCell>
@@ -405,7 +426,7 @@ const CategoryManagement = () => {
                         label="카테고리 이름"
                         fullWidth
                         value={editCategory.name}
-                        onChange={(e) => setEditCategory({ ...editCategory, name: e.target.value })}
+                        onChange={(e) => setEditCategory({...editCategory, name: e.target.value})}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -435,9 +456,9 @@ const CategoryManagement = () => {
                 open={alert.open}
                 autoHideDuration={3000}
                 onClose={handleCloseAlert}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             >
-                <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: '100%' }}>
+                <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{width: '100%'}}>
                     {alert.message}
                 </Alert>
             </Snackbar>

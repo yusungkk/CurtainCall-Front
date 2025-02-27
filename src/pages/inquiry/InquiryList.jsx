@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {
     List,
-    Divider,
     Box,
     Typography,
 } from '@mui/material';
@@ -28,17 +27,6 @@ export default function InquiryList() {
 
     return (
         <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
-            <Typography variant="h4"
-                        gutterBottom
-                        color={"black"}
-                        align={"left"}
-                        mb={4}
-                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
-            >
-                내 문의내역
-            </Typography>
-            <Divider/>
-
             {inquiryData.length > 0 ? (
                 <List sx={{width: '100%', bgcolor: 'background.paper'}}>
                     {inquiryData.map(inquiry => (

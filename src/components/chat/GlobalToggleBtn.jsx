@@ -4,7 +4,7 @@ function GlobalToggleIcon() {
     const { isToggled, setIsToggled } = useToggle();
 
     return (
-        <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", cursor: "pointer" }}>
+        <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", cursor: "pointer", zIndex: "990",}}>
             <button
                 onClick={() => setIsToggled(!isToggled)}
                 style={{
@@ -18,6 +18,7 @@ function GlobalToggleIcon() {
                     width: "4.5rem",
                     height: "4.5rem",
                     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+
                 }}
             >
                 💬

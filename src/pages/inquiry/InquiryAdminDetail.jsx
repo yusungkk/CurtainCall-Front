@@ -55,7 +55,7 @@ export default function InquiryAdminDetail() {
         console.log(reply);
         const data = await createReplyByAdmin(navigate, id, reply);
         if (data === 201) {
-            navigate("/admin");
+            navigate("/admin?menu=inquiry");
         }
     }
 
@@ -64,12 +64,15 @@ export default function InquiryAdminDetail() {
             width: "100vw",
             maxWidth: "80%",
             textAlign: "left",
+            marginTop: "3rem"
         }}>
             <Typography
                 variant="h4"
                 gutterBottom
                 color={"black"}
-                sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
+                sx={{
+                    fontFamily: "'Bareun_hipi', sans-serif",
+                    textAlign: "center",}}
             >
                 문의내역
             </Typography>
@@ -199,7 +202,7 @@ export default function InquiryAdminDetail() {
                     }}>
                         <CancelBtn
                             viewName={"이전"}
-                            onClick={() => navigate("/admin")}
+                            onClick={() => navigate("/admin?menu=inquiry")}
                         />
                     </Box>
                 )

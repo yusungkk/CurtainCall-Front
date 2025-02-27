@@ -89,6 +89,7 @@ function FaqList({setActive, role}) {
                 totalElements: data.totalElements,
                 size: data.totalElements === 0 ? 0 : data.content.length
             });
+            window.scrollTo({top: 0, behavior: "smooth"});
         };
         fetchFaqs();
     }, []);
@@ -132,6 +133,10 @@ function FaqList({setActive, role}) {
 
     const handleCancelBtn = async (e, id) => {
         e.stopPropagation();
+
+        if (!confirm("정말로 삭제하실 건가요?")) {
+            return;
+        }
         const responseStatus = await deleteFaq(id);
 
         if (responseStatus === 204) {
@@ -144,7 +149,7 @@ function FaqList({setActive, role}) {
     }
 
     const handleInquiriesBtn = () => {
-        navigate("/inquiries")
+        navigate("/myPage?menu=inquiry");
     }
 
     const handleChatBtn = () => {
@@ -154,15 +159,17 @@ function FaqList({setActive, role}) {
         }
     };
     return (
-        <div style={{ maxWidth: '70%'}}>
+        <div style={{maxWidth: '70%', marginTop: "4rem"}}>
             <Box sx={{
-                mb: 2
+                mb: 2,
             }}>
-                <Typography variant="h4" sx={{
-                    color: 'black',
-                    textAlign: 'left',
-                    fontFamily: "'Bareun_hipi', sans-serif",
-                }}>자주 묻는 질문
+                <Typography
+                    variant="h4"
+                    sx={{
+                        color: 'black',
+                        textAlign: 'left',
+                        fontFamily: "'Bareun_hipi', sans-serif",
+                    }}>자주 묻는 질문
                 </Typography>
             </Box>
             <Box sx={{width: '100%'}}>
@@ -203,11 +210,10 @@ function FaqList({setActive, role}) {
                                 primary={`❓ ${faq.question}`}
                                 sx={{
                                     fontFamily: "'Bareun_hipi', sans-serif",
-                                    whiteSpace: "nowrap",
+                                    whiteSpace: "pre-line",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                 }}
-
                             />
                             {openFaqs[faq.id] ? <ExpandLess/> : <ExpandMore/>}
 
