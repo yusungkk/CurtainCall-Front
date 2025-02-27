@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetcher } from "/src/utils/fetcher";
-import { PRODUCT_URL, RECOMMEND_URL } from "/src/utils/endpoint";
-import ProductGrid from "/src/components/products/ProductGrid";
-import "/src/pages/products/ProductList.css";
+import { PRODUCT_URL } from "/src/utils/endpoint";
+import "/src/components/products/ProductList.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import {
-    recommendedProductsByCategory,
-    recommendedProductsBySequence,
-} from "../../api/productApi.js";
 
 const ProductList = ({ genre }) => {
     let url;
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [recommendedProducts, setRecommendedProducts] = useState([]); // 추천 상품 리스트
-    const [chainRecommendedProducts, setChainRecommendedProducts] = useState([]); // 추천 상품 리스트
     const [category, setCategory] = useState(genre);
 
     useEffect(() => {
@@ -36,21 +29,6 @@ const ProductList = ({ genre }) => {
     useEffect(() => {
         getProducts(currentPage, 10);
     }, [category, currentPage]);
-
-    useEffect(() => {
-        const loadRecommendedProductsByCategory = async () => {
-            const data = await recommendedProductsByCategory();
-            if (data) setRecommendedProducts(data);
-        };
-
-        const loadRecommendedProductsBySequence = async () => {
-            const data = await recommendedProductsBySequence();
-            if (data) setChainRecommendedProducts(data);
-        };
-
-        loadRecommendedProductsByCategory();
-        loadRecommendedProductsBySequence();
-    }, []);
 
     return (
         <div className="product-list-container">
@@ -94,15 +72,6 @@ const ProductList = ({ genre }) => {
                     </button>
                 )}
             </div>
-
-            <ProductGrid
-                title="🔥 자주 클릭하신 장르의 인기 작품이에요!"
-                products={recommendedProducts}
-            />
-            <ProductGrid
-                title="🔥 다른 이용자들이 연속적으로 클릭한 상품을 추천해드려요!"
-                products={chainRecommendedProducts}
-            />
         </div>
     );
 };

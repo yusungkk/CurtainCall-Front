@@ -116,7 +116,7 @@ const ProductForm = () => {
             price,
             casting,
             notice,
-            productDetails
+            productDetails,
         };
 
         if (!image) {
@@ -182,7 +182,7 @@ const ProductForm = () => {
                                 ))}
                             </Select>
                             {errors.categoryId && (
-                                <Box sx={{color: "error.main", fontSize: "0.75rem", mt: 1}}>
+                                <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
                                     {errors.categoryId}
                                 </Box>
                             )}
@@ -196,7 +196,7 @@ const ProductForm = () => {
                             type="date"
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
-                            slotProps={{inputLabel: {shrink: true}}}
+                            slotProps={{ inputLabel: { shrink: true } }}
                             error={!!errors.startDate}
                             helperText={errors.startDate}
                         />
@@ -209,7 +209,7 @@ const ProductForm = () => {
                             type="date"
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
-                            slotProps={{inputLabel: {shrink: true}}}
+                            slotProps={{ inputLabel: { shrink: true } }}
                             error={!!errors.endDate}
                             helperText={errors.endDate}
                         />
@@ -276,7 +276,7 @@ const ProductForm = () => {
 
                     <Grid size={12}>
                         {productDetails.map((detail, index) => (
-                            <Box key={index} sx={{display: "flex", gap: 2, mb: 2}}>
+                            <Box key={index} sx={{ display: "flex", gap: 2, mb: 2 }}>
                                 <FormControl fullWidth>
                                     <InputLabel>요일 선택</InputLabel>
                                     <Select
@@ -298,7 +298,7 @@ const ProductForm = () => {
                                     </Select>
                                     {errors[`date${index}`] && (
                                         <Box
-                                            sx={{color: "error.main", fontSize: "0.75rem", mt: 1}}
+                                            sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}
                                         >
                                             {errors[`date${index}`]}
                                         </Box>
@@ -329,7 +329,7 @@ const ProductForm = () => {
                                     </Select>
                                     {errors[`time${index}`] && (
                                         <Box
-                                            sx={{color: "error.main", fontSize: "0.75rem", mt: 1}}
+                                            sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}
                                         >
                                             {errors[`time${index}`]}
                                         </Box>
@@ -354,7 +354,7 @@ const ProductForm = () => {
                                     size="small"
                                     onClick={() => removeProductDetail(index)}
                                 >
-                                    <DeleteIcon/>
+                                    <DeleteIcon />
                                 </Button>
                             </Box>
                         ))}
@@ -363,19 +363,19 @@ const ProductForm = () => {
                             component="label"
                             variant="contained"
                             onClick={addProductDetail}
-                            sx={{mt: 2}}
+                            sx={{ mt: 2 }}
                         >
                             + 일정 추가
                         </Button>
                         {errors.productDetails && (
-                            <Box sx={{color: "error.main", fontSize: "0.75rem", mt: 1}}>
+                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
                                 {errors.productDetails}
                             </Box>
                         )}
                     </Grid>
 
                     <Grid size={12}>
-                        <Button component="label" variant="contained" startIcon={<CloudUpload/>}>
+                        <Button component="label" variant="contained" startIcon={<CloudUpload />}>
                             포스터 업로드
                             <input
                                 type="file"
@@ -385,7 +385,7 @@ const ProductForm = () => {
                             />
                         </Button>
                         {errors.image && (
-                            <Box sx={{color: "error.main", fontSize: "0.75rem", mt: 1}}>
+                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
                                 {errors.image}
                             </Box>
                         )}
@@ -393,11 +393,11 @@ const ProductForm = () => {
 
                     <Grid container>
                         <Grid size={6}>
-                            <SaveBtn btnType={"submit"} viewName={"등록"}/>
+                            <SaveBtn btnType={"submit"} viewName={"등록"} />
                         </Grid>
                         <Grid size={6}>
                             <CancelBtn
-                                onClick={() => navigate("/admin/products")}
+                                onClick={() => navigate("/admin?menu=product")}
                                 viewName={"취소"}
                             />
                         </Grid>

@@ -61,11 +61,8 @@ const NavigationBar = () => {
         fetchCategories();
     }, []);
 
-
-    // 검색 기능
-    const handleSearch = () => {
-        alert(`검색어: ${searchText}`);
-    };
+    const handleSearch = async () => {
+        navigate(`/search?keyword=${searchText}`);
 
     const handleCategoryClick = (categoryName) => {
         navigate(`/?genre=${categoryName}`);
@@ -99,13 +96,14 @@ const NavigationBar = () => {
                             src={logo}
                             alt="Curtaincall Logo"
                             style={{ width: "200px", marginLeft: "-16px" }}
-                            onClick={() => navigate("/")}
+
+                            onClick={() => navigate("/")} // 클릭 시 홈으로 이동
                         />
                         {/* 검색창 */}
                         <TextField
                             variant="outlined"
                             size="medium"
-                            placeholder="검색어 입력"
+                            placeholder="상품명으로 찾아보세요."
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
                             sx={{ width: "400px" }}
@@ -156,13 +154,21 @@ const NavigationBar = () => {
                             <>
                                 <a
                                     href="/login"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "20px",
+                                    }}
                                 >
                                     로그인
                                 </a>
                                 <a
                                     href="/join"
-                                    style={{ textDecoration: "none", color: "inherit", fontSize: "20px" }}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
+                                        fontSize: "20px",
+                                    }}
                                 >
                                     회원가입
                                 </a>
@@ -223,6 +229,7 @@ const NavigationBar = () => {
             <Divider sx={{ position: "absolute", left: 0, right: 0, bgcolor: "#e0e0e0", height: "1px", mb: 7 }} />
         </>
     );
+};
 };
 
 export default NavigationBar;

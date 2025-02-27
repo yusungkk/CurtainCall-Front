@@ -1,7 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ProductRegistration from "./pages/products/ProductRegistration";
-import ProductList from "./pages/products/productList";
+import ProductList from "/src/components/products/productList";
+import SearchResult from "/src/pages/products/SearchResult";
 import ProductDetail from "./pages/products/ProductDetail";
 import ProductEditForm from "./pages/products/ProductEditForm.jsx";
 import BookingPage from "./pages/orders/BookingPage.jsx";
@@ -68,7 +69,10 @@ function AppContent() {
                 <Route path="/products" element={<ProductList />} />
                 <Route path="/seat-selection/:productDetailId" element={<BookingPage />} />
                 <Route path="/admin/products/:id/edit" element={<ProductEditForm />} />
-                <Route path={"/faqs"} element={<FaqList setActive={setActive} role={role}/>}></Route>
+                <Route
+                    path={"/faqs"}
+                    element={<FaqList setActive={setActive} role={role} />}
+                ></Route>
                 <Route path={"/inquiries/new"} element={<CreateInquiryForm />} />
                 <Route path="/inquiries" element={<InquiryList />} />
                 <Route path="/admin/inquiries" element={<InquiryAdminList />} />
@@ -77,6 +81,7 @@ function AppContent() {
                 <Route path={"/admin/faqs/new"} element={<FaqAddForm />}></Route>
                 <Route path={"/admin/faqs/:id"} element={<FaqEditForm />}></Route>
                 <Route path="/products/:id" element={<ProductDetail />}></Route>
+                <Route path="/search" element={<SearchResult />}></Route>
 
                 <Route path="/" element={<Home />} />
                 <Route path="/join" element={<Join />} />
