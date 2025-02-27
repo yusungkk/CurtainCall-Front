@@ -32,13 +32,14 @@ export default function InquiryAdminList() {
 
     const fetchInquiries = async () => {
         const data = await getInquiriesByAdmin(navigate, inquirySearchCond, offset - 1);
+        console.log(data);
         setInquiryData([...data.content]);
-        setOffset(data.number + 1);
+        setOffset( data.number + 1);
         setTotalPages(data.totalPages);
     };
 
     useEffect(() => {
-        fetchInquiries();
+        fetchInquiries
     }, []);
 
     useEffect(() => {
@@ -54,6 +55,8 @@ export default function InquiryAdminList() {
         console.log(inquirySearchCond);
         const data = await getInquiriesByAdmin(navigate, inquirySearchCond);
         setInquiryData([...data.content]);
+        setOffset(data.number + 1);
+        setTotalPages(data.totalPages);
     };
 
     const handleKeyUp = (e) => {

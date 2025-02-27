@@ -53,7 +53,7 @@ export const createInquiry = async (inquiryData) => {
     });
 };
 
-export const getInquiriesByUser = async (navigate) => {
+export const getInquiriesByUser = async () => {
 
     return await fetcher(FIND_INQUIRIES_USER_URL);
 };
@@ -72,6 +72,7 @@ export const getInquiriesByAdmin = async (navigate, searchCond, offset = 0) => {
     } else {
         URL += `?offset=${offset}`;
     }
+    console.log(URL);
     return await fetcher(URL);
 };
 
