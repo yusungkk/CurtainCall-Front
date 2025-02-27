@@ -7,21 +7,22 @@ import CancelBtn from "/src/components/CancelBtn";
 import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { CloudUpload } from "@mui/icons-material";
+import { getActiveCategories } from "/src/api/categoryApi";
 
 function ProductEditForm() {
     const navigate = useNavigate();
     const { id } = useParams();
 
     const [formData, setFormData] = useState({
-        productName: null,
-        categoryId: null,
-        place: null,
+        productName: "",
+        categoryId: "",
+        place: "",
         runningTime: 0,
         price: 0,
-        casting: null,
-        notice: null,
-        imageUrl: null,
-        image: null,
+        casting: "",
+        notice: "",
+        imageUrl: "",
+        image: "",
         errors: {},
     });
 
@@ -51,27 +52,13 @@ function ProductEditForm() {
         fetchProduct();
 
         const fetchCategory = async () => {
-            try {
-                const response = await fetch("http://localhost:8080/api/v1/categories", {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
+            const data = await getActiveCategories();
 
-                if (response.ok) {
-                    const data = await response.json();
-
-                    setCategoryData((prev) => ({
-                        ...prev,
-                        categories: data,
-                        parentCategories: data.filter((category) => category.parentId === null),
-                    }));
-                } else {
-                    throw new Error(await response.json());
-                }
-            } catch (e) {
-                console.log(e);
-            }
+            setCategoryData((prev) => ({
+                ...prev,
+                categories: data,
+                parentCategories: data.filter((category) => category.parentId === null),
+            }));
         };
 
         fetchCategory();
@@ -79,9 +66,7 @@ function ProductEditForm() {
 
     const handleParentCategoryChange = (e) => {
         const parentId = parseInt(e.target.value, 10);
-        const filteredChildCategories = categoryData.categories.filter(
-            (category) => category.parentId === parentId
-        );
+        const filteredChildCategories = categoryData.categories.filter((category) => category.parentId === parentId);
 
         setCategoryData((prev) => ({
             ...prev,
@@ -171,15 +156,7 @@ function ProductEditForm() {
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-                <Grid size={12}>
-                    {formData.imageUrl && (
-                        <img
-                            src={formData.imageUrl}
-                            alt="image-preview"
-                            style={{ maxWidth: "100%" }}
-                        />
-                    )}
-                </Grid>
+                <Grid size={12}>{formData.imageUrl && <img src={formData.imageUrl} alt="image-preview" style={{ maxWidth: "100%" }} />}</Grid>
                 <Grid size={12}>
                     <TextField
                         fullWidth
@@ -198,11 +175,7 @@ function ProductEditForm() {
                 <Grid size={6}>
                     <FormControl fullWidth>
                         <InputLabel>1차 카테고리</InputLabel>
-                        <Select
-                            value={categoryData.selectedParentId || ""}
-                            onChange={handleParentCategoryChange}
-                            label="1차 카테고리"
-                        >
+                        <Select value={categoryData.selectedParentId || ""} onChange={handleParentCategoryChange} label="1차 카테고리">
                             <MenuItem value="">1차 카테고리</MenuItem>
                             {categoryData.parentCategories.map((category) => (
                                 <MenuItem key={category.id} value={category.id}>
@@ -215,12 +188,7 @@ function ProductEditForm() {
                 <Grid size={6}>
                     <FormControl fullWidth>
                         <InputLabel>2차 카테고리</InputLabel>
-                        <Select
-                            value={formData.categoryId || ""}
-                            onChange={handleChildCategoryChange}
-                            label="2차 카테고리"
-                            error={!!formData.errors.categoryId}
-                        >
+                        <Select value={formData.categoryId || ""} onChange={handleChildCategoryChange} label="2차 카테고리" error={!!formData.errors.categoryId}>
                             <MenuItem value="">2차 카테고리</MenuItem>
                             {categoryData.childCategories.map((category) => (
                                 <MenuItem key={category.id} value={category.id}>
@@ -228,11 +196,7 @@ function ProductEditForm() {
                                 </MenuItem>
                             ))}
                         </Select>
-                        {formData.errors.categoryId && (
-                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
-                                {formData.errors.categoryId}
-                            </Box>
-                        )}
+                        {formData.errors.categoryId && <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>{formData.errors.categoryId}</Box>}
                     </FormControl>
                 </Grid>
                 <Grid size={4}>
@@ -325,10 +289,7 @@ function ProductEditForm() {
                         <SaveBtn btnType={"submit"} viewName={"수정"} />
                     </Grid>
                     <Grid size={6}>
-                        <CancelBtn
-                            onClick={() => navigate("/admin?menu=product")}
-                            viewName={"취소"}
-                        />
+                        <CancelBtn onClick={() => navigate("/admin?menu=product")} viewName={"취소"} />
                     </Grid>
                 </Grid>
             </Grid>

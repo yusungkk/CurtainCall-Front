@@ -3,25 +3,32 @@ import CancelBtn from "/src/components/CancelBtn.jsx";
 
 const OrderList = ({ user, orders, updateOrders }) => {
     const fetchOrderCancel = async (orderNo) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/v1/cancel`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ orderNo }),
-            });
+        const response = await cancelOrder(orderNo);
 
-            if (response.status === 204) {
-                alert("예매가 정상적으로 취소되었습니다.");
-                const updatedOrders = orders.filter((order) => order.orderNo !== orderNo);
-                updateOrders(updatedOrders);
-            } else {
-                throw new Error(await response.json());
-            }
-        } catch (e) {
-            console.log(e);
+        if (response === 204) {
+            alert("예매가 정상적으로 취소되었습니다.");
+            const updatedOrders = orders.filter((order) => order.orderNo !== orderNo);
+            updateOrders(updatedOrders);
         }
+        // try {
+        //     const response = await fetch(`http://localhost:8080/api/v1/cancel`, {
+        //         method: "PATCH",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({ orderNo }),
+        //     });
+
+        //     if (response.status === 204) {
+        //         alert("예매가 정상적으로 취소되었습니다.");
+        //         const updatedOrders = orders.filter((order) => order.orderNo !== orderNo);
+        //         updateOrders(updatedOrders);
+        //     } else {
+        //         throw new Error(await response.json());
+        //     }
+        // } catch (e) {
+        //     console.log(e);
+        // }
     };
 
     const handleOrderCancel = (orderNo) => {
@@ -62,17 +69,12 @@ const OrderList = ({ user, orders, updateOrders }) => {
                                 <li className="info-item">
                                     <strong className="info-label">공연일</strong>
                                     <p className="info-text">
-                                        {order.performanceDate.replace(/-/g, ".")}{" "}
-                                        {order.performanceTime}
+                                        {order.performanceDate.replace(/-/g, ".")} {order.performanceTime}
                                     </p>
                                 </li>
                                 <li className="info-item">
                                     <strong className="info-label">좌석</strong>
-                                    <p className="info-text">
-                                        {order.seats.length > 1
-                                            ? order.seats.join(", ")
-                                            : order.seats}
-                                    </p>
+                                    <p className="info-text">{order.seats.length > 1 ? order.seats.join(", ") : order.seats}</p>
                                 </li>
                             </ul>
                         </div>
@@ -80,10 +82,7 @@ const OrderList = ({ user, orders, updateOrders }) => {
                         <div className="order-body-right">
                             <div className="order-price-text">{order.orderPrice}원</div>
                             <div>
-                                <CancelBtn
-                                    onClick={() => handleOrderCancel(order.orderNo)}
-                                    viewName={"예매취소"}
-                                ></CancelBtn>
+                                <CancelBtn onClick={() => handleOrderCancel(order.orderNo)} viewName={"예매취소"}></CancelBtn>
                             </div>
                         </div>
                     </div>
