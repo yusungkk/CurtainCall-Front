@@ -72,10 +72,6 @@ export default function InquiryAdminList() {
 
     return (
         <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
-            <Typography variant="h4" gutterBottom color={"black"} align={"left"} mb={4}
-                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
-                작성된 문의 내역
-            </Typography>
             <form onKeyUp={handleKeyUp}>
                 <Box sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
                     <FormControl fullWidth margin={"normal"} sx={{flex: 1}}>
@@ -149,11 +145,19 @@ export default function InquiryAdminList() {
                     작성된 문의내역이 없습니다.
                 </Typography>
             )}
-            <Pagination
-                count={totalPages}
-                page={offset}
-                onChange={handlePageChange}
-            />
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Pagination
+                    count={totalPages}
+                    page={offset}
+                    onChange={handlePageChange}
+                    sx={{
+                        "& .Mui-selected": {
+                            backgroundColor: "#800000 !important",
+                            color: "#fff",
+                        },
+                    }}
+                />
+            </div>
         </Box>
     );
 };

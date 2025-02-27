@@ -41,17 +41,21 @@ function FaqEditForm() {
 
         const response = await updateFaq(formData, formData.id);
         if (response === 204) {
-            navigate("/admin");
+            navigate("/admin?menu=faq");
         }
     };
 
     const handleCancelBtn = () => {
-        navigate("/admin");
+        navigate("/admin?menu=faq");
     };
 
     return (
         <>
-            <Typography variant="h3" gutterBottom sx={{color: 'black', fontFamily: "'Bareun_hipi', sans-serif",}}>
+            <Typography variant="h3" gutterBottom sx={{
+                color: 'black',
+                marginTop: "3rem",
+                textAlign: "center",
+                fontFamily: "'Bareun_hipi', sans-serif",}}>
                 FAQ 수정
             </Typography>
             <CommonFaqForm

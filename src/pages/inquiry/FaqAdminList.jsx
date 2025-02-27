@@ -14,6 +14,7 @@ import CancelBtn from "../../components/CancelBtn.jsx";
 import LoadMoreBtn from "../../components/LoadMoreBtn.jsx";
 import {useNavigate} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
+import SaveBtn from "../../components/SaveBtn.jsx";
 
 
 function FaqAdminList() {
@@ -126,6 +127,11 @@ function FaqAdminList() {
 
     const handleCancelBtn = async (e, id) => {
         e.stopPropagation();
+
+        if (!confirm("정말로 삭제하실 건가요?")) {
+            return;
+        }
+
         const responseStatus = await deleteFaq(id);
 
         if (responseStatus === 204) {
@@ -133,18 +139,12 @@ function FaqAdminList() {
         }
     };
 
+    const handleAddBtn = () => {
+        navigate(`/admin/faqs/new`);
+    }
+
     return (
         <Box sx={{maxWidth: "100%", mt: 5, ml: 2}}>
-            <Box sx={{
-                mb: 2
-            }}>
-                <Typography variant="h4" sx={{
-                    color: 'black',
-                    textAlign: 'left',
-                    fontFamily: "'Bareun_hipi', sans-serif",
-                }}>자주 묻는 질문
-                </Typography>
-            </Box>
             <Box sx={{width: '100%'}}>
                 <Tabs
                     value={tab}
@@ -214,11 +214,18 @@ function FaqAdminList() {
                     </div>
                 ))}
             </List>
-            <LoadMoreBtn
-                onClick={handleMoreBtn}
-                viewName={`더 보기(${pageInfo.size}/${pageInfo.totalElements})`}
-                isDisabled={pageInfo.totalElements === 0 || pageInfo.size >= pageInfo.totalElements}
-            />
+            <div style={{display: "flex", justifyContent: "space-between"}}>
+                <LoadMoreBtn
+                    onClick={handleMoreBtn}
+                    viewName={`더 보기(${pageInfo.size}/${pageInfo.totalElements})`}
+                    isDisabled={pageInfo.totalElements === 0 || pageInfo.size >= pageInfo.totalElements}
+                />
+                <EditBtn
+                    onClick={handleAddBtn}
+                    viewName={"FAQ 추가"}
+                />
+            </div>
+
         </Box>
     );
 

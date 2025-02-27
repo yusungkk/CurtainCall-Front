@@ -81,6 +81,8 @@ const NavigationBar = ({setActive, setRoleToggle}) => {
                     setUser(null);
                     setActive(false);
                     setRoleToggle("ANONYMOUS");
+                    window.sessionStorage.removeItem("toggleActive");
+                    window.sessionStorage.removeItem("roomId");
                     alert("로그아웃 되었습니다.");
                     navigate("/");
                 } catch (error) {
@@ -101,7 +103,11 @@ const NavigationBar = ({setActive, setRoleToggle}) => {
                             <img
                                 src={logo}
                                 alt="Curtaincall Logo"
-                                style={{ width: "200px", marginLeft: "-16px" }}
+                                style={{
+                                    width: "200px",
+                                    marginLeft: "-16px",
+                                    cursor: "pointer"
+                            }}
                                 onClick={() => navigate("/")} // 클릭 시 홈으로 이동
                             />
                             {/* 검색창 */}
