@@ -32,6 +32,8 @@ function ProductDetail() {
     const [selectedProductDetailId, setSelectedProductDetailId] = useState(null);
 
     useEffect(() => {
+
+        window.scrollTo(0, 0); // 페이지 로드 시 화면을 맨 위로 스크롤
         const fetchProduct = async () => {
             const data = await getProduct(id);
 
