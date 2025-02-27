@@ -10,6 +10,8 @@ import {
     Table,
     TableHead,
     TableBody,
+    Tooltip,
+    Typography,
     TableRow,
     TableCell,
     Button,
@@ -87,28 +89,8 @@ function ProductManagement() {
     };
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", padding: "32px 24px" }}>
             <Box>
-                <Box sx={{ padding: 2, display: "flex", justifyContent: "center" }}>
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage + 1}
-                        onChange={handlePageChange}
-                        sx={{
-                            "& .MuiPaginationItem-page.Mui-selected": {
-                                backgroundColor: "#800000",
-                                color: "#ffffff",
-                            },
-
-                            "& .MuiPaginationItem-page": {
-                                color: "#555555",
-                                "&:hover": {
-                                    backgroundColor: "#F5F5F5",
-                                },
-                            },
-                        }}
-                    />
-                </Box>
                 <Box
                     sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
                 >
@@ -157,7 +139,28 @@ function ProductManagement() {
                                                 style={{ width: "50px" }}
                                             />
                                         </TableCell>
-                                        <TableCell>{product.productName}</TableCell>
+                                        <TableCell>
+                                            <Tooltip
+                                                title={product.productName}
+                                                enterDelay={500}
+                                                leaveDelay={200}
+                                                sx={{
+                                                    fontSize: "1.2rem", // 툴팁 텍스트 크기
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{
+                                                        width: "130px", // 11자 정도에 맞게 너비 설정
+                                                        overflow: "hidden",
+                                                        textOverflow: "ellipsis",
+                                                        whiteSpace: "nowrap",
+                                                    }}
+                                                >
+                                                    {product.productName}
+                                                </Typography>
+                                            </Tooltip>
+                                        </TableCell>
                                         <TableCell>{product.place}</TableCell>
                                         <TableCell>{product.startDate}</TableCell>
                                         <TableCell>{product.endDate}</TableCell>
@@ -187,6 +190,26 @@ function ProductManagement() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                </Box>
+                <Box sx={{ padding: 2, display: "flex", justifyContent: "center" }}>
+                    <Pagination
+                        count={totalPages}
+                        page={currentPage + 1}
+                        onChange={handlePageChange}
+                        sx={{
+                            "& .MuiPaginationItem-page.Mui-selected": {
+                                backgroundColor: "#800000",
+                                color: "#ffffff",
+                            },
+
+                            "& .MuiPaginationItem-page": {
+                                color: "#555555",
+                                "&:hover": {
+                                    backgroundColor: "#F5F5F5",
+                                },
+                            },
+                        }}
+                    />
                 </Box>
             </Box>
         </Box>
