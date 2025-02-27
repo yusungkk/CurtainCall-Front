@@ -30,7 +30,7 @@ export default function InquiryDetail() {
             case "TICKET":
                 return "티켓";
             case "USER":
-                return "유저";
+                return "회원";
             case "ETC":
                 return "기타";
         }
@@ -105,7 +105,9 @@ export default function InquiryDetail() {
                     <Typography
                         variant="body1"
                         color="black"
-                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
+                        sx={{
+                            whiteSpace: "pre-line",
+                            fontFamily: "'Bareun_hipi', sans-serif",}}
                     >
                         {inquiryData.content}
                     </Typography>
@@ -139,7 +141,9 @@ export default function InquiryDetail() {
                         color={"black"}
                         variant="body1"
                         whiteSpace={"pre-line"}
-                        sx={{fontFamily: "'Bareun_hipi', sans-serif",}}
+                        sx={{
+                            whiteSpace: "pre-line",
+                            fontFamily: "'Bareun_hipi', sans-serif",}}
                     >
                         {inquiryData.reply !== null ? inquiryData.reply :
                             "고객님, 안녕하세요.\n\n" +

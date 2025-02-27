@@ -52,7 +52,11 @@ export default function Footer() {
                     {/* 고객센터 */}
                     <Box sx={{textAlign: "center", maxWidth: "30%"}}>
                         <Typography variant="body2" color="text.secondary">
-                            <strong onClick={handleInquiryBtn} style={{color: "#1976d2", cursor: "pointer"}}>365고객센터</strong>
+                            <strong onClick={handleInquiryBtn}
+                                    style={{color: "#1976d2", cursor: "pointer"}}>
+                                365고객센터&nbsp;
+                            </strong>
+                            | 언제든지 눌러주세요
                             <br/>
                             <Typography component="span" sx={{fontWeight: "bold", fontSize: "18px"}}>
                                 1833-6068

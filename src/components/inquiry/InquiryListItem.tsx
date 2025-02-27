@@ -12,7 +12,7 @@ export default function InquiryListItem({inquiry, onClick}) {
             case "TICKET":
                 return "티켓";
             case "USER":
-                return "유저";
+                return "회원";
             case "ETC":
                 return "기타";
         }

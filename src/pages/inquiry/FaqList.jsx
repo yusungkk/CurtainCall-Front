@@ -122,7 +122,7 @@ function FaqList({setActive, role}) {
         setFaqs(prevState => [...prevState, ...data.content]);
         setPageInfo({
             ...pageInfo,
-            size: pageInfo.size + data.page.size > pageInfo.totalElements ? pageInfo.totalElements : pageInfo.size + data.page.size,
+            size: pageInfo.size + data.content.length > pageInfo.totalElements ? pageInfo.totalElements : pageInfo.size + data.content.length,
         });
     };
 
@@ -232,6 +232,7 @@ function FaqList({setActive, role}) {
                             <List component="div" disablePadding sx={{pl: 4}}>
                                 <ListItemText
                                     sx={{
+                                        whiteSpace: "pre-line",
                                         wordBreak: "break-word",
                                         overflowY: "auto",
                                         maxWidth: "90%",

@@ -16,7 +16,7 @@ export default function CreateInquiryForm() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        replayEmail: "",
+
         questionType: "",
         title: "",
         content: ""
@@ -43,20 +43,6 @@ export default function CreateInquiryForm() {
             ...prev,
             [name]: value
         }));
-
-        if (name === "replayEmail") {
-            if (!emailRegex.test(value)) {
-                setErrors((prev) => ({
-                    ...prev,
-                    replayEmail: "유효한 이메일 주소를 입력해 주세요"
-                }));
-            } else {
-                setErrors((prev) => {
-                    const {replayEmail, ...rest} = prev;
-                    return rest;
-                });
-            }
-        }
     };
 
     const handleCancelBtn = () => {
@@ -68,7 +54,7 @@ export default function CreateInquiryForm() {
         console.log(formData);
         if (Object.values(formData).every(value => value !== "")) {
             if (await createInquiry(formData) === 201) {
-                navigate("/faqs");
+                navigate("/myPage?menu=inquiry");
             }
         }
     }
@@ -78,22 +64,13 @@ export default function CreateInquiryForm() {
             <Typography variant="h3" gutterBottom color={"black"}
                         sx={{
                             fontFamily: "'Bareun_hipi', sans-serif",
-                            textAlign: "center"
+                            textAlign: "center",
+                            marginTop: "3rem"
                         }}>
                 1:1 문의하기
             </Typography>
             <form onSubmit={handleSubmit} style={{width: "100vw", maxWidth: "100%"}}>
                 <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <InputText
-                        id={"replayEmail"}
-                        name={"replayEmail"}
-                        value={formData.replayEmail}
-                        event={handleChange}
-                        label={"답변 받을 이메일 주소"}
-                        onBlur={() => handleBlur("replayEmail")}
-                        isError={touched.replayEmail && (formData.replayEmail === "" || errors.replayEmail)}
-                        errorText={touched.replayEmail && (formData.replayEmail === "" ? "답변 받을 이메일 주소를 입력해 주세요" : errors.replayEmail)}
-                    />
                     <FormControl sx={{width: "70%", mb: 2, mt: 2}}>
                         <InputLabel id="faq-type-label">문의 유형</InputLabel>
                         <Select
