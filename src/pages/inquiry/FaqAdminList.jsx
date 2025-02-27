@@ -183,7 +183,7 @@ function FaqAdminList() {
                                 primary={`❓ ${faq.question}`}
                                 sx={{
                                     fontFamily: "'Bareun_hipi', sans-serif",
-                                    whiteSpace: "nowrap",
+                                    whiteSpace: "pre-line",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                 }}
