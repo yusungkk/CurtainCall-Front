@@ -232,6 +232,7 @@ function FaqList({setActive, role}) {
                             <List component="div" disablePadding sx={{pl: 4}}>
                                 <ListItemText
                                     sx={{
+                                        whiteSpace: "pre-line",
                                         wordBreak: "break-word",
                                         overflowY: "auto",
                                         maxWidth: "90%",
