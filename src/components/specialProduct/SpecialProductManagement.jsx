@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
     Container,
     Tabs,
@@ -7,6 +6,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    Tooltip,
     TableContainer,
     TableHead,
     TableRow,
@@ -38,9 +38,9 @@ import {
 
 // 상태에 대한 한글 라벨 및 색상 매핑
 const statusLabels = {
-    UPCOMING: '할인 예정',
-    ACTIVE: '할인 중',
-    DELETED: '할인 종료',
+    UPCOMING: '할인예정',
+    ACTIVE: '할인중',
+    DELETED: '할인종료',
 };
 
 const statusColors = {
@@ -260,11 +260,11 @@ const SpecialProductManagement = () => {
                         }}
                         onKeyDown={handleKeyDown}
                     />
-                    <Button variant="contained" color="primary" size="small" onClick={fetchActiveProducts}>
+                    <Button variant="outlined" color="primary" size="small" onClick={fetchActiveProducts}>
                         검색
                     </Button>
                 </Box>
-                <Button variant="contained" color="primary" size="small" onClick={() => setRegisterDialogOpen(true)}>
+                <Button variant="outlined" color="primary" size="small" onClick={() => setRegisterDialogOpen(true)}>
                     특가상품 등록
                 </Button>
             </Box>
@@ -298,7 +298,30 @@ const SpecialProductManagement = () => {
                                 {activeProducts.map((specialProductDto) => (
                                     <TableRow key={specialProductDto.specialProductId}>
                                         <TableCell>{specialProductDto.specialProductId}</TableCell>
-                                        <TableCell>{specialProductDto.productName}</TableCell>
+                                        <TableCell>
+                                            <Tooltip
+                                                title={specialProductDto.productName}
+                                                enterDelay={500}
+                                                leaveDelay={200}
+                                                sx={{
+                                                    fontSize: '1.2rem', // 툴팁 텍스트 크기
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{
+                                                        width: '130px', // 11자 정도에 맞게 너비 설정
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                    }}
+                                                >
+                                                    {specialProductDto.productName}
+                                                </Typography>
+                                            </Tooltip>
+
+                                        </TableCell>
+
                                         <TableCell>{specialProductDto.price?.toLocaleString() + '원'}</TableCell>
                                         <TableCell>{specialProductDto.discountRate}%</TableCell>
                                         {/*<TableCell>{calcDiscountedPrice(specialProductDto.price, specialProductDto.discountRate)}</TableCell>*/}
@@ -311,7 +334,7 @@ const SpecialProductManagement = () => {
                                         <TableCell>
                                             {specialProductDto.status === 'UPCOMING' ? (
                                                 <Button
-                                                    variant="contained"
+                                                    variant="outlined"
                                                     color="primary"
                                                     size="small"
                                                     onClick={() => handleApproveProduct(specialProductDto.specialProductId)}
@@ -320,18 +343,12 @@ const SpecialProductManagement = () => {
                                                 </Button>
                                             ) : (
                                                 <Button
-                                                    variant="contained"
-                                                    sx={{
-                                                        backgroundColor: "red", // 배경색을 #800000로 설정
-                                                        color: "#ffffff", // 글자 색상은 흰색으로 설정
-                                                        '&:hover': {
-                                                            backgroundColor: "#B30000", // hover 시 더 진한 빨간색으로 설정
-                                                        },
-                                                    }}
+                                                    variant="outlined"
+                                                    color="error"
                                                     size="small"
                                                     onClick={() => handleCancelApproveProduct(specialProductDto.specialProductId)}
                                                 >
-                                                    승인 취소
+                                                    취소
                                                 </Button>
                                             )}
                                         </TableCell>
@@ -434,10 +451,10 @@ const SpecialProductManagement = () => {
                     <Typography>정말로 삭제하시겠습니까?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error" onClick={handleDeleteProduct}>
+                    <Button variant="outlined" onClick={handleDeleteProduct}>
                         삭제
                     </Button>
-                    <Button onClick={() => setDeleteDialogOpen(false)}>취소</Button>
+                    <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>취소</Button>
                 </DialogActions>
             </Dialog>
 
