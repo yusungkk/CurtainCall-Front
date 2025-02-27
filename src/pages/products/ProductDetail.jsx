@@ -136,25 +136,25 @@ function ProductDetail() {
                             <div className="poster-box">
                                 <img src={imageUrl} />
                             </div>
-                            <ul className="info">
-                                <li className="info-item">
-                                    <strong className="info-label">장소</strong>
-                                    <p className="info-text">{place}</p>
+                            <ul className="detail-info">
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">장소</strong>
+                                    <p className="detail-info-text">{place}</p>
                                 </li>
-                                <li className="info-item">
-                                    <strong className="info-label">공연기간</strong>
-                                    <p className="info-text">
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">공연기간</strong>
+                                    <p className="detail-info-text">
                                         {startDate} ~ {endDate}
                                     </p>
                                 </li>
-                                <li className="info-item">
-                                    <strong className="info-label">공연시간</strong>
-                                    <p className="info-text">{runningTime}분</p>
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">공연시간</strong>
+                                    <p className="detail-info-text">{runningTime}분</p>
                                 </li>
-                                <li className="info-item">
-                                    <strong className="info-label">가격</strong>
+                                <li className="detail-info-item">
+                                    <strong className="detail-info-label">가격</strong>
                                     {discountRate > 0 ? (
-                                        <div className="info-text">
+                                        <div className="detail-info-text">
                                             <span className="original-price">
                                                 {price.toLocaleString("ko-KR")}원
                                             </span>
@@ -169,17 +169,17 @@ function ProductDetail() {
                                             </span>
                                         </div>
                                     ) : (
-                                        <p className="info-text">
+                                        <p className="detail-info-text">
                                             {price.toLocaleString("ko-KR")}원
                                         </p>
                                     )}
                                 </li>
                                 {discountRate > 0 && (
-                                    <li className="info-item">
-                                        <strong className="info-label discount-label">
+                                    <li className="detail-info-item">
+                                        <strong className="detail-info-label discount-label">
                                             할인기간
                                         </strong>
-                                        <p className="info-text discount-period">
+                                        <p className="detail-info-text discount-period">
                                             {format(new Date(discountStartDate), "yyyy-MM-dd")} ~{" "}
                                             {format(new Date(discountEndDate), "yyyy-MM-dd")}
                                         </p>

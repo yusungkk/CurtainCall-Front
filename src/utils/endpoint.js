@@ -29,7 +29,7 @@ export const PRODUCT_URL = `${API_VERSION_V1}/products`;
 export const CREATE_PRODUCT_URL = `${API_VERSION_V1}/products/new`;
 export const UPDATE_PRODUCT_URL = (id) => `${API_VERSION_V1}/products/${id}`;
 export const DELETE_PRODUCT_URL = (id) => `${API_VERSION_V1}/products/${id}`;
-export const RECOMMEND_URL = "http://localhost:8080/api/recommend";
+export const RECOMMEND_URL = `${API_VERSION_V1}/recommend`;
 export const PRODUCT_BY_DETAILID_URL =  `${API_VERSION_V1}/products/detail`;
 export const PRODUCT_DETAILS_URL = `${API_VERSION_V1}/products/details`;
 
