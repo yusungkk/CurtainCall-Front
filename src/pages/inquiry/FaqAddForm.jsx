@@ -41,8 +41,12 @@ function FaqAddForm() {
 
     return (
         <>
-            <Typography variant="h3" gutterBottom color={"black"} sx={{fontFamily: "'Bareun_hipi', sans-serif",}}>
-                FAQ 등록
+            <Typography variant="h3" gutterBottom sx={{
+                color: 'black',
+                marginTop: "3rem",
+                textAlign: "center",
+                fontFamily: "'Bareun_hipi', sans-serif",}}>
+                FAQ 수정
             </Typography>
             <CommonFaqForm
                 onSubmit={handleSubmit}

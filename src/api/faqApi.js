@@ -75,35 +75,17 @@ export const getInquiriesByAdmin = async (navigate, searchCond, offset = 0) => {
     return await fetcher(URL);
 };
 
-export const getInquiryByUser = async (navigate, id) => {
-    const token = localStorage.getItem("jwt");
+export const getInquiryByUser = async (id) => {
 
-    if (!token) {
-        navigate("/login");
-        return;
-    }
     return await fetcher(FIND_INQUIRY_USER_URL(id));
 };
 
-export const getInquiryByAdmin = async (navigate, id) => {
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-        navigate("/login");
-        return;
-    }
+export const getInquiryByAdmin = async (id) => {
 
     return await fetcher(FIND_INQUIRY_ADMIN_URL(id));
 };
 
-export const createReplyByAdmin = async (navigate, id, body) => {
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-        navigate("/login");
-        return;
-    }
-
+export const createReplyByAdmin = async (id, body) => {
     return await fetcher(CREATE_REPLY_ADMIN_URL(id), {
         method: "POST",
         body: JSON.stringify(body),

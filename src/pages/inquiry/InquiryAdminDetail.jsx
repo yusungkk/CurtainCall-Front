@@ -19,7 +19,7 @@ export default function InquiryAdminDetail() {
 
     useEffect(() => {
         const fetchInquiry = async () => {
-            const data = await getInquiryByAdmin(navigate, id);
+            const data = await getInquiryByAdmin(id);
             console.log(data);
             setInquiryData({...data});
         }
@@ -53,7 +53,7 @@ export default function InquiryAdminDetail() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(reply);
-        const data = await createReplyByAdmin(navigate, id, reply);
+        const data = await createReplyByAdmin(id, reply);
         if (data === 201) {
             navigate("/admin?menu=inquiry");
         }

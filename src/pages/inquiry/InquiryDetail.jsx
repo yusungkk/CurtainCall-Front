@@ -13,8 +13,9 @@ export default function InquiryDetail() {
 
     useEffect(() => {
         const fetchInquiry = async () => {
-            const data = await getInquiryByUser(navigate, id);
-            console.log(data);
+            const data = await getInquiryByUser(id);
+            console.log("data : fd", data);
+            console.log("data : fd", data);
             setInquiryData(data);
         };
         fetchInquiry();
