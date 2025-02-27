@@ -180,6 +180,7 @@ const Register = () => {
           margin="dense"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onBlur={(e) => validateName(e.target.value)}
           error={!!nameError}
           helperText={nameError}
           sx={{ width: "400px", mt: 3 }}

@@ -16,10 +16,10 @@ import {
 } from "@mui/material";
 import CategoryManagement from "../../components/category/CategoryManagement.jsx";
 import SpecialProductManagement from "../../components/specialProduct/SpecialProductManagement.jsx";
-import FaqList from "../inquiry/FaqList.jsx";
-import InquiryAdminList from "../inquiry/InquiryAdminList.jsx";
-import ProductManagement from "/src/pages/products/ProductManagement.jsx";
+import InquiryAdminList from "/src/pages/inquiry/InquiryAdminList.jsx";
+
 import FaqAdminList from "../inquiry/FaqAdminList.jsx";
+import ProductManagement from "/src/components/products/ProductManagement.jsx";
 
 const MyPage = () => {
   const location = useLocation();
