@@ -127,7 +127,7 @@ const ProductForm = () => {
         const response = await createProduct(productData, image);
         if (response === 201) {
             alert("상품이 등록되었습니다!");
-            navigate("/admin/products");
+            navigate("/admin");
         } else {
             alert("상품 등록에 실패했습니다.");
         }
