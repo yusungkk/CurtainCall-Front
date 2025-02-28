@@ -1,7 +1,8 @@
 .payment-title {
     text-align: center;
+    margin-top: 3rem;
     margin-left: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .payment-container {
