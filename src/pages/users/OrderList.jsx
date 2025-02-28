@@ -65,7 +65,7 @@ const OrderList = ({ user, orders, updateOrders }) => {
                         </div>
 
                         <div className="order-body-right">
-                            <div className="order-price-text">{order.orderPrice}원</div>
+                            <div className="order-price-text">{order.orderPrice.toLocaleString("ko-KR")}원</div>
                             <div>
                                 <CancelBtn
                                     onClick={() => handleOrderCancel(order.orderNo)}

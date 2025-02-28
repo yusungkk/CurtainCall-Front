@@ -62,9 +62,7 @@ const ProductForm = () => {
         const parentId = parseInt(e.target.value, 10);
         setSelectedParentId(parentId);
 
-        const filteredChildCategories = categories.filter(
-            (category) => category.parentId === parentId
-        );
+        const filteredChildCategories = categories.filter((category) => category.parentId === parentId);
         setChildCategories(filteredChildCategories);
     };
 
@@ -87,8 +85,7 @@ const ProductForm = () => {
         if (!casting.trim()) newErrors.casting = "캐스팅을 입력하세요.";
         if (!notice.trim()) newErrors.notice = "공지사항을 입력하세요.";
         if (!image) newErrors.image = "이미지를 업로드하세요.";
-        if (productDetails.length === 0)
-            newErrors.productDetails = "최소 하나의 공연 일정을 추가하세요.";
+        if (productDetails.length === 0) newErrors.productDetails = "최소 하나의 공연 일정을 추가하세요.";
 
         // 공연 일정 유효성 검사
         productDetails.forEach((detail, index) => {
@@ -136,7 +133,7 @@ const ProductForm = () => {
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} sx={{ mt: 9 }}>
                     <Grid size={12}>
                         <TextField
                             fullWidth
@@ -182,9 +179,7 @@ const ProductForm = () => {
                                 ))}
                             </Select>
                             {errors.categoryId && (
-                                <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
-                                    {errors.categoryId}
-                                </Box>
+                                <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>{errors.categoryId}</Box>
                             )}
                         </FormControl>
                     </Grid>
@@ -281,9 +276,7 @@ const ProductForm = () => {
                                     <InputLabel>요일 선택</InputLabel>
                                     <Select
                                         value={detail.date}
-                                        onChange={(e) =>
-                                            updateProductDetail(index, "date", e.target.value)
-                                        }
+                                        onChange={(e) => updateProductDetail(index, "date", e.target.value)}
                                         label="요일 선택"
                                         error={!!errors[`date${index}`]}
                                     >
@@ -297,9 +290,7 @@ const ProductForm = () => {
                                         <MenuItem value="일">일</MenuItem>
                                     </Select>
                                     {errors[`date${index}`] && (
-                                        <Box
-                                            sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}
-                                        >
+                                        <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
                                             {errors[`date${index}`]}
                                         </Box>
                                     )}
@@ -309,28 +300,19 @@ const ProductForm = () => {
                                     <InputLabel>시간 선택</InputLabel>
                                     <Select
                                         value={detail.time}
-                                        onChange={(e) =>
-                                            updateProductDetail(index, "time", e.target.value)
-                                        }
+                                        onChange={(e) => updateProductDetail(index, "time", e.target.value)}
                                         label="시간 선택"
                                         error={!!errors[`time${index}`]}
                                     >
                                         <MenuItem value="">시간 선택</MenuItem>
                                         {[...Array(24).keys()].map((hour) => (
-                                            <MenuItem
-                                                key={hour}
-                                                value={`HOUR_${hour
-                                                    .toString()
-                                                    .padStart(2, "0")}_00`}
-                                            >
+                                            <MenuItem key={hour} value={`HOUR_${hour.toString().padStart(2, "0")}_00`}>
                                                 {`${hour.toString().padStart(2, "0")}:00`}
                                             </MenuItem>
                                         ))}
                                     </Select>
                                     {errors[`time${index}`] && (
-                                        <Box
-                                            sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}
-                                        >
+                                        <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
                                             {errors[`time${index}`]}
                                         </Box>
                                     )}
@@ -341,9 +323,7 @@ const ProductForm = () => {
                                     label="잔여 좌석"
                                     type="number"
                                     value={detail.remain}
-                                    onChange={(e) =>
-                                        updateProductDetail(index, "remain", e.target.value)
-                                    }
+                                    onChange={(e) => updateProductDetail(index, "remain", e.target.value)}
                                     error={!!errors[`remain${index}`]}
                                     helperText={errors[`remain${index}`]}
                                 />
@@ -359,35 +339,21 @@ const ProductForm = () => {
                             </Box>
                         ))}
 
-                        <Button
-                            component="label"
-                            variant="contained"
-                            onClick={addProductDetail}
-                            sx={{ mt: 2 }}
-                        >
+                        <Button component="label" variant="contained" onClick={addProductDetail} sx={{ mt: 2 }}>
                             + 일정 추가
                         </Button>
                         {errors.productDetails && (
-                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
-                                {errors.productDetails}
-                            </Box>
+                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>{errors.productDetails}</Box>
                         )}
                     </Grid>
 
                     <Grid size={12}>
                         <Button component="label" variant="contained" startIcon={<CloudUpload />}>
                             포스터 업로드
-                            <input
-                                type="file"
-                                hidden
-                                accept="image/*"
-                                onChange={handleImageChange}
-                            />
+                            <input type="file" hidden accept="image/*" onChange={handleImageChange} />
                         </Button>
                         {errors.image && (
-                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
-                                {errors.image}
-                            </Box>
+                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>{errors.image}</Box>
                         )}
                     </Grid>
 
@@ -396,10 +362,7 @@ const ProductForm = () => {
                             <SaveBtn btnType={"submit"} viewName={"등록"} />
                         </Grid>
                         <Grid size={6}>
-                            <CancelBtn
-                                onClick={() => navigate("/admin?menu=product")}
-                                viewName={"취소"}
-                            />
+                            <CancelBtn onClick={() => navigate("/admin?menu=product")} viewName={"취소"} />
                         </Grid>
                     </Grid>
                 </Grid>

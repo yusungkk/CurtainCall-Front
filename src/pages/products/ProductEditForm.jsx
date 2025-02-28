@@ -155,8 +155,12 @@ function ProductEditForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-                <Grid size={12}>{formData.imageUrl && <img src={formData.imageUrl} alt="image-preview" style={{ maxWidth: "100%" }} />}</Grid>
+            <Grid container spacing={3} sx={{ mt: 9 }}>
+                <Grid size={12}>
+                    {formData.imageUrl && (
+                        <img src={formData.imageUrl} alt="image-preview" style={{ maxWidth: "100%" }} />
+                    )}
+                </Grid>
                 <Grid size={12}>
                     <TextField
                         fullWidth
@@ -175,7 +179,11 @@ function ProductEditForm() {
                 <Grid size={6}>
                     <FormControl fullWidth>
                         <InputLabel>1차 카테고리</InputLabel>
-                        <Select value={categoryData.selectedParentId || ""} onChange={handleParentCategoryChange} label="1차 카테고리">
+                        <Select
+                            value={categoryData.selectedParentId || ""}
+                            onChange={handleParentCategoryChange}
+                            label="1차 카테고리"
+                        >
                             <MenuItem value="">1차 카테고리</MenuItem>
                             {categoryData.parentCategories.map((category) => (
                                 <MenuItem key={category.id} value={category.id}>
@@ -188,7 +196,12 @@ function ProductEditForm() {
                 <Grid size={6}>
                     <FormControl fullWidth>
                         <InputLabel>2차 카테고리</InputLabel>
-                        <Select value={formData.categoryId || ""} onChange={handleChildCategoryChange} label="2차 카테고리" error={!!formData.errors.categoryId}>
+                        <Select
+                            value={formData.categoryId || ""}
+                            onChange={handleChildCategoryChange}
+                            label="2차 카테고리"
+                            error={!!formData.errors.categoryId}
+                        >
                             <MenuItem value="">2차 카테고리</MenuItem>
                             {categoryData.childCategories.map((category) => (
                                 <MenuItem key={category.id} value={category.id}>
@@ -196,7 +209,11 @@ function ProductEditForm() {
                                 </MenuItem>
                             ))}
                         </Select>
-                        {formData.errors.categoryId && <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>{formData.errors.categoryId}</Box>}
+                        {formData.errors.categoryId && (
+                            <Box sx={{ color: "error.main", fontSize: "0.75rem", mt: 1 }}>
+                                {formData.errors.categoryId}
+                            </Box>
+                        )}
                     </FormControl>
                 </Grid>
                 <Grid size={4}>
