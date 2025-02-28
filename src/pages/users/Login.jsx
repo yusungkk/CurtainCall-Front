@@ -24,7 +24,6 @@ const Login = () => {
         const { from } = location.state || { from: "/" };
 
         if (role === "ADMIN") {
-          alert("관리자로 로그인 성공.");
           navigate("/admin");
           window.location.reload();
         } else {
