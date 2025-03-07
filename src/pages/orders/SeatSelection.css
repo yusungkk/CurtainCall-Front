@@ -1,0 +1,70 @@
+.seat-selection-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.screen {
+    background: #444;
+    color: white;
+    padding: 10px;
+    width: 80%;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.seats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.seat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 40px) 50px repeat(8, 40px) 50px repeat(3, 40px);
+    gap: 8px;
+    justify-content: center;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    border: 1px solid #444;
+    background: #e3e3e3a6;;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center; /* 텍스트 정렬 */
+    display: block;
+    /*justify-content: center; !* 가로 중앙 정렬 *!*/
+    font-family: sans-serif;
+}
+
+.seat:hover {
+    background: #b1b1b1;
+}
+
+.seat.selected {
+    background: #ffcc00;
+}
+
+.seat.reserved {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.confirm-btn {
+    margin-top: 20px;
+    padding: 10px;
+    background: #d9534f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.confirm-btn:hover {
+    background: #c9302c;
+}

@@ -1,0 +1,114 @@
+/* 상품 목록 컨테이너 */
+.product-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    max-width: 1280px;
+}
+
+.product-list-container .product-list-body {
+    width: 100%;
+    position: relative;
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.product-list-title {
+    display: flex;
+    align-items: center;
+    font-size: 32px;
+    margin-bottom: 0;
+}
+
+.product-list-title img {
+    margin-right: 10px;
+}
+
+.product-list-body button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    opacity: 0.8;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.product-list-body button:first-child {
+    left: -28px;
+}
+
+.product-list-body button:last-child {
+    right: -28px;
+}
+
+/* 상품 그리드 (격자 형태) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* 5개씩 배치 */
+    gap: 20px;
+    /* 카드 간 간격 */
+    justify-content: center;
+    /* 중앙 정렬 */
+    padding: 20px 0;
+}
+
+/* 상품 카드 */
+.product-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+/* 상품 이미지 */
+.product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* 상품 제목 */
+.product-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+
+    width: 240px;
+    overflow: hidden;
+    /* 넘치는 텍스트는 숨김 */
+    text-overflow: ellipsis;
+    /* 넘치는 텍스트는 '...'으로 표시 */
+    white-space: nowrap;
+    /* 텍스트가 한 줄로 표시되도록 설정 */
+    cursor: pointer;
+    /* 마우스를 올렸을 때 커서가 포인터로 변경되도록 설정 */
+}
+
+/* 상품 장소 */
+.product-place {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 상품 날짜 */
+.product-dates {
+    font-size: 14px;
+    color: #999;
+}

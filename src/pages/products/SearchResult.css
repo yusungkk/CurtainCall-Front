@@ -1,0 +1,28 @@
+.search-result-container {
+    padding: 30px 0;
+}
+
+.search-result-container .product-list-body {
+    width: 100%;
+    position: relative;
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.search-result-header {
+    margin-top: 21px;
+}
+
+.search-result-header .product-search-title {
+    font-size: 32px;
+    margin-right: 8px;
+}
+
+.search-result-header {
+    display: flex;
+    align-items: center;
+}
+
+.search-result-header .result-count {
+    font-size: 24px;
+}
